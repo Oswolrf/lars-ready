@@ -43,6 +43,33 @@ test("el selector de idioma usa banderas y no enlaza traducciones inexistentes",
   await expect(selector.locator(".language-flag")).toHaveCount(4);
 });
 
+test("el menú móvil cubre la portada y aísla el contenido de fondo", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+
+  const navigation = page.locator("[data-mobile-navigation]");
+  const summary = navigation.locator(":scope > summary");
+  const panel = navigation.locator("[data-mobile-navigation-panel]");
+  await summary.click();
+
+  await expect(navigation).toHaveAttribute("open", "");
+  await expect(panel).toBeVisible();
+  await expect(panel).toHaveCSS("background-color", "rgb(19, 22, 20)");
+  await expect(page.locator("main")).toHaveCSS("visibility", "hidden");
+  await expect(page.locator("footer")).toHaveCSS("visibility", "hidden");
+  expect(await page.locator("main").evaluate((element) => element.inert)).toBe(true);
+  expect(await page.locator("footer").evaluate((element) => element.inert)).toBe(true);
+
+  await page.keyboard.press("Tab");
+  expect(await page.evaluate(() => Boolean(document.activeElement?.closest("[data-mobile-navigation]")))).toBe(true);
+
+  await page.keyboard.press("Escape");
+  await expect(navigation).not.toHaveAttribute("open", "");
+  await expect(page.locator("main")).toHaveCSS("visibility", "visible");
+  expect(await page.locator("main").evaluate((element) => element.inert)).toBe(false);
+  await expect(summary).toBeFocused();
+});
+
 test("la reserva funciona sin JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();

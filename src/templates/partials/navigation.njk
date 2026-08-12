@@ -30,7 +30,8 @@
         <path d="m6 6 12 12M18 6 6 18"></path>
       </svg>
     </summary>
-    <div class="fixed inset-0 z-[60] flex flex-col gap-8 bg-[#131614] px-6 pt-24 text-white">
+    <div class="fixed inset-0 z-[60] flex flex-col gap-8 bg-[#131614] px-6 pt-24 text-white"
+      data-mobile-navigation-panel>
       <div class="flex flex-col gap-6 font-display text-2xl font-light uppercase tracking-widest">
         {% for item in navigation %}
         <a href="{{ url(item.route) }}"

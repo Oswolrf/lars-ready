@@ -76,4 +76,21 @@ test.describe("regresion visual representativa", () => {
       });
     }
   }
+
+  test("menú móvil de inicio abierto a 375px", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    const response = await page.goto("/", { waitUntil: "networkidle" });
+    expect(response?.status()).toBe(200);
+
+    const navigation = page.locator("[data-mobile-navigation]");
+    await navigation.locator(":scope > summary").click();
+    await expect(navigation).toHaveAttribute("open", "");
+    await expect(navigation.locator("[data-mobile-navigation-panel]")).toBeVisible();
+
+    await expect(page).toHaveScreenshot("inicio-menu-375.png", {
+      animations: "disabled",
+      caret: "hide",
+      maxDiffPixelRatio: 0.005,
+    });
+  });
 });
