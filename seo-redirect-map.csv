@@ -1,0 +1,29 @@
+source,destination,status,reason
+/index.html,/,ready,Physical static URL
+/LaCasona.html,/la-casona/,ready,Preview physical URL
+/LaCasona,/la-casona/,ready,Previous Vercel clean URL
+/Lasvillas.html,/las-villas-casitas-independientes/,ready,Preview physical URL
+/Lasvillas,/las-villas-casitas-independientes/,ready,Previous Vercel clean URL
+/OtrosAlojamientos.html,/rural-prado/,ready,Preview physical URL
+/OtrosAlojamientos,/rural-prado/,ready,Previous Vercel clean URL
+/otros-alojamientos,/rural-prado/,ready,Legacy URL without trailing slash
+/otros-alojamientos/,/rural-prado/,ready,Replaced generic URL with the canonical property URL
+/Entorno.html,/el-entorno/,ready,Preview physical URL
+/Entorno,/el-entorno/,ready,Previous Vercel clean URL
+/Reserva.html,/reservas/,ready,Preview physical URL
+/Reserva,/reservas/,ready,Previous Vercel clean URL
+/sobre-nosotros.html,/sobre-nosotros/,ready,Preview physical URL
+/suites/la-panera.html,/suite-la-panera/,ready,Preview physical URL
+/suites/el-cabozo.html,/suite-el-cabozo/,ready,Preview physical URL
+/suites/la-capilla.html,/suite-la-capilla/,ready,Preview physical URL
+/suites/el-valle.html,/suite-el-valle/,ready,Preview physical URL
+/suites/el-jardin.html,/suite-el-jardin/,ready,Preview physical URL
+/villas/el-camino.html,/villa-el-camino/,ready,Preview physical URL
+/villas/camelia.html,/villa-camelia/,ready,Preview physical URL
+/villas/jazmin.html,/villa-jazmin/,ready,Preview physical URL
+/politica-de-privacidad.html,/politica-privacidad/,ready,Preview physical URL
+/aviso-legal.html,/aviso-legal/,ready,Preview physical URL
+/zonas-comunes.html,/zonas-comunes/,ready,Physical static URL for migrated content
+/como-llegar/,/el-entorno/#como-llegar,verify,Confirm equivalent content
+/excursiones-en-lugo/,,gone,HTTP 410 because the service is retired
+/blog/,,gone,HTTP 410 because the content is retired

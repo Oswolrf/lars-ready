@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Casa rural de lujo en A Pontenova, Lugo | Lar de Víes</title>
+    <meta name="description" content="Suites y villas privadas en el Valle del Eo, entre Galicia y Asturias. Naturaleza, diseño y descanso en Lar de Víes. Reserva tu estancia.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://lardevies.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Lar de Víes | Casa rural de lujo en el Valle del Eo">
+    <meta property="og:description" content="Suites y villas privadas en el Valle del Eo, entre Galicia y Asturias. Naturaleza, diseño y descanso en Lar de Víes. Reserva tu estancia.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lardevies.com/">
+    <meta property="og:image" content="https://lardevies.com/images/home-hero-updated-desktop-2560.webp">
+    <meta property="og:image:alt" content="Lar de Víes y el paisaje del Valle del Eo">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:site_name" content="Lar de Víes">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lar de Víes | Casa rural de lujo en el Valle del Eo">
+    <meta name="twitter:description" content="Suites y villas privadas en el Valle del Eo, entre Galicia y Asturias. Naturaleza, diseño y descanso en Lar de Víes. Reserva tu estancia.">
+    <meta name="twitter:image" content="https://lardevies.com/images/home-hero-updated-desktop-2560.webp">
+    <meta name="twitter:image:alt" content="Lar de Víes y el paisaje del Valle del Eo">
+
+
+
+
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+
+
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="./dist/output.css?v=20260810-brevo-fix" rel="stylesheet" />
+    <link href="./css/nav-brand.css?v=20260805-surfaces-v5" rel="stylesheet" />
+    <link href="./css/hero-video.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Lora:ital,wght@0,300;0,400;0,600;0,700;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+
+
+
+    <style>
+        html {
+            background-color: #fdfdfc;
+        }
+
+        html.dark {
+            background-color: #171b18;
+        }
+    </style>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        html.lenis,
+        html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        .lenis.lenis-scrolling iframe {
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+            50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+            100% { transform: scaleY(1); transform-origin: top; opacity: 0; }
+        }
+
+        .hero-logo {
+            width: clamp(15rem, 27vw, 32rem);
+        }
+
+
+
+        /* Back to Top Button Styles */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.4);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        #back-to-top .material-symbols-outlined {
+            color: #1b261f;
+            font-size: 24px;
+            font-weight: 300;
+            /* Thin arrow */
+        }
+
+        /* === MOBILE OPTIMIZATIONS === */
+        @media (max-width: 767px) {
+
+            /* Hero height optimization */
+            header.h-screen {
+                min-height: 85vh;
+                height: 85vh;
+            }
+
+            /* Hero typography */
+            .font-display.text-5xl {
+                font-size: 2.5rem;
+            }
+
+            /* Touch targets minimum 44px */
+            nav a,
+            nav button {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+
+            /* Footer mobile spacing */
+            footer {
+                padding-bottom: 1.5rem !important;
+            }
+
+            /* Map aspect ratio for mobile */
+            .aspect-\[21\/9\] {
+                aspect-ratio: 4/3;
+            }
+
+            /* Card heights */
+            .h-\[70vh\] {
+                height: 60vh;
+            }
+
+            /* Back-to-top button mobile position */
+            #back-to-top {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+    <!-- SEO Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://lardevies.com/#website",
+          "url": "https://lardevies.com/",
+          "name": "Lar de Víes",
+          "inLanguage": "es-ES",
+          "publisher": {
+            "@id": "https://lardevies.com/#lodging"
+          }
+        },
+        {
+          "@type": "LodgingBusiness",
+          "@id": "https://lardevies.com/#lodging",
+          "name": "Lar de Víes",
+          "description": "Suites y villas privadas en el Valle del Eo, entre Galicia y Asturias. Naturaleza, diseño y descanso en Lar de Víes. Reserva tu estancia.",
+          "url": "https://lardevies.com/",
+          "logo": "https://lardevies.com/images/logo%20sin%20fondo.png",
+          "image": [
+            "https://lardevies.com/images/home-hero-updated-desktop-2560.webp",
+            "https://lardevies.com/images/la-casona-hero-desktop-opt-v2.webp",
+            "https://lardevies.com/images/las-villas-hero-desktop-opt-v2.webp"
+          ],
+          "telephone": "+34678655303",
+          "email": "reservas@lardevies.com",
+          "identifier": {
+            "@type": "PropertyValue",
+            "propertyID": "Registro de Turismo",
+            "value": "TR-LU-000310"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Neipín, 4",
+            "addressLocality": "A Pontenova",
+            "addressRegion": "Lugo",
+            "postalCode": "27721",
+            "addressCountry": "ES"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 43.3255,
+            "longitude": -7.1626
+          },
+          "hasMap": "https://maps.google.com/?q=43.3255,-7.1626",
+          "priceRange": "€€€",
+          "amenityFeature": [
+            {
+              "@type": "LocationFeatureSpecification",
+              "name": "Wi-Fi",
+              "value": true
+            },
+            {
+              "@type": "LocationFeatureSpecification",
+              "name": "Aparcamiento privado",
+              "value": true
+            },
+            {
+              "@type": "LocationFeatureSpecification",
+              "name": "Entorno natural",
+              "value": true
+            }
+          ],
+          "sameAs": [
+            "https://www.instagram.com/lardevies",
+            "https://www.facebook.com/lardevies/"
+          ],
+          "containsPlace": [
+            {
+              "@id": "https://lardevies.com/suite-la-panera/#accommodation"
+            },
+            {
+              "@id": "https://lardevies.com/suite-el-cabozo/#accommodation"
+            },
+            {
+              "@id": "https://lardevies.com/suite-la-capilla/#accommodation"
+            },
+            {
+              "@id": "https://lardevies.com/suite-el-valle/#accommodation"
+            },
+            {
+              "@id": "https://lardevies.com/suite-el-jardin/#accommodation"
+            },
+            {
+              "@id": "https://lardevies.com/villa-el-camino/#accommodation"
+            },
+            {
+              "@id": "https://lardevies.com/villa-camelia/#accommodation"
+            },
+            {
+              "@id": "https://lardevies.com/villa-jazmin/#accommodation"
+            }
+          ]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://lardevies.com/#webpage",
+          "url": "https://lardevies.com/",
+          "name": "Casa rural de lujo en A Pontenova, Lugo | Lar de Víes",
+          "description": "Suites y villas privadas en el Valle del Eo, entre Galicia y Asturias. Naturaleza, diseño y descanso en Lar de Víes. Reserva tu estancia.",
+          "inLanguage": "es-ES",
+          "isPartOf": {
+            "@id": "https://lardevies.com/#website"
+          },
+          "about": {
+            "@id": "https://lardevies.com/#lodging"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://lardevies.com/images/home-hero-updated-desktop-2560.webp"
+          }
+        }
+      ]
+    }
+    </script>
+    <link href="/css/sticky-cta.css" rel="stylesheet" />
+    <link href="/css/booking-modal.css" rel="stylesheet" />
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-text-slate antialiased font-sans selection:bg-primary/30">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:text-primary-dark focus:shadow-lg">Saltar al contenido</a>
+
+    <nav id="main-nav" aria-label="Navegación principal"
+        class="fixed top-0 w-full z-40 px-6 py-6 md:px-12 flex justify-between items-center text-white transition-all duration-300">
+        <div class="flex items-center">
+            <a href="/" class="nav-brand hover:opacity-80" aria-label="Lar de Víes">
+                <img src="./images/logo solo blanco.png" alt="" loading="eager" decoding="async" width="1254" height="1254" />
+            </a>
+        </div>
+        <div class="hidden md:flex items-center gap-6">
+            <div class="flex items-center gap-6 text-xs lg:text-sm font-medium tracking-wide uppercase">
+                <a class="text-white border-b border-white pb-0.5" href="/" aria-current="page">Inicio</a>
+                <a class="hover:text-stone-200 transition-colors" href="/la-casona/">La Casona</a>
+                <a class="hover:text-stone-200 transition-colors" href="/las-villas-casitas-independientes/">Las Villas</a>
+                <a class="hover:text-stone-200 transition-colors" href="/rural-prado/">Otros Alojamientos</a>
+
+
+                <a class="hover:text-stone-200 transition-colors" href="/el-entorno/">Entorno</a>
+                <a class="hover:text-stone-200 transition-colors" href="/sobre-nosotros/">Sobre Nosotros</a>
+            </div>
+
+            <span class="text-sm font-medium tracking-wide uppercase" lang="es" aria-label="Idioma actual: español">ES</span>
+            <a data-booking-trigger href="/reservas/#elegir-alojamiento"
+                class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-md hover:shadow-lg">
+                Reservar
+            </a>
+        </div>
+        <button id="mobile-menu-btn" type="button" aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden text-white relative z-50 w-11 h-11 -mr-2 flex items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/80">
+            <span aria-hidden="true" class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú principal" aria-hidden="true"
+        class="hidden fixed inset-0 z-[60] bg-[#131614] text-white flex flex-col pt-24 px-6 gap-8 animate-fade-in">
+        <button id="mobile-menu-close" type="button" aria-label="Cerrar menú" class="absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-full text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
+            <span aria-hidden="true" class="material-symbols-outlined text-3xl">close</span>
+        </button>
+
+        <nav aria-label="Navegación móvil" class="flex flex-col gap-6 text-2xl font-display font-light uppercase tracking-widest">
+            <a class="text-primary font-medium" href="/" aria-current="page">Inicio</a>
+            <a class="hover:text-primary transition-colors" href="/la-casona/">La Casona</a>
+            <a class="hover:text-primary transition-colors" href="/las-villas-casitas-independientes/">Las Villas</a>
+            <a class="hover:text-primary transition-colors" href="/rural-prado/">Otros Alojamientos</a>
+
+
+            <a class="hover:text-primary transition-colors" href="/el-entorno/">Entorno</a>
+            <a class="hover:text-primary transition-colors" href="/sobre-nosotros/">Sobre Nosotros</a>
+        </nav>
+
+        <div class="h-px bg-white/10 w-full my-4"></div>
+
+        <p class="text-sm text-center text-white" lang="es" aria-label="Idioma actual: español">ES</p>
+
+        <a data-booking-trigger href="/reservas/#elegir-alojamiento"
+            class="bg-primary hover:bg-primary-dark text-white px-6 py-4 rounded-full text-center text-sm font-bold uppercase tracking-widest shadow-lg">
+            Reservar Ahora
+        </a>
+
+        <div class="mt-auto pb-12 text-center text-white/40 text-sm">
+            <p>Lar de Víes</p>
+        </div>
+    </div>
+    <script defer src="/js/dialog.js"></script>
+    <script defer src="/js/mobile-menu.js?v=3-brevo"></script>
+    <script defer src="./js/hero-video.js?v=20260720-mobile"></script>
+
+    <noscript>
+        <nav aria-label="Navegación sin JavaScript" class="md:hidden bg-[#131614] px-6 py-4 text-white">
+            <ul class="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-xs font-bold uppercase tracking-wider">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/la-casona/">La Casona</a></li>
+                <li><a href="/las-villas-casitas-independientes/">Las Villas</a></li>
+                <li><a href="/rural-prado/">Otros Alojamientos</a></li>
+                <li><a href="/el-entorno/">Entorno</a></li>
+                <li><a href="/sobre-nosotros/">Sobre Nosotros</a></li>
+                <li><a data-booking-trigger href="/reservas/#elegir-alojamiento">Reservar</a></li>
+            </ul>
+        </nav>
+    </noscript>
+    <main id="main-content">
+    <header
+        class="hero-viewport relative w-full overflow-hidden flex items-center justify-center bg-primary-dark">
+        <div class="absolute inset-0 z-0"
+            style="background-color:#1a2020">
+            <video class="absolute inset-0 w-full h-full object-cover" data-hero-video muted loop playsinline preload="none" aria-hidden="true"
+                poster="./images/home-hero-updated-desktop-2560.webp"
+                style="opacity:0;animation:fadeIn 2s ease-out 0.2s forwards">
+                <source src="./videos/home-hero-optimized.webm" type="video/webm">
+                <source src="./videos/home-hero-optimized.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay absolute inset-0 bg-gradient-to-b from-black/40 via-primary-dark/30 to-black/60"
+                style="opacity:1;transition:opacity 0.3s"></div>
+        </div>
+        <div class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2">
+            <h1 class="sr-only">Lar de Víes — Turismo rural en la Reserva de la Biosfera del Valle del Eo</h1>
+            <img src="./images/logo lar de vies final sin fondo.png" alt="Lar de Víes" class="hero-logo drop-shadow-lg" style="width:clamp(15rem, 27vw, 32rem);filter:brightness(0) invert(1);opacity:0;animation:fadeIn 1.5s ease-out 0.35s forwards" loading="eager" decoding="async" width="1254" height="1254" />
+            <p class="w-full px-4 text-center text-balance font-display text-white/80 text-lg md:text-xl tracking-widest leading-relaxed drop-shadow" style="opacity:0;animation:fadeIn 1.5s ease-out 0.7s forwards">TU REFUGIO EN LA NATURALEZA</p>
+            <a data-booking-trigger href="/reservas/#elegir-alojamiento"
+                class="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-white/50 bg-black/20 px-7 py-3 text-xs font-bold uppercase tracking-widest text-white backdrop-blur-sm transition-all hover:border-white hover:bg-white hover:text-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                style="opacity:0;animation:fadeIn 1.5s ease-out 1s forwards">Reservar estancia</a>
+        </div>
+        <div class="absolute left-0 right-0 z-20 flex flex-col items-center gap-2" style="bottom:2.5rem;opacity:0;animation:fadeIn 1.5s ease-out 2s forwards">
+            <span class="font-sans text-white/60 text-xs tracking-[0.25em] uppercase">Descubre la tranquilidad</span>
+            <div style="width:1px;height:40px;background:linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0));animation:scrollLine 1.8s ease-in-out infinite"></div>
+        </div>
+    </header>
+    <section id="biodiversity"
+        class="py-24 px-6 md:px-20 lg:px-40 bg-background-light dark:bg-background-dark bg-paper-texture">
+        <div class="max-w-4xl mx-auto text-center flex flex-col gap-8 animate-on-scroll">
+            <div class="flex justify-center items-center gap-12 text-primary">
+                <span aria-hidden="true" class="material-symbols-outlined text-3xl">water_drop</span>
+                <span aria-hidden="true" class="material-symbols-outlined text-3xl">eco</span>
+                <span aria-hidden="true" class="material-symbols-outlined text-3xl">wb_sunny</span>
+            </div>
+            <h2 class="font-display text-3xl md:text-5xl text-[#131614] dark:text-white leading-tight">
+                Un santuario de la biodiversidad </h2>
+            <p class="text-text-slate text-lg md:text-xl leading-relaxed font-light">
+                Lar de Víes está situado en una pequeña aldea de montaña, Neipín, entre Asturias y Galicia,
+                en el valle del río Eo, una zona declarada por la Unesco reserva de la Biosfera.
+            </p>
+        </div>
+    </section>
+    <section class="container mx-auto px-6 md:px-12 py-12 md:py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 animate-on-scroll">
+            <a href="/las-villas-casitas-independientes/"
+                class="group relative h-[70vh] lg:h-[800px] overflow-hidden block rounded-2xl shadow-2xl">
+                <div class="absolute inset-0 transition-transform duration-1000 group-hover:scale-105">
+                    <img class="w-full h-full object-cover transition-opacity duration-700"
+                        alt="Las Villas de Lar de Víes"
+                        src="./images/las%20villas%20main.jpeg" width="800" height="1000" loading="lazy" decoding="async" />
+                    <div
+                        class="absolute inset-0 bg-primary-dark/10 group-hover:bg-primary-dark/20 transition-colors mix-blend-multiply">
+                    </div>
+                </div>
+                <div
+                    class="absolute inset-0 p-8 md:p-16 flex flex-col justify-end text-white z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent">
+                    <span
+                        class="text-stone-300 font-bold tracking-widest uppercase text-xs mb-4 flex items-center gap-2">
+                        <span class="w-8 h-px bg-stone-300"></span> ALOJAMIENTO
+                    </span>
+                    <h3 class="font-display text-4xl md:text-5xl mb-6">Las Villas</h3>
+                    <p class="text-stone-200 text-lg max-w-md font-light mb-8 leading-relaxed">
+                        Tres refugios independientes diseñados para fundirse con el paisaje. Un espacio de calma y
+                        privacidad absoluta, donde el lujo reside en la nobleza de la piedra, la madera y las vistas
+                        infinitas al valle.
+                    </p>
+                    <ul class="text-sm font-medium tracking-wide space-y-2 text-stone-300">
+                        <li class="flex items-center gap-2"><span aria-hidden="true" class="material-symbols-outlined text-sm">check</span>
+                            Privacidad total</li>
+                        <li class="flex items-center gap-2"><span aria-hidden="true" class="material-symbols-outlined text-sm">check</span>
+                            Vistas panorámicas</li>
+                        <li class="flex items-center gap-2"><span aria-hidden="true" class="material-symbols-outlined text-sm">check</span>
+                            Esencia gallega</li>
+                    </ul>
+                </div>
+            </a>
+            <a href="/la-casona/"
+                class="group relative h-[70vh] lg:h-[800px] overflow-hidden block rounded-2xl shadow-2xl">
+                <div class="absolute inset-0 transition-transform duration-1000 group-hover:scale-105">
+                    <img class="w-full h-full object-cover transition-opacity duration-700"
+                        alt="La Casona de Lar de Víes"
+                        src="./images/la%20casona%20main.jpeg" width="800" height="1000" loading="lazy" decoding="async" />
+                    <div
+                        class="absolute inset-0 bg-blue-900/10 group-hover:bg-blue-900/20 transition-colors mix-blend-multiply">
+                    </div>
+                </div>
+                <div
+                    class="absolute inset-0 p-8 md:p-16 flex flex-col justify-end text-white z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent">
+                    <span
+                        class="text-stone-300 font-bold tracking-widest uppercase text-xs mb-4 flex items-center gap-2">
+                        <span class="w-8 h-px bg-stone-300"></span> TRADICIÓN
+                    </span>
+                    <h3 class="font-display text-4xl md:text-5xl mb-6">La Casona</h3>
+                    <p class="text-stone-200 text-lg max-w-md font-light mb-8 leading-relaxed">
+                        El corazón de la propiedad. Una casa de piedra restaurada con mimo, donde cada detalle evoca la
+                        vida
+                        rural gallega, pero con el confort contemporáneo como prioridad.
+                    </p>
+                    <ul class="text-sm font-medium tracking-wide space-y-2 text-stone-300">
+                        <li class="flex items-center gap-2"><span aria-hidden="true" class="material-symbols-outlined text-sm">check</span>
+                            Suites con personalidad única</li>
+                        <li class="flex items-center gap-2"><span aria-hidden="true" class="material-symbols-outlined text-sm">check</span>
+                            Diseño y piezas restauradas</li>
+                        <li class="flex items-center gap-2"><span aria-hidden="true" class="material-symbols-outlined text-sm">check</span>
+                            Vistas panorámicas</li>
+                    </ul>
+                </div>
+            </a>
+        </div>
+    </section>
+    <section class="relative py-28 md:py-36 px-6 bg-primary-dark text-white overflow-hidden" aria-labelledby="filosofia-title">
+        <div
+            class="absolute inset-0 opacity-20 pointer-events-none"
+            style="background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.18),transparent 34%),radial-gradient(circle at 78% 66%,rgba(255,255,255,.12),transparent 28%)">
+        </div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/10 rounded-full pointer-events-none">
+        </div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] border border-white/5 rounded-full pointer-events-none">
+        </div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <header class="text-center max-w-3xl mx-auto mb-16 md:mb-24">
+                <span class="text-white/60 font-bold tracking-[0.4em] uppercase text-xs mb-6 block">Nuestra filosofía</span>
+                <h2 id="filosofia-title" class="font-display text-5xl md:text-6xl lg:text-7xl italic text-stone-100 text-balance">
+                    Volver a uno mismo
+                </h2>
+            </header>
+
+            <div class="max-w-2xl mx-auto text-center">
+                <div class="space-y-6 text-stone-300 text-[1.05rem] leading-[1.85] font-light">
+                    <p>No porque aquí desaparezcan los problemas.</p>
+                    <p>Sino porque, por un momento, dejan de hacer tanto ruido.</p>
+                    <p>Vivimos rodeados de notificaciones.<br>Prisas.<br>Responsabilidades.</p>
+                    <p>Y casi sin darnos cuenta olvidamos algo muy sencillo:</p>
+                    <p class="font-display text-2xl md:text-3xl italic text-stone-100 leading-relaxed">parar.</p>
+                    <p>En Lar de Víes no buscamos que desconectes del mundo.</p>
+                    <p>Buscamos que vuelvas a conectar contigo.</p>
+                </div>
+                <a href="/sobre-nosotros/"
+                    class="mt-12 inline-flex min-h-11 items-center justify-center rounded-full border border-white/35 bg-white/5 px-8 py-3 text-xs font-bold uppercase tracking-[0.18em] text-stone-100 backdrop-blur-sm transition-all hover:border-white hover:bg-white hover:text-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 active:scale-[0.98]">
+                    Descubre nuestra filosofía <span class="ml-2 text-base leading-none" aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="py-24 bg-background-light dark:bg-background-dark bg-paper-texture">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-3xl md:text-4xl text-[#131614] dark:text-white">Los elementos</h2>
+                <p class="text-text-slate mt-4 max-w-xl mx-auto">El clima de Galicia es un personaje en sí mismo: suave,
+                    oceánico y de un verde vibrante.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 animate-stagger-container">
+                <div
+                    class="bg-[#efe9df]/90 hover:bg-[#f2ede4]/95 dark:bg-[#252a26] p-10 rounded-2xl shadow-[0_10px_24px_rgba(79,65,49,0.10)] hover:shadow-[0_14px_32px_rgba(79,65,49,0.15)] border border-white/35 dark:border-white/5 group transition-all duration-300 transform hover:-translate-y-1 backdrop-blur-sm animate-stagger-item">
+                    <div
+                        class="size-12 bg-[#e5dfd4]/80 dark:bg-white/10 rounded-full flex items-center justify-center mb-6 text-primary">
+                        <span aria-hidden="true" class="material-symbols-outlined">cloud</span>
+                    </div>
+                    <h3 class="font-display text-xl mb-3 text-[#131614] dark:text-white">A Brétema (La Bruma)</h3>
+                    <p class="text-text-slate font-light text-sm leading-relaxed">
+                        La misteriosa niebla matutina que abraza el fondo del valle, creando una atmósfera de ensueño
+                        antes de que el sol rompa a través de ella.
+                    </p>
+                </div>
+                <div
+                    class="bg-[#efe9df]/90 hover:bg-[#f2ede4]/95 dark:bg-[#252a26] p-10 rounded-2xl shadow-[0_10px_24px_rgba(79,65,49,0.10)] hover:shadow-[0_14px_32px_rgba(79,65,49,0.15)] border border-white/35 dark:border-white/5 group transition-all duration-300 transform hover:-translate-y-1 backdrop-blur-sm animate-stagger-item">
+                    <div
+                        class="size-12 bg-[#e5dfd4]/80 dark:bg-white/10 rounded-full flex items-center justify-center mb-6 text-primary">
+                        <span aria-hidden="true" class="material-symbols-outlined">water_drop</span>
+                    </div>
+                    <h3 class="font-display text-xl mb-3 text-[#131614] dark:text-white">A Chuvia (La Lluvia)</h3>
+                    <p class="text-text-slate font-light text-sm leading-relaxed">
+                        La fuente de nuestro verde infinito. Suave, frecuente y vital, transforma el paisaje en un
+                        paraíso exuberante.
+                    </p>
+                </div>
+                <div
+                    class="bg-[#efe9df]/90 hover:bg-[#f2ede4]/95 dark:bg-[#252a26] p-10 rounded-2xl shadow-[0_10px_24px_rgba(79,65,49,0.10)] hover:shadow-[0_14px_32px_rgba(79,65,49,0.15)] border border-white/35 dark:border-white/5 group transition-all duration-300 transform hover:-translate-y-1 backdrop-blur-sm animate-stagger-item">
+                    <div
+                        class="size-12 bg-[#e5dfd4]/80 dark:bg-white/10 rounded-full flex items-center justify-center mb-6 text-primary">
+                        <span aria-hidden="true" class="material-symbols-outlined">sunny</span>
+                    </div>
+                    <h3 class="font-display text-xl mb-3 text-[#131614] dark:text-white">A Luz (La Luz)</h3>
+                    <p class="text-text-slate font-light text-sm leading-relaxed">
+                        La hora dorada en el Valle del Eo es espectacular. La luz se filtra entre las hojas,
+                        creando reflejos dorados sobre las paredes de piedra de Lar de Víes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="relative py-24 bg-background-light dark:bg-background-dark overflow-hidden">
+        <div class="container mx-auto px-6 md:px-12 relative z-10 animate-on-scroll">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <span
+                        class="text-secondary font-bold tracking-widest uppercase text-xs mb-3 block">Exploration</span>
+                    <h2 class="font-display text-4xl text-[#131614] dark:text-white">Mapa de la Reserva</h2>
+                    <p class="text-text-slate mt-4 max-w-lg">Desde los arcos icónicos de Playa de As Reigadas hasta las
+                        calles encantadoras de Ribadeo.</p>
+                </div>
+            </div>
+            <div
+                class="relative w-full aspect-[16/9] md:aspect-[21/9] bg-[#e8e6e1] dark:bg-[#2a2f2b] rounded-2xl overflow-hidden border border-stone-200 dark:border-white/5 shadow-inner">
+                <iframe title="Mapa de Lar de Víes y el Valle del Eo" src="https://maps.google.com/maps?q=43.3255,-7.1626&amp;hl=es&amp;z=14&amp;output=embed"
+                    class="w-full h-full min-h-[500px] z-10 grayscale-[10%] hover:grayscale-0 transition-all duration-700"
+                    style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <footer class="bg-[#222e26] text-white pt-20 pb-32 md:pb-20 px-6 md:px-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="flex flex-col gap-6">
+                <div style="position:relative;width:5.75rem;height:5.5rem;overflow:hidden">
+                    <img src="./images/logo solo blanco.png" alt="Lar de Víes" loading="lazy" decoding="async" width="1254" height="1254"
+                        style="position:absolute;width:11.5rem;max-width:none;height:auto;left:50%;top:50%;transform:translate(-50%,-50%)" />
+                </div>
+                <p class="text-stone-400 text-sm leading-relaxed">
+                    Turismo rural premium en el corazón de la Reserva de la Biosfera del Valle del Eo. Un lugar para
+                    desconectar.
+                </p>
+            </div>
+            <div>
+                <h2 class="font-bold text-sm uppercase tracking-widest mb-6 text-stone-300">Explorar</h2>
+                <ul class="flex flex-col gap-3 text-sm text-stone-400">
+                    <li><a class="hover:text-primary transition-colors" href="/">Inicio</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="/la-casona/">La Casona</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="/las-villas-casitas-independientes/">Las Villas</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="/rural-prado/">Otros Alojamientos</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="/el-entorno/">Entorno</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="/sobre-nosotros/">Sobre Nosotros</a></li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="font-bold text-sm uppercase tracking-widest mb-6 text-stone-300">CONTACTO</h2>
+                <ul class="flex flex-col gap-3 text-sm text-stone-400">
+                    <li>Neipín, A Pontenova<br />Galicia. 27721 Spain</li>
+                    <li><a class="hover:text-white" href="tel:+34678655303">+34 678 655 303</a></li>
+                    <li><a class="hover:text-white" href="mailto:reservas@lardevies.com">reservas@lardevies.com</a></li>
+                </ul>
+                <div class="flex items-center gap-4 mt-6">
+                    <a class="opacity-60 hover:opacity-100 transition-opacity" href="https://www.instagram.com/lardevies"
+                        target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect width="18" height="18" x="3" y="3" rx="5"></rect>
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none"></circle>
+                        </svg>
+                    </a>
+                    <a class="opacity-60 hover:opacity-100 transition-opacity"
+                        href="https://www.facebook.com/lardevies/" target="_blank" rel="noopener noreferrer"
+                        aria-label="Facebook" title="Facebook">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M13.5 21v-8h2.75l.41-3H13.5V8.08c0-.87.24-1.46 1.58-1.46h1.69V3.94a22.5 22.5 0 0 0-2.46-.13c-2.43 0-4.1 1.49-4.1 4.22V10H7.46v3h2.75v8h3.29Z">
+                            </path>
+                        </svg>
+                    </a>
+                    <a class="opacity-60 hover:opacity-100 transition-opacity"
+                        href="https://www.youtube.com/channel/UCJQMiPWLy8OtIGr9uP7gvxA/videos" target="_blank"
+                        rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M21.58 7.19a2.95 2.95 0 0 0-2.08-2.09C17.66 4.6 12 4.6 12 4.6s-5.66 0-7.5.5a2.95 2.95 0 0 0-2.08 2.09C1.92 9.03 1.92 12 1.92 12s0 2.97.5 4.81A2.95 2.95 0 0 0 4.5 18.9c1.84.5 7.5.5 7.5.5s5.66 0 7.5-.5a2.95 2.95 0 0 0 2.08-2.09c.5-1.84.5-4.81.5-4.81s0-2.97-.5-4.81ZM10 15.2V8.8l5.2 3.2-5.2 3.2Z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div id="sib-form-container">
+
+                <p class="newsletter-kicker">Newsletter</p>
+                <h2 class="mb-3 font-serif text-2xl leading-tight text-white">Historias para volver al norte</h2>
+                <p class="newsletter-intro">Novedades de Lar de Vies, escapadas con calma y rincones del valle del Eo, directamente en tu correo.</p>
+                <div id="error-message" class="sib-form-message-panel newsletter-message newsletter-message--error" role="alert">
+                    <svg viewBox="0 0 512 512" aria-hidden="true"><path d="M256 40c118.6 0 216 96.1 216 216 0 119.3-96.6 216-216 216S40 375.4 40 256 136.6 40 256 40m0-32C119 8 8 119.1 8 256s111 248 248 248 248-111 248-248S393 8 256 8Zm-11.5 120h23c6.8 0 12.3 5.7 12 12.5l-7 168c-.3 6.4-5.6 11.5-12 11.5h-9c-6.4 0-11.7-5.1-12-11.5l-7-168c-.3-6.8 5.2-12.5 12-12.5ZM256 340a28 28 0 1 0 0 56 28 28 0 0 0 0-56Z"/></svg>
+                    <span class="sib-form-message-panel__inner-text">No hemos podido validar tu suscripción. Revisa los datos e inténtalo de nuevo.</span>
+                </div>
+                <div id="success-message" class="sib-form-message-panel newsletter-message newsletter-message--success" role="status" aria-live="polite">
+                    <svg viewBox="0 0 512 512" aria-hidden="true"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8Zm141.6 189L217.2 376.1a12 12 0 0 1-17-.1l-85.9-86.6a12 12 0 0 1 .1-17l8.5-8.4a12 12 0 0 1 17 .1l69 69.5 163.4-162.1a12 12 0 0 1 17 .1l8.4 8.5a12 12 0 0 1-.1 17Z"/></svg>
+                    <span class="sib-form-message-panel__inner-text">Tu suscripción se ha realizado correctamente.</span>
+                </div>
+                <form id="sib-form" class="newsletter-form" method="POST" action="https://a87793f8.sibforms.com/serve/MUIFAMmnAonPZ14KvJ_GH-G9DtBlGjSXS0Y1Ob4YSzUDiq5A4VLnFrs0KyNIbs-BJgiZxHyTytU94ABvcR5e9mq7u_AHVmjr-psvxs2x546E2A4idhb3WQjnxsxMgYFRj3PcuVAvE2AFwQfcoa2uKIYgr_X_UgKT-E8J1bGI6yU-rN-weHyAmCKi7uPpVkUR8rFjNPZVOmhu1HIn0A==" data-type="subscription" data-newsletter-form>
+                    <div class="sib-input sib-form-block newsletter-field">
+                        <div class="form__entry entry_block">
+                            <label for="EMAIL" class="sr-only" data-required="*">Correo electrónico</label>
+                            <div class="entry__field">
+                                <input id="EMAIL" class="input newsletter-input" name="EMAIL" type="email" autocomplete="email" inputmode="email" placeholder="tu@email.com" data-required="true" aria-describedby="newsletter-email-error" required>
+                            </div>
+                            <p aria-live="polite" id="newsletter-email-error" class="entry__error entry__error--primary newsletter-error"></p>
+                        </div>
+                        <button class="sib-form-block__button sib-form-block__button-with-loader newsletter-submit" form="sib-form" type="submit">
+                            <svg class="newsletter-loader progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="m460.1 373.8-20.8-12c-5.5-3.2-7.5-10.2-4.7-15.9a200 200 0 0 0-167.2-289.6c-6.4-.4-11.4-5.6-11.4-12V20.3c0-6.9 5.8-12.3 12.7-12 83.6 4.3 160.6 51 202.1 123.7 42.1 72.7 44.1 162.3 6 236.8-3.1 6.2-10.7 8.5-16.7 5Z"/></svg>
+                            Suscribirme
+                        </button>
+                    </div>
+                    <div class="sib-optin sib-form-block">
+                        <div class="form__entry entry_mcq">
+                            <div class="newsletter-consent">
+                                <input id="OPT_IN" class="newsletter-checkbox" name="OPT_IN" type="checkbox" value="1" data-required="true" aria-describedby="newsletter-consent-error" required>
+                                <span>
+                                    <label for="OPT_IN">Acepto recibir la newsletter y he leído la </label><a href="/politica-privacidad/">política de privacidad</a><label for="OPT_IN">. Podré darme de baja en cualquier momento.</label>
+                                </span>
+                            </div>
+                            <p aria-live="polite" id="newsletter-consent-error" class="entry__error entry__error--primary newsletter-error"></p>
+                        </div>
+                    </div>
+                    <input class="input--hidden" name="email_address_check" type="text" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
+                    <input name="locale" type="hidden" value="es">
+                </form>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-stone-500">
+            <p>© 2026 Lar de Vies. Todos los derechos reservados.</p>
+            <div class="flex gap-6">
+                <a class="hover:text-stone-300" href="/politica-privacidad/">Política de privacidad</a>
+                <a class="hover:text-stone-300" href="/aviso-legal/">Aviso legal</a>
+            </div>
+        </div>
+    </footer>
+
+    <button type="button" id="back-to-top" class="opacity-0 pointer-events-none transition-opacity duration-300"
+        aria-label="Volver arriba" aria-hidden="true" tabindex="-1">
+        <span aria-hidden="true" class="material-symbols-outlined">expand_less</span>
+    </button>
+
+    <script defer src="./js/back-to-top.js"></script>
+
+    <script defer src="./js/sticky-nav.js"></script>
+    <script defer src="./js/scroll-experience.js"></script>
+    <script defer src="./js/strict-loading.js"></script>
+    <script defer src="./js/prefetch-heroes.js"></script>
+    <script defer src="/js/booking-modal.js"></script>
+    <script defer src="/js/sticky-cta.js"></script>
+    <script defer src="/js/newsletter.js?v=4"></script>
+</body>
+
+</html>

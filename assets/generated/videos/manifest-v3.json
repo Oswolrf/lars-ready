@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-11T10:43:52.190Z",
+  "selection": "original",
+  "entries": [
+    {
+      "slug": "home",
+      "source": "videos/INICIO WEB 2K.mp4",
+      "sourceBytes": 112559541,
+      "sourceSha256": "e11bf581749ac9f5b519a99b48bab516773b02b8b119ae1be93e498332091500",
+      "startSeconds": 0,
+      "durationSeconds": 16,
+      "derivatives": [
+        {
+          "format": "mp4",
+          "codec": "libx264",
+          "path": "assets/generated/videos/home-hero-v3.mp4",
+          "bytes": 240073
+        },
+        {
+          "format": "webm",
+          "codec": "libvpx-vp9",
+          "path": "assets/generated/videos/home-hero-v3.webm",
+          "bytes": 194322
+        }
+      ]
+    },
+    {
+      "slug": "la-casona",
+      "source": "videos/LA CASONA WEB(1).mp4",
+      "sourceBytes": 122581612,
+      "sourceSha256": "346c766afcb326e1c502c98a19cdcf9e07a9675017952f2e1b1b9b1a05ca8a68",
+      "startSeconds": 0,
+      "durationSeconds": 18,
+      "derivatives": [
+        {
+          "format": "mp4",
+          "codec": "libx264",
+          "path": "assets/generated/videos/la-casona-hero-v3.mp4",
+          "bytes": 527211
+        },
+        {
+          "format": "webm",
+          "codec": "libvpx-vp9",
+          "path": "assets/generated/videos/la-casona-hero-v3.webm",
+          "bytes": 628075
+        }
+      ]
+    },
+    {
+      "slug": "las-villas",
+      "source": "videos/LAS VILLAS WEB 2K.mp4",
+      "sourceBytes": 89508734,
+      "sourceSha256": "810fefeca0a7a960e1bc8c32d7989c4f5517d4755aba53665aca6907791e3eb6",
+      "startSeconds": 0,
+      "durationSeconds": 16,
+      "derivatives": [
+        {
+          "format": "mp4",
+          "codec": "libx264",
+          "path": "assets/generated/videos/las-villas-hero-v3.mp4",
+          "bytes": 1665913
+        },
+        {
+          "format": "webm",
+          "codec": "libvpx-vp9",
+          "path": "assets/generated/videos/las-villas-hero-v3.webm",
+          "bytes": 1738647
+        }
+      ]
+    },
+    {
+      "slug": "entorno",
+      "source": "videos/ENTORNO WEB 2k.mp4",
+      "sourceBytes": 109678964,
+      "sourceSha256": "98ef5f36fbbfdbc8e5615e3d93e2d0c1756e085d59451c5ce70513b4ef89a2e9",
+      "startSeconds": 0,
+      "durationSeconds": 18,
+      "derivatives": [
+        {
+          "format": "mp4",
+          "codec": "libx264",
+          "path": "assets/generated/videos/entorno-hero-v3.mp4",
+          "bytes": 1316418
+        },
+        {
+          "format": "webm",
+          "codec": "libvpx-vp9",
+          "path": "assets/generated/videos/entorno-hero-v3.webm",
+          "bytes": 1702378
+        }
+      ]
+    },
+    {
+      "slug": "sobre-nosotros",
+      "source": "videos/sobre nosotros 2k.mp4",
+      "sourceBytes": 107124162,
+      "sourceSha256": "fa3d9a5189e703a0e57764c0c5bbb0c5f9409f04bd74fc923179742dedad10be",
+      "startSeconds": 0,
+      "durationSeconds": 18,
+      "derivatives": [
+        {
+          "format": "mp4",
+          "codec": "libx264",
+          "path": "assets/generated/videos/sobre-nosotros-hero-v3.mp4",
+          "bytes": 2565895
+        },
+        {
+          "format": "webm",
+          "codec": "libvpx-vp9",
+          "path": "assets/generated/videos/sobre-nosotros-hero-v3.webm",
+          "bytes": 2493297
+        }
+      ]
+    }
+  ]
+}

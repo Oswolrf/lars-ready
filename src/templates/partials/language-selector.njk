@@ -1,0 +1,62 @@
+<details class="language-selector language-selector--{{ languageVariant }}" data-language-selector>
+  <summary class="language-selector__trigger" aria-label="Seleccionar idioma. Idioma actual: Español">
+    <span class="language-flag" aria-hidden="true">
+      <svg viewBox="0 0 3 2" focusable="false">
+        <rect width="3" height="2" fill="#aa151b"></rect>
+        <rect width="3" height="1" y="0.5" fill="#f1bf00"></rect>
+      </svg>
+    </span>
+    <span class="sr-only">Español</span>
+    <svg class="language-selector__chevron" viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+      <path d="m6 8 4 4 4-4"></path>
+    </svg>
+  </summary>
+
+  <div class="language-selector__menu">
+    <p class="language-selector__heading" id="language-selector-heading-{{ languageVariant }}">Idioma</p>
+    <ul class="language-selector__list">
+      <li>
+        <a class="language-selector__item is-current" href="{{ url(page.route) }}" lang="es" aria-current="true">
+          <span class="language-flag" aria-hidden="true">
+            <svg viewBox="0 0 3 2" focusable="false">
+              <rect width="3" height="2" fill="#aa151b"></rect>
+              <rect width="3" height="1" y="0.5" fill="#f1bf00"></rect>
+            </svg>
+          </span>
+          <span>Español</span>
+          <svg class="language-selector__check" viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="m5 10 3 3 7-7"></path>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <span class="language-selector__item is-disabled" lang="en" aria-disabled="true" title="Versión en inglés próximamente">
+          <span class="language-flag" aria-hidden="true">
+            <svg viewBox="0 0 60 30" focusable="false">
+              <rect width="60" height="30" fill="#012169"></rect>
+              <path d="M0 0 60 30M60 0 0 30" stroke="#fff" stroke-width="6"></path>
+              <path d="M0 0 60 30M60 0 0 30" stroke="#c8102e" stroke-width="3.5"></path>
+              <path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"></path>
+              <path d="M30 0v30M0 15h60" stroke="#c8102e" stroke-width="6"></path>
+            </svg>
+          </span>
+          <span>English</span>
+          <small>Próximamente</small>
+        </span>
+      </li>
+      <li>
+        <span class="language-selector__item is-disabled" lang="de" aria-disabled="true" title="Versión en alemán próximamente">
+          <span class="language-flag" aria-hidden="true">
+            <svg viewBox="0 0 5 3" focusable="false">
+              <rect width="5" height="3" fill="#181818"></rect>
+              <rect width="5" height="2" y="1" fill="#dd0000"></rect>
+              <rect width="5" height="1" y="2" fill="#ffce00"></rect>
+            </svg>
+          </span>
+          <span>Deutsch</span>
+          <small>Próximamente</small>
+        </span>
+      </li>
+    </ul>
+  </div>
+</details>

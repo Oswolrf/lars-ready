@@ -1,0 +1,96 @@
+#main-nav:not(.nav-static) {
+    background-color: transparent;
+    backdrop-filter: none;
+}
+
+#main-nav:not(.nav-static).nav-scrolled {
+    background-color: rgba(19, 22, 20, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#main-nav .nav-brand {
+    position: relative;
+    display: block;
+    width: 3rem;
+    height: 2.75rem;
+    overflow: hidden;
+    flex: none;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+#main-nav .nav-brand img {
+    position: absolute;
+    width: 5rem;
+    max-width: none;
+    height: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#main-nav.nav-scrolled .nav-brand,
+#main-nav .nav-brand.nav-brand-static {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+@media (max-width: 767px) {
+    #main-nav:not(.nav-static) .nav-brand {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+}
+
+#main-nav .nav-brand.nav-brand-static img {
+    filter: brightness(0);
+    opacity: 0.82;
+}
+
+.dark #main-nav .nav-brand.nav-brand-static img {
+    filter: none;
+    opacity: 1;
+}
+
+/* Superficies claras cálidas para evitar saltos de blanco entre páginas. */
+:root {
+    --color-surface-light: 229 220 207;
+    --color-surface-soft: 235 228 217;
+    --color-surface-card: 239 233 223;
+}
+
+html:not(.dark) {
+    background-color: rgb(var(--color-surface-light)) !important;
+}
+
+html:not(.dark) .bg-background-light {
+    background-color: rgb(var(--color-surface-light)) !important;
+}
+
+/* Normaliza los fondos claros heredados sin alterar botones blancos sobre fondos oscuros. */
+html:not(.dark) .bg-\[\#f4f3f0\],
+html:not(.dark) .bg-\[\#fdfbf7\],
+html:not(.dark) .bg-\[\#fdfdfc\] {
+    background-color: rgb(var(--color-surface-light)) !important;
+}
+
+html:not(.dark) .bg-\[\#f8f7f5\] {
+    background-color: rgb(var(--color-surface-soft)) !important;
+}
+
+html:not(.dark) .bg-white\/80 {
+    background-color: rgb(var(--color-surface-card) / 0.82) !important;
+}
+
+html:not(.dark) .bg-white\/90,
+html:not(.dark) .bg-white\/95 {
+    background-color: rgb(var(--color-surface-card) / 0.90) !important;
+}

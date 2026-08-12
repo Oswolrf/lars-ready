@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rural Prado | Apartamentos rurales en San Tirso de Abres</title>
+    <meta name="description" content="Conoce los alojamientos de Rural Prado en San Tirso de Abres y consulta su disponibilidad." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://lardevies.com/rural-prado/" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="Rural Prado | Alojamientos rurales en Asturias" />
+    <meta property="og:description" content="Conoce los alojamientos de Rural Prado en San Tirso de Abres y consulta su disponibilidad." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lardevies.com/rural-prado/" />
+    <meta property="og:image" content="https://lardevies.com/images/AMEIRO/AMEIRO1.jpeg" />
+    <meta property="og:image:alt" content="Alojamiento Rural Prado en San Tirso de Abres" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Rural Prado" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Rural Prado | Alojamientos rurales en Asturias" />
+    <meta name="twitter:description" content="Conoce los alojamientos de Rural Prado en San Tirso de Abres y consulta su disponibilidad." />
+    <meta name="twitter:image" content="https://lardevies.com/images/AMEIRO/AMEIRO1.jpeg" />
+    <meta name="twitter:image:alt" content="Alojamiento Rural Prado en San Tirso de Abres" />
+    <!-- Favicon -->
+    <base href="/" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="dist/output.css?v=20260810-brevo-fix" rel="stylesheet" />
+    <link href="css/nav-brand.css?v=20260805-surfaces-v5" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Lora:ital,wght@0,300;0,400;0,600;1,400&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <style>
+        html { background: #f4f3f0; }
+        .stay-image { transition: transform .8s cubic-bezier(.16,1,.3,1); }
+        .stay-card:hover .stay-image { transform: scale(1.035); }
+        .stay-arrow { transition: transform .35s cubic-bezier(.16,1,.3,1); }
+        .stay-card:hover .stay-arrow { transform: translateX(.35rem); }
+        .gallery-trigger { appearance: none; border: 0; padding: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+        .gallery-modal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 1rem; }
+        .gallery-modal[hidden] { display: none; }
+        .gallery-modal__backdrop { position: absolute; inset: 0; background: rgba(17, 22, 18, .84); backdrop-filter: blur(6px); }
+        .gallery-modal__surface { position: relative; z-index: 1; width: min(100%, 66rem); max-height: min(92dvh, 56rem); overflow: auto; padding: clamp(1.25rem, 3vw, 2rem); background: #f4f3f0; color: #172019; box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, .32); }
+        .gallery-modal__viewer { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .75rem; align-items: center; margin-top: 1.5rem; }
+        .gallery-modal__image-wrap { aspect-ratio: 4 / 3; min-height: 16rem; overflow: hidden; background: #1b251f; }
+        .gallery-modal__image { width: 100%; height: 100%; object-fit: contain; }
+        .gallery-modal__nav { display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid rgba(39, 49, 43, .2); border-radius: 999px; background: rgba(255, 255, 255, .72); color: #27312b; cursor: pointer; }
+        .gallery-modal__nav:hover { background: #fff; }
+        .gallery-modal__thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr)); gap: .5rem; margin-top: 1rem; }
+        .gallery-thumb { aspect-ratio: 1; overflow: hidden; padding: 0; border: 0; opacity: .5; background: #d8d6d0; cursor: pointer; }
+        .gallery-thumb[aria-current="true"] { opacity: 1; outline: 2px solid #526656; outline-offset: 2px; }
+        .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        body.gallery-open { overflow: hidden; }
+        @keyframes fade-up { from { opacity: 0; transform: translateY(1.25rem); } to { opacity: 1; transform: translateY(0); } }
+        .hero-reveal { opacity: 0; animation: fade-up .9s cubic-bezier(.16,1,.3,1) forwards; }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-reveal { opacity: 1; animation: none; }
+            .stay-image, .stay-arrow { transition: none; }
+        }
+        @media (max-width: 767px) {
+            nav a, nav button { min-height: 44px; display: flex; align-items: center; }
+        }
+    </style>
+    <!-- SEO Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://lardevies.com/rural-prado/#webpage",
+          "url": "https://lardevies.com/rural-prado/",
+          "name": "Rural Prado | Apartamentos rurales en San Tirso de Abres",
+          "description": "Conoce los alojamientos de Rural Prado en San Tirso de Abres y consulta su disponibilidad.",
+          "inLanguage": "es-ES",
+          "dateModified": "2026-08-11",
+          "isPartOf": { "@id": "https://lardevies.com/#website" },
+          "about": { "@id": "https://lardevies.com/rural-prado/#rural-prado" },
+          "mainEntity": { "@id": "https://lardevies.com/rural-prado/#rural-prado" },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://lardevies.com/images/AMEIRO/AMEIRO1.jpeg"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://lardevies.com/rural-prado/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://lardevies.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Rural Prado",
+              "item": "https://lardevies.com/rural-prado/"
+            }
+          ]
+        },
+        {
+          "@type": "LodgingBusiness",
+          "@id": "https://lardevies.com/rural-prado/#rural-prado",
+          "name": "Rural Prado",
+          "url": "https://lardevies.com/rural-prado/",
+          "description": "Alojamientos rurales restaurados en piedra y pizarra a orillas del río Eo, en San Tirso de Abres, Asturias.",
+          "image": "https://lardevies.com/images/AMEIRO/AMEIRO1.jpeg",
+          "potentialAction": {
+            "@type": "ReserveAction",
+            "target": "https://lardevies.com/reservas/#elegir-alojamiento"
+          }
+        },
+        {
+          "@type": "ItemList",
+          "@id": "https://lardevies.com/rural-prado/#apartments",
+          "name": "Apartamentos de Rural Prado",
+          "about": { "@id": "https://lardevies.com/rural-prado/#rural-prado" },
+          "numberOfItems": 5,
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Ameiro" },
+            { "@type": "ListItem", "position": 2, "name": "Salgueiro" },
+            { "@type": "ListItem", "position": 3, "name": "Castañeiro" },
+            { "@type": "ListItem", "position": 4, "name": "Bidueira" },
+            { "@type": "ListItem", "position": 5, "name": "Carballo" }
+          ]
+        }
+      ]
+    }
+    </script>
+</head>
+<body class="bg-[#f4f3f0] text-[#27312b] antialiased font-sans selection:bg-primary/30">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[90] focus:bg-white focus:text-[#172019] focus:px-4 focus:py-3">Saltar al contenido</a>
+    <nav id="main-nav" aria-label="Navegación principal" class="fixed top-0 w-full z-40 px-6 py-6 md:px-12 flex justify-between items-center text-white transition-all duration-300">
+        <a href="/" class="nav-brand hover:opacity-80" aria-label="Lar de Víes">
+            <img src="images/logo solo blanco.png" alt="" />
+        </a>
+        <div class="hidden md:flex items-center gap-6">
+            <div class="flex items-center gap-6 text-[0.7rem] lg:text-xs font-medium tracking-wide uppercase">
+                <a class="hover:text-stone-200 transition-colors" href="/">Inicio</a>
+                <a class="hover:text-stone-200 transition-colors" href="/la-casona/">La Casona</a>
+                <a class="hover:text-stone-200 transition-colors" href="/las-villas-casitas-independientes/">Las Villas</a>
+                <a class="text-white border-b border-white pb-0.5" href="/rural-prado/" aria-current="page">Rural Prado</a>
+                <a class="hover:text-stone-200 transition-colors" href="/el-entorno/">Entorno</a>
+                <a class="hover:text-stone-200 transition-colors" href="/sobre-nosotros/">Sobre Nosotros</a>
+            </div>
+            <a href="/reservas/#elegir-alojamiento" class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all active:scale-[0.98]">Reservar</a>
+        </div>
+        <button id="mobile-menu-btn" type="button" aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden text-white relative z-50 w-11 h-11 -mr-2 flex items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
+            <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+    </nav>
+
+    <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú principal" aria-hidden="true" class="hidden fixed inset-0 z-[60] bg-[#131614] text-white flex flex-col pt-24 px-6 gap-8">
+        <button id="mobile-menu-close" type="button" aria-label="Cerrar menú" class="absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-full text-white/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
+            <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+        <div class="flex flex-col gap-5 text-xl font-display font-light uppercase tracking-widest">
+            <a class="hover:text-primary transition-colors" href="/">Inicio</a>
+            <a class="hover:text-primary transition-colors" href="/la-casona/">La Casona</a>
+            <a class="hover:text-primary transition-colors" href="/las-villas-casitas-independientes/">Las Villas</a>
+            <a class="text-primary font-medium" href="/rural-prado/" aria-current="page">Rural Prado</a>
+            <a class="hover:text-primary transition-colors" href="/el-entorno/">Entorno</a>
+            <a class="hover:text-primary transition-colors" href="/sobre-nosotros/">Sobre Nosotros</a>
+        </div>
+        <div class="h-px bg-white/10 w-full"></div>
+        <a href="/reservas/#elegir-alojamiento" class="bg-primary hover:bg-primary-dark text-white px-6 py-4 rounded-full text-center text-sm font-bold uppercase tracking-widest active:scale-[0.98]">Reservar Ahora</a>
+    </div>
+    <script defer src="/js/dialog.js"></script>
+    <script defer src="/js/mobile-menu.js?v=3-brevo"></script>
+
+    <main id="main-content">
+        <header class="relative min-h-[82dvh] md:min-h-[88dvh] overflow-hidden flex items-end bg-[#1b251f]">
+            <img src="images/AMEIRO/AMEIRO1.jpeg" alt="Interior del apartamento Ameiro en Rural Prado" class="absolute inset-0 w-full h-full object-cover" width="1080" height="1440" fetchpriority="high" />
+            <div class="absolute inset-0 bg-gradient-to-r from-[#111612]/90 via-[#111612]/45 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#111612]/85 via-transparent to-black/30"></div>
+            <div class="relative w-full max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24 text-white">
+                <span class="hero-reveal block text-white/65 text-xs font-bold tracking-[0.35em] uppercase mb-6" style="animation-delay:.15s">Rural Prado · San Tirso de Abres, Asturias</span>
+                <h1 class="hero-reveal font-display text-5xl md:text-7xl lg:text-8xl font-light leading-[.95] max-w-4xl text-balance" style="animation-delay:.28s">Rural<br><span class="italic text-stone-200">Prado</span></h1>
+                <p class="hero-reveal mt-8 text-stone-200 text-base md:text-lg font-light leading-relaxed max-w-xl" style="animation-delay:.42s">Rural Prado es un complejo de alojamientos rurales que ocupa una antigua edificación familiar de arquitectura tradicional asturiana, íntegramente restaurada en piedra y pizarra a orillas del río Eo en San Tirso de Abres, Asturias. El establecimiento está dividido en cinco apartamentos independientes que combinan el encanto rústico con comodidades modernas, equipados con zona de cocina-salón, calefacción, televisión, baño privado y conexión Wi-Fi gratuita. Su privilegiada localización dentro de la Reserva de la Biosfera de la comarca Los Oscos-Eo ofrece a los huéspedes un entorno natural ideal para el senderismo, situándose a solo 10 minutos en coche del mágico pueblo artesano de Taramundi y a unos 35 minutos de la espectacular Playa de las Catedrales, además de dar acceso a servicios comunes como lavandería, jardín y terraza, encontrándose convenientemente a unos 119 kilómetros del Aeropuerto de Asturias.</p>
+            </div>
+        </header>
+
+        <section class="py-24 md:py-36 px-6 md:px-12" aria-labelledby="estancias-title">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-12 gap-8 md:gap-12 items-end mb-16 md:mb-24">
+                    <div class="md:col-span-7">
+                <span class="text-primary-dark text-xs font-bold tracking-[0.3em] uppercase block mb-5">Rural Prado · Los Oscos-Eo</span>
+                        <h2 id="estancias-title" class="font-display text-4xl md:text-6xl text-[#172019] leading-tight">Cinco apartamentos junto al río Eo</h2>
+                    </div>
+                    <p class="md:col-span-4 md:col-start-9 text-stone-600 font-light leading-relaxed">El establecimiento está dividido en cinco apartamentos independientes que combinan el encanto rústico con comodidades modernas, equipados con zona de cocina-salón, calefacción, televisión, baño privado y conexión Wi-Fi gratuita.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-x-8 lg:gap-x-14 gap-y-16 md:gap-y-24">
+                    <article class="stay-card group block w-full text-left md:mt-20" aria-labelledby="ameiro-title">
+                        <button type="button" class="gallery-trigger relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-gallery-open="ameiro" aria-label="Abrir galería de Ameiro">
+                            <img src="images/AMEIRO/AMEIRO1.jpeg" alt="Interior del alojamiento Ameiro" class="stay-image w-full h-full object-cover" loading="lazy" />
+                            <span class="absolute bottom-4 right-4 inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 text-[#172019]" aria-hidden="true"><span class="material-symbols-outlined">photo_library</span></span>
+                        </button>
+                        <div class="pt-6 border-t border-[#27312b]/20 mt-6">
+                            <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="ameiro-title" class="font-display text-3xl mt-2 text-[#172019]">Ameiro</h3></div><span class="stay-arrow material-symbols-outlined mt-3" aria-hidden="true">photo_library</span></div>
+                            <p class="font-display italic text-lg text-primary-dark mt-5">“Un pequeño ático con mucho HOGAR.”</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-4">En la parte más alta de la casa, Ameiro es un apartamento abuhardillado donde la madera, las vigas vistas y la luz natural crean un ambiente especialmente acogedor.</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-3">Dormitorio independiente, cocina, comedor y zona de estar se reparten en un espacio cálido y tranquilo, pensado para descansar y disfrutar sin prisas de unos días en Abres.</p>
+                        </div>
+                    </article>
+                    <article class="stay-card group block w-full text-left" aria-labelledby="salgueiro-title">
+                        <div class="aspect-[5/4] overflow-hidden bg-[#27312b] text-white flex items-end p-8 md:p-10" aria-hidden="true">
+                            <div><span class="text-white/55 text-[0.68rem] uppercase tracking-[0.25em]">Rural Prado</span><p class="font-display text-4xl mt-3">Salgueiro</p></div>
+                        </div>
+                        <div class="pt-6 border-t border-[#27312b]/20 mt-6">
+                            <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="salgueiro-title" class="font-display text-3xl mt-2 text-[#172019]">Salgueiro</h3></div><span class="material-symbols-outlined mt-3 text-primary-dark" aria-hidden="true">home</span></div>
+                            <p class="font-display italic text-lg text-primary-dark mt-5">“El ático de Prado.”</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-4">Un ático íntimo y acogedor, donde los techos abuhardillados crean pequeños rincones para descansar y disfrutar con calma.</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-3">Con cocina, comedor y zona de estar integrados, es un espacio sencillo y confortable, perfecto para desconectar y sentirse como en casa.</p>
+                        </div>
+                    </article>
+                    <article class="stay-card group block w-full text-left md:mt-8" aria-labelledby="castaneiro-title">
+                        <button type="button" class="gallery-trigger relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-gallery-open="castaneiro" aria-label="Abrir galería de Castañeiro">
+                            <img src="images/Castañeiro/Castaéiro 3.jpeg" alt="Interior del alojamiento Castañeiro" class="stay-image w-full h-full object-cover" loading="lazy" />
+                            <span class="absolute bottom-4 right-4 inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 text-[#172019]" aria-hidden="true"><span class="material-symbols-outlined">photo_library</span></span>
+                        </button>
+                        <div class="pt-6 border-t border-[#27312b]/20 mt-6">
+                            <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="castaneiro-title" class="font-display text-3xl mt-2 text-[#172019]">Castañeiro</h3></div><span class="stay-arrow material-symbols-outlined mt-3" aria-hidden="true">photo_library</span></div>
+                            <p class="font-display italic text-lg text-primary-dark mt-5">“Espacio y comodidad”</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-4">Uno de los apartamentos más amplios de Prado, pensado para disfrutar con mayor comodidad y libertad de movimiento.</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-3">Adaptado para personas con movilidad reducida, sus estancias cómodas y luminosas se abren al paisaje verde que rodea la casa, siempre presente al otro lado de las ventanas.</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-3">Un espacio cómodo, accesible y conectado con la naturaleza de Abres.</p>
+                        </div>
+                    </article>
+                    <article class="stay-card group block w-full text-left md:mt-20" aria-labelledby="bidueira-title">
+                        <button type="button" class="gallery-trigger relative block w-full aspect-[5/4] overflow-hidden bg-stone-200" data-gallery-open="bidueira" aria-label="Abrir galería de Bidueira">
+                            <img src="images/BIDUEIRA/BIDUEIRA 1.jpeg" alt="Interior del alojamiento Bidueira" class="stay-image w-full h-full object-cover" loading="lazy" />
+                            <span class="absolute bottom-4 right-4 inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 text-[#172019]" aria-hidden="true"><span class="material-symbols-outlined">photo_library</span></span>
+                        </button>
+                        <div class="pt-6 border-t border-[#27312b]/20 mt-6">
+                            <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="bidueira-title" class="font-display text-3xl mt-2 text-[#172019]">Bidueira</h3></div><span class="stay-arrow material-symbols-outlined mt-3" aria-hidden="true">photo_library</span></div>
+                            <p class="font-display italic text-lg text-primary-dark mt-5">“Mirando al valle”</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-4">Un apartamento cómodo y acogedor, adaptado para personas con movilidad reducida y pensado para disfrutar de Prado con total tranquilidad.</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-3">Su zona de estar y comedor se abre hacia unas preciosas vistas al valle, haciendo que el paisaje forme parte del apartamento desde primera hora del día.</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-3">Comodidad, luz y naturaleza en un mismo espacio.</p>
+                        </div>
+                    </article>
+                    <article class="stay-card group block w-full text-left md:mt-8" aria-labelledby="carballo-title">
+                        <button type="button" class="gallery-trigger relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-gallery-open="carballo" aria-label="Abrir galería de Carballo">
+                            <img src="images/CARBALLO/CARBALLO1.jpeg" alt="Interior del alojamiento Carballo" class="stay-image w-full h-full object-cover" loading="lazy" />
+                            <span class="absolute bottom-4 right-4 inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 text-[#172019]" aria-hidden="true"><span class="material-symbols-outlined">photo_library</span></span>
+                        </button>
+                        <div class="pt-6 border-t border-[#27312b]/20 mt-6">
+                            <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="carballo-title" class="font-display text-3xl mt-2 text-[#172019]">Carballo</h3></div><span class="stay-arrow material-symbols-outlined mt-3" aria-hidden="true">photo_library</span></div>
+                            <p class="font-display italic text-lg text-primary-dark mt-5">“Espacio para compartir”</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-4">El apartamento más amplio de Prado, con dos habitaciones independientes y espacios pensados para disfrutar cómodamente en familia.</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-3">Su salón, cocina y comedor ofrecen ese espacio extra para compartir, mientras la piedra y las vistas al paisaje de Abres mantienen intacto el carácter rural de la casa.</p>
+                            <p class="text-stone-600 font-light leading-relaxed mt-3">Un lugar para estar juntos, pero con espacio para cada uno.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-[#1d2821] text-white px-6 md:px-12 py-24 md:py-32">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-10 items-end">
+                <div class="md:col-span-7"><span class="text-white/50 text-xs font-bold tracking-[0.3em] uppercase block mb-6">Tu estancia empieza aquí</span><h2 class="font-display text-4xl md:text-6xl font-light leading-tight">Elige el espacio.<br><span class="italic text-stone-300">Nosotros cuidamos el resto.</span></h2></div>
+                <div class="md:col-span-4 md:col-start-9"><p class="text-stone-300 font-light leading-relaxed mb-8">Consulta la disponibilidad de todos nuestros alojamientos y encuentra las fechas que mejor encajan contigo.</p><a href="/reservas/#elegir-alojamiento" class="inline-flex items-center gap-3 bg-primary hover:bg-primary-dark text-white px-7 py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-colors active:scale-[0.98]">Ver disponibilidad <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span></a></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#162019] text-white pt-16 pb-10 px-6 md:px-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="md:col-span-2"><p class="font-display text-3xl mb-6">Rural Prado</p><p class="text-stone-400 text-sm leading-relaxed max-w-sm">Alojamientos rurales en San Tirso de Abres, Asturias, junto al río Eo.</p></div>
+            <div><h2 class="font-bold text-xs uppercase tracking-widest mb-6 text-stone-300">Explorar</h2><ul class="flex flex-col gap-3 text-sm text-stone-400"><li><a class="hover:text-white" href="/">Inicio</a></li><li><a class="hover:text-white" href="/la-casona/">La Casona</a></li><li><a class="hover:text-white" href="/las-villas-casitas-independientes/">Las Villas</a></li><li><a class="text-white" href="/rural-prado/" aria-current="page">Rural Prado</a></li><li><a class="hover:text-white" href="/zonas-comunes/">Zonas comunes</a></li><li><a class="hover:text-white" href="/el-entorno/">Entorno</a></li></ul></div>
+            <div><h2 class="font-bold text-xs uppercase tracking-widest mb-6 text-stone-300">Reservas</h2><p class="text-sm text-stone-400 mb-5">El selector de reservas permite elegir entre Rural Prado y Lar de Víes.</p><a class="inline-flex items-center gap-2 text-sm text-white hover:text-stone-200" href="/reservas/#elegir-alojamiento">Elegir alojamiento <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span></a></div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-4 text-xs text-stone-500"><p>© 2026 Rural Prado. Todos los derechos reservados.</p><div class="flex gap-6"><a class="hover:text-stone-300" href="/politica-privacidad/">Política de privacidad</a><a class="hover:text-stone-300" href="/aviso-legal/">Aviso legal</a></div></div>
+    </footer>
+    <button id="back-to-top" type="button" class="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-white/80 backdrop-blur border border-stone-200 shadow-md flex items-center justify-center opacity-0 pointer-events-none transition-opacity" aria-label="Volver arriba"><span class="material-symbols-outlined">expand_less</span></button>
+    <div id="gallery-modal" class="gallery-modal" hidden aria-hidden="true">
+        <div class="gallery-modal__backdrop" data-gallery-close></div>
+        <div class="gallery-modal__surface" role="dialog" aria-modal="true" aria-labelledby="gallery-modal-title" tabindex="-1">
+            <div class="flex items-start justify-between gap-6 border-b border-[#27312b]/15 pb-5">
+                <div>
+                    <span id="gallery-modal-kicker" class="text-primary-dark/60 text-[0.68rem] font-bold tracking-[0.25em] uppercase">Alojamiento rural</span>
+                    <p id="gallery-modal-title" class="font-display text-3xl md:text-4xl mt-2 text-[#172019]">Galería del alojamiento</p>
+                </div>
+                <button type="button" class="w-11 h-11 shrink-0 inline-flex items-center justify-center rounded-full border border-[#27312b]/20 hover:bg-white" data-gallery-close aria-label="Cerrar galería"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
+            </div>
+            <div class="gallery-modal__viewer">
+                <button type="button" class="gallery-modal__nav" data-gallery-prev aria-label="Imagen anterior"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></button>
+                <div class="gallery-modal__image-wrap"><img id="gallery-modal-image" class="gallery-modal__image" src="images/AMEIRO/AMEIRO1.jpeg" alt="" /></div>
+                <button type="button" class="gallery-modal__nav" data-gallery-next aria-label="Imagen siguiente"><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></button>
+            </div>
+            <div id="gallery-modal-thumbs" class="gallery-modal__thumbs"></div>
+            <div class="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#27312b]/15 pt-5">
+                <p id="gallery-modal-count" class="text-sm text-stone-500"></p>
+                <a href="/reservas/#elegir-alojamiento" class="inline-flex items-center justify-center gap-3 bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-colors">Consultar disponibilidad <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span></a>
+            </div>
+        </div>
+    </div>
+    <script defer src="js/back-to-top.js"></script>
+    <script defer src="js/sticky-nav.js"></script>
+    <script defer src="js/otros-alojamientos-gallery.js"></script>
+</body>
+</html>

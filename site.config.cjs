@@ -1,0 +1,248 @@
+"use strict";
+
+const site = {
+  name: "Lar de Víes",
+  defaultOrigin: "https://lardevies.com",
+  locale: "es_ES",
+  language: "es-ES",
+  bookingFallback: "/reservas/#elegir-alojamiento",
+};
+
+const properties = {
+  larDeVies: {
+    id: "lar-de-vies",
+    name: "Lar de Víes",
+    entityId: "/#lar-de-vies",
+    bookingUrl: "https://direct-book.com/properties/complejorurallardevies",
+  },
+  ruralPrado: {
+    id: "rural-prado",
+    name: "Rural Prado",
+    entityId: "/rural-prado/#rural-prado",
+    bookingUrl: "https://direct-book.com/properties/casaruralelprado?locale=es",
+  },
+};
+
+const pages = [
+  {
+    source: "index.html",
+    route: "/",
+    active: "inicio",
+    lastModified: "2026-08-11",
+    title: "Casa rural de lujo en A Pontenova, Lugo | Lar de Víes",
+    description: "Suites y villas privadas en el Valle del Eo, entre Galicia y Asturias. Naturaleza, diseño y descanso en Lar de Víes. Reserva tu estancia.",
+    ogTitle: "Lar de Víes | Casa rural de lujo en el Valle del Eo",
+    image: "/images/home-hero-updated-desktop-2560.webp",
+    imageAlt: "Lar de Víes y el paisaje del Valle del Eo",
+    entity: "larDeVies",
+    hero: "home",
+  },
+  {
+    source: "LaCasona.html",
+    route: "/la-casona/",
+    active: "casona",
+    lastModified: "2026-08-11",
+    title: "Suites rurales en A Pontenova, Lugo | La Casona",
+    description: "Cinco suites con personalidad propia en una casona gallega del siglo XVIII restaurada en el Valle del Eo. Descubre La Casona de Lar de Víes.",
+    ogTitle: "La Casona | Suites rurales en el Valle del Eo",
+    image: "/images/la-casona-hero-desktop-opt-v2.webp",
+    imageAlt: "La Casona histórica de Lar de Víes rodeada de naturaleza",
+    entity: "larDeVies",
+    hero: "casona",
+  },
+  {
+    source: "Lasvillas.html",
+    route: "/las-villas-casitas-independientes/",
+    active: "villas",
+    lastModified: "2026-08-11",
+    title: "Villas rurales privadas en Lugo | Lar de Víes",
+    description: "Tres villas rurales independientes con jardín, cocina y vistas al Valle del Eo. Privacidad y naturaleza en A Pontenova, Lugo.",
+    ogTitle: "Las Villas | Casas rurales privadas en Lugo",
+    image: "/images/las-villas-hero-desktop-opt-v2.webp",
+    imageAlt: "Villas privadas de Lar de Víes integradas en el paisaje gallego",
+    entity: "larDeVies",
+    hero: "villas",
+  },
+  {
+    source: "OtrosAlojamientos.html",
+    route: "/rural-prado/",
+    active: "rural",
+    lastModified: "2026-08-11",
+    title: "Rural Prado | Apartamentos rurales en San Tirso de Abres",
+    description: "Conoce los alojamientos de Rural Prado en San Tirso de Abres y consulta su disponibilidad.",
+    ogTitle: "Rural Prado | Alojamientos rurales en Asturias",
+    image: "/images/AMEIRO/AMEIRO1.jpeg",
+    imageAlt: "Alojamiento Rural Prado en San Tirso de Abres",
+    entity: "ruralPrado",
+  },
+  {
+    source: "Entorno.html",
+    route: "/el-entorno/",
+    active: "entorno",
+    lastModified: "2026-08-11",
+    title: "Valle del Eo: rutas y naturaleza | Lar de Víes",
+    description: "Rutas, bosques, cascadas y patrimonio cerca de Lar de Víes, en la Reserva de la Biosfera Río Eo, Oscos y Terras de Burón.",
+    ogTitle: "El Entorno | Reserva de la Biosfera Río Eo, Oscos y Terras de Burón",
+    image: "/images/entorno-hero-desktop-opt-v2.webp",
+    imageAlt: "Paisaje de la Reserva de la Biosfera Río Eo, Oscos y Terras de Burón",
+    entity: "larDeVies",
+    hero: "entorno",
+  },
+  {
+    source: "Reserva.html",
+    route: "/reservas/",
+    active: "reservas",
+    lastModified: "2026-08-11",
+    title: "Reservar alojamiento rural | Lar de Víes y Rural Prado",
+    description: "Elige entre Lar de Víes y Rural Prado y consulta la disponibilidad del alojamiento que prefieras.",
+    ogTitle: "Reservas | Lar de Víes y Rural Prado",
+    image: "/images/reserva-hero-v2.webp",
+    imageAlt: "Paisaje verde del Valle del Eo",
+    entity: "larDeVies",
+  },
+  {
+    source: "sobre-nosotros.html",
+    route: "/sobre-nosotros/",
+    active: "nosotros",
+    lastModified: "2026-08-11",
+    title: "Historia de Lar de Víes | Casa rural en Lugo",
+    description: "Conoce el proyecto familiar que recuperó una casona gallega del siglo XVIII en Neipín y creó Lar de Víes, un refugio rural en el Valle del Eo.",
+    ogTitle: "Sobre Lar de Víes | Historia y hospitalidad rural",
+    image: "/images/sobre-nosotros-poster.webp",
+    imageAlt: "Casona de piedra restaurada de Lar de Víes",
+    entity: "larDeVies",
+    hero: "nosotros",
+  },
+  {
+    source: "zonas-comunes.html",
+    route: "/zonas-comunes/",
+    active: "casona",
+    lastModified: "2026-08-11",
+    title: "Zonas comunes de La Casona | Lar de Víes",
+    description: "Conoce el comedor, la zona de café, los sofás y otros espacios comunes disponibles para huéspedes de La Casona de Lar de Víes.",
+    ogTitle: "Zonas comunes | Lar de Víes",
+    image: "/images/la-casona-jardin-opt.webp",
+    imageAlt: "Exterior de La Casona de Lar de Víes",
+    entity: "larDeVies",
+  },
+  {
+    source: "suites/la-panera.html", route: "/suite-la-panera/", active: "casona", lastModified: "2026-08-11",
+    title: "Suite La Panera en A Pontenova, Lugo | Lar de Víes", description: "Suite rural para hasta 4 personas con vistas al Valle del Eo, zona de estar y cama con dosel en La Casona de Lar de Víes.", ogTitle: "Suite La Panera | Lar de Víes", image: "/images/Panera/panera-1.webp", imageAlt: "Suite La Panera con vistas al Valle del Eo", entity: "larDeVies",
+  },
+  {
+    source: "suites/el-cabozo.html", route: "/suite-el-cabozo/", active: "casona", lastModified: "2026-08-11",
+    title: "Suite El Cabozo en A Pontenova, Lugo | Lar de Víes", description: "Suite rural para hasta 3 personas, con madera original, baño con vistas al valle y ambiente acogedor en La Casona de Lar de Víes.", ogTitle: "Suite El Cabozo | Lar de Víes", image: "/images/El%20cabozo/cabozo-1.webp", imageAlt: "Interior de la Suite El Cabozo en Lar de Víes", entity: "larDeVies",
+  },
+  {
+    source: "suites/la-capilla.html", route: "/suite-la-capilla/", active: "casona", lastModified: "2026-08-11",
+    title: "Suite La Capilla en A Pontenova, Lugo | Lar de Víes", description: "Suite rural para hasta 4 personas, distribuida en varias alturas junto a la Capilla de Santa Apolonia, en La Casona de Lar de Víes.", ogTitle: "Suite La Capilla | Lar de Víes", image: "/images/Capilla/capilla-1.webp", imageAlt: "Suite La Capilla en la casona histórica de Lar de Víes", entity: "larDeVies",
+  },
+  {
+    source: "suites/el-valle.html", route: "/suite-el-valle/", active: "casona", lastModified: "2026-08-11",
+    title: "Suite El Valle en A Pontenova, Lugo | Lar de Víes", description: "Suite rural para hasta 4 personas inspirada en los hórreos gallegos, con claraboyas y vistas al paisaje del Valle del Eo.", ogTitle: "Suite El Valle | Lar de Víes", image: "/images/Valle/valle-1.webp", imageAlt: "Suite El Valle con vistas panorámicas en Lar de Víes", entity: "larDeVies",
+  },
+  {
+    source: "suites/el-jardin.html", route: "/suite-el-jardin/", active: "casona", lastModified: "2026-08-11",
+    title: "Suite El Jardín en A Pontenova, Lugo | Lar de Víes", description: "Suite rural adaptada para hasta 4 personas, con zona de estar y acceso directo al exterior de La Casona de Lar de Víes.", ogTitle: "Suite El Jardín | Lar de Víes", image: "/images/Jardin/jardin-2.webp", imageAlt: "Suite El Jardín con acceso directo al exterior", entity: "larDeVies",
+  },
+  {
+    source: "villas/el-camino.html", route: "/villa-el-camino/", active: "villas", lastModified: "2026-08-11",
+    title: "Villa El Camino en A Pontenova, Lugo | Lar de Víes", description: "Villa rural para hasta 5 personas con dormitorio, cocina, chimenea, porche y jardín privado con vistas al Valle del Eo.", ogTitle: "Villa El Camino | Lar de Víes", image: "/images/Camino/camino-1.webp", imageAlt: "Villa El Camino con vistas al Valle del Eo", entity: "larDeVies",
+  },
+  {
+    source: "villas/camelia.html", route: "/villa-camelia/", active: "villas", lastModified: "2026-08-11",
+    title: "Villa Camelia en A Pontenova, Lugo | Lar de Víes", description: "Villa rural para hasta 4 personas con cocina, porche acristalado y jardín privado rodeado de naturaleza en el Valle del Eo.", ogTitle: "Villa Camelia | Lar de Víes", image: "/images/Camelia/camelia-1.webp", imageAlt: "Villa Camelia rodeada de bosque en Lar de Víes", entity: "larDeVies",
+  },
+  {
+    source: "villas/jazmin.html", route: "/villa-jazmin/", active: "villas", lastModified: "2026-08-11",
+    title: "Villa Jazmín en A Pontenova, Lugo | Lar de Víes", description: "Villa rural para hasta 4 personas con cocina, porche, jardín aromático privado y vistas abiertas al Valle del Eo.", ogTitle: "Villa Jazmín | Lar de Víes", image: "/images/Jazmin/jazmin-1.webp", imageAlt: "Villa Jazmín con jardín privado en Lar de Víes", entity: "larDeVies",
+  },
+  {
+    source: "politica-de-privacidad.html", route: "/politica-privacidad/", active: null, lastModified: "2026-08-11", indexable: false,
+    nav: "solid",
+    title: "Política de privacidad | Lar de Víes", description: "Información sobre privacidad y tratamiento de datos personales en el sitio web de Lar de Víes.", ogTitle: "Política de privacidad | Lar de Víes", image: "/images/home-hero-updated-desktop-2560.webp", imageAlt: "Lar de Víes", entity: "larDeVies",
+  },
+  {
+    source: "aviso-legal.html", route: "/aviso-legal/", active: null, lastModified: "2026-08-11", indexable: false,
+    nav: "solid",
+    title: "Aviso legal y condiciones de uso | Lar de Víes", description: "Información sobre la titularidad, responsabilidad y condiciones de uso aplicables al sitio web de Lar de Víes.", ogTitle: "Aviso legal | Lar de Víes", image: "/images/home-hero-updated-desktop-2560.webp", imageAlt: "Lar de Víes", entity: "larDeVies",
+  },
+];
+
+const specialPages = [
+  { source: "404.html", output: "404.html", indexable: false },
+];
+
+const redirects = [
+  { from: "/otros-alojamientos/", to: "/rural-prado/", status: 301 },
+  { from: "/otros-alojamientos", to: "/rural-prado/", status: 301 },
+  { from: "/OtrosAlojamientos.html", to: "/rural-prado/", status: 301 },
+  { from: "/index.html", to: "/", status: 301 },
+  { from: "/LaCasona.html", to: "/la-casona/", status: 301 },
+  { from: "/LaCasona", to: "/la-casona/", status: 301 },
+  { from: "/Lasvillas.html", to: "/las-villas-casitas-independientes/", status: 301 },
+  { from: "/Lasvillas", to: "/las-villas-casitas-independientes/", status: 301 },
+  { from: "/OtrosAlojamientos", to: "/rural-prado/", status: 301 },
+  { from: "/Entorno.html", to: "/el-entorno/", status: 301 },
+  { from: "/Entorno", to: "/el-entorno/", status: 301 },
+  { from: "/Reserva.html", to: "/reservas/", status: 301 },
+  { from: "/Reserva", to: "/reservas/", status: 301 },
+  { from: "/sobre-nosotros.html", to: "/sobre-nosotros/", status: 301 },
+  { from: "/politica-de-privacidad.html", to: "/politica-privacidad/", status: 301 },
+  { from: "/aviso-legal.html", to: "/aviso-legal/", status: 301 },
+  { from: "/zonas-comunes.html", to: "/zonas-comunes/", status: 301 },
+  { from: "/suites/la-panera.html", to: "/suite-la-panera/", status: 301 },
+  { from: "/suites/la-panera", to: "/suite-la-panera/", status: 301 },
+  { from: "/suites/el-cabozo.html", to: "/suite-el-cabozo/", status: 301 },
+  { from: "/suites/el-cabozo", to: "/suite-el-cabozo/", status: 301 },
+  { from: "/suites/la-capilla.html", to: "/suite-la-capilla/", status: 301 },
+  { from: "/suites/la-capilla", to: "/suite-la-capilla/", status: 301 },
+  { from: "/suites/el-valle.html", to: "/suite-el-valle/", status: 301 },
+  { from: "/suites/el-valle", to: "/suite-el-valle/", status: 301 },
+  { from: "/suites/el-jardin.html", to: "/suite-el-jardin/", status: 301 },
+  { from: "/suites/el-jardin", to: "/suite-el-jardin/", status: 301 },
+  { from: "/villas/el-camino.html", to: "/villa-el-camino/", status: 301 },
+  { from: "/villas/el-camino", to: "/villa-el-camino/", status: 301 },
+  { from: "/villas/camelia.html", to: "/villa-camelia/", status: 301 },
+  { from: "/villas/camelia", to: "/villa-camelia/", status: 301 },
+  { from: "/villas/jazmin.html", to: "/villa-jazmin/", status: 301 },
+  { from: "/villas/jazmin", to: "/villa-jazmin/", status: 301 },
+  { from: "/como-llegar/", to: "/el-entorno/#como-llegar", status: 301 },
+];
+
+const gone = ["/excursiones-en-lugo/", "/blog/"];
+
+const heroVideos = {
+  home: {
+    selected: "optimized",
+    poster: { mobile: "/images/home-hero-updated-mobile.webp", desktop: "/images/home-hero-updated-desktop-2560.webp" },
+    original: { webm: "/videos/home-hero.webm", mp4: "/videos/home-hero.mp4" },
+    optimized: { webm: "/assets/generated/videos/home-hero-v3.webm", mp4: "/assets/generated/videos/home-hero-v3.mp4" },
+  },
+  casona: {
+    selected: "optimized",
+    poster: { mobile: "/images/la-casona-hero-mobile.webp", desktop: "/images/la-casona-hero-desktop-opt-v2.webp" },
+    original: { webm: "/videos/la-casona-hero.webm", mp4: "/videos/la-casona-hero.mp4" },
+    optimized: { webm: "/assets/generated/videos/la-casona-hero-v3.webm", mp4: "/assets/generated/videos/la-casona-hero-v3.mp4" },
+  },
+  villas: {
+    selected: "optimized",
+    poster: { mobile: "/images/las-villas-hero-mobile.webp", desktop: "/images/las-villas-hero-desktop-opt-v2.webp" },
+    original: { webm: "/videos/las-villas-hero.webm", mp4: "/videos/las-villas-hero.mp4" },
+    optimized: { webm: "/assets/generated/videos/las-villas-hero-v3.webm", mp4: "/assets/generated/videos/las-villas-hero-v3.mp4" },
+  },
+  entorno: {
+    selected: "optimized",
+    poster: { mobile: "/images/entorno-hero-mobile.webp", desktop: "/images/entorno-hero-desktop-opt-v2.webp" },
+    original: { webm: "/videos/entorno-hero.webm", mp4: "/videos/entorno-hero.mp4" },
+    optimized: { webm: "/assets/generated/videos/entorno-hero-v3.webm", mp4: "/assets/generated/videos/entorno-hero-v3.mp4" },
+  },
+  nosotros: {
+    selected: "optimized",
+    poster: { mobile: "/images/sobre-nosotros-poster.webp", desktop: "/images/sobre-nosotros-poster.webp" },
+    original: { webm: "/videos/sobre-nosotros-hero.webm", mp4: "/videos/sobre-nosotros-hero.mp4" },
+    optimized: { webm: "/assets/generated/videos/sobre-nosotros-hero-v3.webm", mp4: "/assets/generated/videos/sobre-nosotros-hero-v3.mp4" },
+  },
+};
+
+module.exports = { site, properties, pages, specialPages, redirects, gone, heroVideos };

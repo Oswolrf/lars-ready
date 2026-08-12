@@ -1,0 +1,17 @@
+<dialog id="booking-dialog" class="booking-modal" aria-labelledby="booking-dialog-title" data-booking-dialog>
+  <div class="booking-modal__panel">
+    <button type="button" class="booking-modal__close" data-dialog-close aria-label="Cerrar selector de alojamiento">×</button>
+    <p class="booking-modal__eyebrow">Reserva directa</p>
+    <p id="booking-dialog-title" class="booking-modal__title">Elige alojamiento</p>
+    <p class="booking-modal__intro">Selecciona la propiedad cuya disponibilidad quieres consultar.</p>
+    <div class="booking-modal__options">
+      <a href="{{ properties.larDeVies.bookingUrl }}" class="booking-modal__option" data-booking-property="lar-de-vies" rel="external">
+        <strong>Lar de Víes</strong><span>Suites y villas en A Pontenova</span>
+      </a>
+      <a href="{{ properties.ruralPrado.bookingUrl }}" class="booking-modal__option" data-booking-property="rural-prado" rel="external">
+        <strong>Rural Prado</strong><span>Alojamientos en San Tirso de Abres</span>
+      </a>
+    </div>
+    <p class="booking-modal__fallback"><a href="{{ url('/reservas/#elegir-alojamiento') }}">Ver las dos opciones en la página de reservas</a></p>
+  </div>
+</dialog>

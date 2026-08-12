@@ -1,0 +1,63 @@
+/* Selector de alojamiento nativo y progresivo. */
+body.booking-modal-open { overflow: hidden; }
+
+dialog.booking-modal {
+    width: min(100% - 2rem, 33rem);
+    max-width: none;
+    padding: 0;
+    border: 0;
+    border-radius: 1.25rem;
+    overflow: visible;
+    background: transparent;
+    color: #222e26;
+}
+
+dialog.booking-modal::backdrop {
+    background: rgba(19, 22, 20, 0.66);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.booking-modal__panel {
+    position: relative;
+    padding: 2rem;
+    border: 1px solid rgba(82, 102, 86, 0.18);
+    border-radius: 1.25rem;
+    background: #fdfdfc;
+    box-shadow: 0 24px 70px rgba(19, 22, 20, 0.26);
+}
+
+.booking-modal__close {
+    position: absolute;
+    top: 0.875rem;
+    right: 0.875rem;
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: #6b746d;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+.booking-modal__close:hover { background: #eef1ed; color: #222e26; }
+.booking-modal__close:focus-visible,
+.booking-modal__option:focus-visible,
+.booking-modal__fallback a:focus-visible { outline: 2px solid #526656; outline-offset: 3px; }
+.booking-modal__eyebrow { margin: 0 2rem 0.5rem 0; color: #526656; font: 700 0.68rem/1.4 Inter, sans-serif; letter-spacing: 0.18em; text-transform: uppercase; }
+.booking-modal__title { margin: 0; padding-right: 2rem; color: #222e26; font: 400 clamp(1.45rem, 4vw, 1.8rem)/1.2 Lora, Georgia, serif; }
+.booking-modal__intro { margin: 0.75rem 0 1.25rem; color: #6b746d; font: 400 0.9rem/1.55 Inter, sans-serif; }
+.booking-modal__options { display: grid; gap: 0.75rem; }
+.booking-modal__option { display: grid; gap: 0.25rem; min-height: 4.25rem; padding: 0.95rem 1.15rem; border: 1px solid rgba(82, 102, 86, 0.2); border-radius: 0.8rem; color: #222e26; text-decoration: none; transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease; }
+.booking-modal__option:hover { border-color: #526656; background: #f3f6f2; transform: translateY(-1px); }
+.booking-modal__option strong { font: 700 0.9rem/1.4 Inter, sans-serif; }
+.booking-modal__option span { color: #7a827c; font: 400 0.75rem/1.4 Inter, sans-serif; }
+.booking-modal__fallback { margin: 1.25rem 0 0; text-align: center; font-size: 0.75rem; }
+.booking-modal__fallback a { color: #526656; text-decoration: underline; text-underline-offset: 0.2em; }
+
+@media (max-width: 480px) { .booking-modal__panel { padding: 1.5rem; } .booking-modal__option { min-height: 4.5rem; } }
+@media (prefers-reduced-motion: reduce) { .booking-modal__close, .booking-modal__option { transition: none; } }

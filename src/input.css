@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.no-js [data-carousel] {
+  display: none !important;
+}
+
+.carousel-no-js {
+  height: min(70vh, 600px);
+  overflow: hidden;
+  border-radius: 2rem;
+}
+
+.carousel-no-js picture,
+.carousel-no-js img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.font-hero {
+  font-family: "Lora Hero", "Lora", Georgia, serif;
+}
+
+@layer base {
+    :root {
+        /* Default Theme (Index, Entorno, Galeria) */
+        /* #4f6d55 -> 79 109 85 */
+        --color-primary: 79 109 85;
+        /* #3a5240 -> 58 82 64 */
+        --color-primary-dark: 58 82 64;
+        /* #8B5A2B -> 139 90 43 */
+        --color-secondary: 139 90 43;
+        /* #e5dccf -> 229 220 207 */
+        --color-background-light: 229 220 207;
+        /* #171b18 -> 23 27 24 */
+        --color-background-dark: 23 27 24;
+    }
+}
+
+@layer utilities {
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .text-shadow-md {
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .text-shadow-lg {
+        text-shadow: 0 15px 30px rgba(0, 0, 0, 0.11), 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+body.mobile-navigation-open {
+    overflow: hidden;
+}
+
+/* Brevo newsletter ------------------------------------------------------- */
+@layer components {
+    .newsletter-kicker {
+        @apply mb-3 text-xs font-semibold uppercase text-stone-300;
+        letter-spacing: 0.18em;
+    }
+
+    .newsletter-intro {
+        @apply mb-5 max-w-sm text-sm leading-relaxed text-stone-300;
+        text-wrap: pretty;
+    }
+
+    .newsletter-form {
+        @apply flex max-w-md flex-col gap-4;
+    }
+
+    .newsletter-form--hidden {
+        display: none;
+    }
+
+    .newsletter-field {
+        @apply relative;
+    }
+
+    .newsletter-input {
+        @apply min-h-12 w-full rounded-none border-0 border-b border-white/25 bg-transparent px-0 pr-28 text-sm text-white placeholder-stone-400 transition-colors duration-200;
+    }
+
+    .newsletter-input:hover {
+        @apply border-white/50;
+    }
+
+    .newsletter-input:focus {
+        @apply border-primary outline-none ring-0;
+    }
+
+    .newsletter-submit {
+        @apply absolute bottom-0 right-0 inline-flex min-h-12 items-center gap-2 px-1 text-xs font-semibold uppercase text-stone-100 transition-colors duration-200;
+        letter-spacing: 0.14em;
+    }
+
+    .newsletter-submit:hover {
+        @apply text-white;
+    }
+
+    .newsletter-submit:disabled,
+    .newsletter-submit:disabled:hover {
+        @apply cursor-not-allowed text-stone-500 opacity-60;
+    }
+
+    .newsletter-submit:active {
+        transform: translateY(1px);
+    }
+
+    .newsletter-submit:disabled:active {
+        transform: none;
+    }
+
+    .newsletter-submit:focus-visible {
+        @apply rounded-sm outline-none ring-2 ring-primary ring-offset-4 ring-offset-[#222e26];
+    }
+
+    .newsletter-loader {
+        @apply h-4 w-4 animate-spin fill-current;
+    }
+
+    .sib-hide-loader-icon {
+        display: none;
+    }
+
+    .newsletter-consent {
+        @apply flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-stone-300;
+    }
+
+    .newsletter-checkbox {
+        @apply mt-0.5 h-4 w-4 shrink-0 rounded-sm border-white/40 bg-transparent text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#222e26];
+    }
+
+    .newsletter-consent a {
+        @apply underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white;
+    }
+
+    .newsletter-consent-row {
+        @apply grid max-w-md cursor-pointer grid-cols-[auto_1fr] items-start gap-x-3 gap-y-1 text-xs leading-relaxed text-stone-300;
+    }
+
+    .newsletter-consent-row label {
+        @apply cursor-pointer;
+    }
+
+    .newsletter-consent-row a {
+        @apply col-start-2 underline decoration-white/30 underline-offset-2 transition-colors hover:text-white hover:decoration-white;
+    }
+
+    .newsletter-message {
+        @apply hidden items-start gap-2 border-l-2 px-3 py-2 text-xs leading-relaxed;
+    }
+
+    .newsletter-message.sib-form-message-panel--active {
+        @apply flex;
+    }
+
+    .newsletter-message--error {
+        @apply border-red-300 bg-red-950/25 text-red-100;
+    }
+
+    .newsletter-message--success {
+        @apply border-emerald-300 bg-emerald-950/25 text-emerald-50;
+    }
+
+    .newsletter-message svg {
+        @apply mt-0.5 h-4 w-4 shrink-0 fill-current;
+    }
+
+    .newsletter-error {
+        @apply mt-2 block text-xs leading-relaxed text-red-200;
+    }
+
+    .newsletter-error:empty {
+        display: none;
+    }
+
+    .input--hidden {
+        display: none !important;
+    }
+}

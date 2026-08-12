@@ -1,0 +1,137 @@
+Options -Indexes -MultiViews
+
+RewriteEngine On
+
+# Fuerza HTTPS y un único dominio canónico. Mantener también activa la
+# redirección HTTPS desde el panel de IONOS como segunda capa de protección.
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.lardevies\.com$ [NC]
+RewriteRule ^ https://lardevies.com%{REQUEST_URI} [R=301,L,NE]
+
+# URLs físicas o de la antigua preview: una sola redirección a la URL pública.
+RewriteCond %{THE_REQUEST} \s/+index\.html(?:[?\s]) [NC]
+RewriteRule ^index\.html$ / [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+LaCasona(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^LaCasona(?:\.html)?$ /la-casona/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+Lasvillas(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^Lasvillas(?:\.html)?$ /las-villas-casitas-independientes/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+OtrosAlojamientos(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^OtrosAlojamientos(?:\.html)?$ /rural-prado/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+Entorno(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^Entorno(?:\.html)?$ /el-entorno/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+Reserva(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^Reserva(?:\.html)?$ /reservas/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+sobre-nosotros\.html(?:[?\s]) [NC]
+RewriteRule ^sobre-nosotros\.html$ /sobre-nosotros/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+suites/la-panera(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^suites/la-panera(?:\.html)?$ /suite-la-panera/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+suites/el-cabozo(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^suites/el-cabozo(?:\.html)?$ /suite-el-cabozo/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+suites/la-capilla(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^suites/la-capilla(?:\.html)?$ /suite-la-capilla/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+suites/el-valle(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^suites/el-valle(?:\.html)?$ /suite-el-valle/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+suites/el-jardin(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^suites/el-jardin(?:\.html)?$ /suite-el-jardin/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+villas/el-camino(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^villas/el-camino(?:\.html)?$ /villa-el-camino/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+villas/camelia(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^villas/camelia(?:\.html)?$ /villa-camelia/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+villas/jazmin(?:\.html)?(?:[?\s]) [NC]
+RewriteRule ^villas/jazmin(?:\.html)?$ /villa-jazmin/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+politica-de-privacidad\.html(?:[?\s]) [NC]
+RewriteRule ^politica-de-privacidad\.html$ /politica-privacidad/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+aviso-legal\.html(?:[?\s]) [NC]
+RewriteRule ^aviso-legal\.html$ /aviso-legal/ [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+zonas-comunes\.html(?:[?\s]) [NC]
+RewriteRule ^zonas-comunes\.html$ /zonas-comunes/ [R=301,L,NE]
+
+# Contenido antiguo de WordPress consolidado en la nueva arquitectura.
+RewriteRule ^como-llegar/?$ /el-entorno/#como-llegar [R=301,L,NE]
+RewriteRule ^otros-alojamientos/?$ /rural-prado/ [R=301,L,NE]
+RewriteRule ^(?:excursiones-en-lugo|blog)/?$ - [G,L]
+
+# Normaliza con barra final las URLs públicas que no son archivos.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^(la-casona|las-villas-casitas-independientes|rural-prado|zonas-comunes|el-entorno|reservas|sobre-nosotros|suite-la-panera|suite-el-cabozo|suite-la-capilla|suite-el-valle|suite-el-jardin|villa-el-camino|villa-camelia|villa-jazmin|politica-privacidad|aviso-legal)$ /$1/ [R=301,L,NE]
+
+# Rutas públicas limpias -> archivos estáticos.
+RewriteRule ^la-casona/?$ LaCasona.html [L]
+RewriteRule ^las-villas-casitas-independientes/?$ Lasvillas.html [L]
+RewriteRule ^rural-prado/?$ OtrosAlojamientos.html [L]
+RewriteRule ^zonas-comunes/?$ zonas-comunes.html [L]
+RewriteRule ^el-entorno/?$ Entorno.html [L]
+RewriteRule ^reservas/?$ Reserva.html [L]
+RewriteRule ^sobre-nosotros/?$ sobre-nosotros.html [L]
+RewriteRule ^suite-la-panera/?$ suites/la-panera.html [L]
+RewriteRule ^suite-el-cabozo/?$ suites/el-cabozo.html [L]
+RewriteRule ^suite-la-capilla/?$ suites/la-capilla.html [L]
+RewriteRule ^suite-el-valle/?$ suites/el-valle.html [L]
+RewriteRule ^suite-el-jardin/?$ suites/el-jardin.html [L]
+RewriteRule ^villa-el-camino/?$ villas/el-camino.html [L]
+RewriteRule ^villa-camelia/?$ villas/camelia.html [L]
+RewriteRule ^villa-jazmin/?$ villas/jazmin.html [L]
+RewriteRule ^politica-privacidad/?$ politica-de-privacidad.html [L]
+RewriteRule ^aviso-legal/?$ aviso-legal.html [L]
+
+ErrorDocument 404 /404.html
+ErrorDocument 410 /404.html
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 hour"
+  ExpiresByType application/javascript "access plus 1 hour"
+  ExpiresByType image/avif "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/x-icon "access plus 30 days"
+  ExpiresByType video/mp4 "access plus 30 days"
+  ExpiresByType video/webm "access plus 30 days"
+  ExpiresByType application/pdf "access plus 30 days"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.html?$">
+    Header always set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(css|js)$">
+    Header always set Cache-Control "public, max-age=3600, stale-while-revalidate=86400"
+  </FilesMatch>
+  <FilesMatch "\.(avif|gif|ico|jpe?g|png|svg|webp|mp4|webm|pdf)$">
+    Header always set Cache-Control "public, max-age=2592000, stale-while-revalidate=604800"
+  </FilesMatch>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' https://sibforms.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com; media-src 'self'; frame-src https://maps.google.com https://www.google.com; connect-src 'self' https://sibforms.com https://*.sibforms.com; form-action 'self' https://*.sibforms.com https://direct-book.com; upgrade-insecure-requests"
+  Header always set X-Frame-Options "DENY"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), fullscreen=(self)"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-site"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+</IfModule>

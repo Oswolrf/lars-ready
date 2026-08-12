@@ -1,0 +1,70 @@
+<footer class="border-t border-white/10 bg-[#222e26] px-6 pb-32 pt-20 text-white md:px-12 md:pb-20">
+  <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 md:grid-cols-4">
+    <section aria-labelledby="footer-site-title" class="flex flex-col gap-6">
+      <img src="{{ url('/images/logo solo blanco.png') }}" width="92" height="88" alt="" loading="lazy" decoding="async">
+      <p id="footer-site-title" class="sr-only">Lar de Víes</p>
+      <p class="text-sm leading-relaxed text-stone-400">Turismo rural en la Reserva de la Biosfera Río Eo, Oscos y Terras de Burón.</p>
+    </section>
+
+    <nav aria-label="Explorar" class="flex flex-col gap-3 text-sm text-stone-400">
+      <p class="mb-3 text-sm font-bold uppercase tracking-widest text-stone-300">Explorar</p>
+      {% for item in navigation %}<a class="transition-colors hover:text-primary" href="{{ url(item.route) }}">{{ item.label }}</a>{% endfor %}
+      <a class="transition-colors hover:text-primary" href="{{ url('/reservas/') }}">Reservas</a>
+    </nav>
+
+    <section aria-labelledby="footer-contact-title">
+      <p id="footer-contact-title" class="mb-6 text-sm font-bold uppercase tracking-widest text-stone-300">{% if page.entity === 'ruralPrado' %}Reservas{% else %}Contacto{% endif %}</p>
+      {% if page.entity === 'ruralPrado' %}
+      <a href="{{ url(site.bookingFallback) }}" data-booking-trigger class="text-sm text-stone-400 underline underline-offset-4 hover:text-white">Elegir alojamiento</a>
+      {% else %}
+      <address class="flex flex-col gap-3 text-sm not-italic text-stone-400">
+        <span>Neipín, A Pontenova<br>Galicia, 27721 España</span>
+        <a class="hover:text-white" href="tel:+34678655303">+34 678 655 303</a>
+        <a class="hover:text-white" href="mailto:reservas@lardevies.com">reservas@lardevies.com</a>
+      </address>
+      {% endif %}
+      <div class="mt-6 flex items-center gap-4">
+        <a class="opacity-60 transition-opacity hover:opacity-100" href="https://www.instagram.com/lardevies" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Lar de Víes">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r=".75" fill="currentColor" stroke="none"></circle></svg>
+        </a>
+        <a class="opacity-60 transition-opacity hover:opacity-100" href="https://www.facebook.com/lardevies/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Lar de Víes">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.75l.41-3H13.5V8.08c0-.87.24-1.46 1.58-1.46h1.69V3.94a22.5 22.5 0 0 0-2.46-.13c-2.43 0-4.1 1.49-4.1 4.22V10H7.46v3h2.75v8h3.29Z"></path></svg>
+        </a>
+        <a class="opacity-60 transition-opacity hover:opacity-100" href="https://www.youtube.com/channel/UCJQMiPWLy8OtIGr9uP7gvxA/videos" target="_blank" rel="noopener noreferrer" aria-label="YouTube de Lar de Víes">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.58 7.19a2.95 2.95 0 0 0-2.08-2.09C17.66 4.6 12 4.6 12 4.6s-5.66 0-7.5.5a2.95 2.95 0 0 0-2.08 2.09C1.92 9.03 1.92 12 1.92 12s0 2.97.5 4.81A2.95 2.95 0 0 0 4.5 18.9c1.84.5 7.5.5 7.5.5s5.66 0 7.5-.5a2.95 2.95 0 0 0 2.08-2.09c.5-1.84.5-4.81.5-4.81s0-2.97-.5-4.81ZM10 15.2V8.8l5.2 3.2-5.2 3.2Z"></path></svg>
+        </a>
+      </div>
+    </section>
+
+    <section id="sib-form-container" aria-labelledby="newsletter-title">
+      <p class="newsletter-kicker">Newsletter</p>
+      <p id="newsletter-title" class="mb-3 font-serif text-2xl leading-tight text-white">Historias para volver al norte</p>
+      <p class="newsletter-intro">Novedades de Lar de Víes, escapadas con calma y rincones del valle del Eo, directamente en tu correo.</p>
+      <div id="error-message" class="sib-form-message-panel newsletter-message newsletter-message--error" role="alert" aria-live="assertive"><span class="sib-form-message-panel__inner-text">No hemos podido validar tu suscripción. Revisa los datos e inténtalo de nuevo.</span></div>
+      <div id="success-message" class="sib-form-message-panel newsletter-message newsletter-message--success" role="status" aria-live="polite"><span class="sib-form-message-panel__inner-text">Tu suscripción se ha realizado correctamente.</span></div>
+      <form id="sib-form" class="newsletter-form" method="post" action="https://a87793f8.sibforms.com/serve/MUIFAMmnAonPZ14KvJ_GH-G9DtBlGjSXS0Y1Ob4YSzUDiq5A4VLnFrs0KyNIbs-BJgiZxHyTytU94ABvcR5e9mq7u_AHVmjr-psvxs2x546E2A4idhb3WQjnxsxMgYFRj3PcuVAvE2AFwQfcoa2uKIYgr_X_UgKT-E8J1bGI6yU-rN-weHyAmCKi7uPpVkUR8rFjNPZVOmhu1HIn0A==" data-type="subscription" data-newsletter-form novalidate>
+        <div class="newsletter-field">
+          <label for="EMAIL" class="sr-only">Correo electrónico</label>
+          <input id="EMAIL" class="input newsletter-input" name="EMAIL" type="email" autocomplete="email" inputmode="email" placeholder="tu@email.com" aria-describedby="newsletter-email-error" required>
+          <button class="newsletter-submit" type="submit">Suscribirme</button>
+        </div>
+        <p id="newsletter-email-error" class="newsletter-error" aria-live="polite"></p>
+        <div class="newsletter-consent-row">
+          <input id="OPT_IN" class="newsletter-checkbox" name="OPT_IN" type="checkbox" value="1" aria-describedby="newsletter-consent-error" required>
+          <label for="OPT_IN">Acepto recibir la newsletter.</label>
+          <a href="{{ url('/politica-privacidad/') }}">Leer la política de privacidad</a>
+        </div>
+        <p id="newsletter-consent-error" class="newsletter-error" aria-live="polite"></p>
+        <input class="input--hidden" name="email_address_check" type="text" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input name="locale" type="hidden" value="es">
+      </form>
+    </section>
+  </div>
+  <div class="mx-auto mt-20 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 text-xs text-stone-500 md:flex-row">
+    <p>© 2026 Lar de Víes. Todos los derechos reservados.</p>
+    <nav aria-label="Información legal" class="flex gap-6">
+      <a class="hover:text-stone-300" href="{{ url('/politica-privacidad/') }}">Política de privacidad</a>
+      <a class="hover:text-stone-300" href="{{ url('/aviso-legal/') }}">Aviso legal</a>
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,70 @@
+.hero-viewport {
+    height: 100vh;
+    min-height: 600px;
+}
+
+.hero-viewport [data-hero-video] {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transition: opacity 600ms ease-out;
+    opacity: 0;
+}
+
+.hero-viewport .hero-poster {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: opacity 300ms ease-out;
+}
+
+.hero-viewport .hero-poster img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+/* A blocked/error state must expose the poster even if legacy markup carries
+   an inline fade-in opacity. */
+.hero-viewport [data-hero-video][data-hero-state="blocked"],
+.hero-viewport [data-hero-video][data-hero-state="error"] {
+    opacity: 0 !important;
+}
+
+@media (max-width: 767px) {
+    .hero-viewport {
+        height: 100vh;
+        min-height: 100vh;
+    }
+
+    @supports (height: 100svh) {
+        .hero-viewport {
+            height: 100svh;
+            min-height: 100svh;
+        }
+    }
+
+    @supports (height: 100dvh) {
+        .hero-viewport {
+            height: 100dvh;
+            min-height: 100dvh;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-viewport [data-hero-video] {
+        opacity: 0 !important;
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .hero-viewport .hero-poster { opacity: 1 !important; transition: none !important; }
+}

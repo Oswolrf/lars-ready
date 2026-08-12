@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output (regenerable via `npm run build:css`)
+# dist/   # descomenta si prefieres no versionar el CSS compilado
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local source video exports. The site publishes optimized hero assets instead.
+videos/*WEB*.mp4
+videos/*2K*.mp4
+videos/*2k*.mp4
+videos/*(1).mp4
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vercel
+.vercel
+public/
+.cache/
+playwright-report/
+test-results/
+.lighthouseci/
+
+# Local comparison encodes that exceeded the approved budgets; retained on disk.
+assets/generated/videos/*-hero-v2.mp4
+assets/generated/videos/*-hero-v2.webm
+assets/generated/videos/manifest.json
+
+.env*

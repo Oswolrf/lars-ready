@@ -1,0 +1,51 @@
+<nav id="main-nav" aria-label="Navegación principal"
+  class="fixed top-0 z-40 flex w-full items-center justify-between px-6 py-6 text-white transition-all duration-300 md:px-12{% if page.nav === 'solid' %} nav-static bg-[#222e26] shadow-lg{% endif %}">
+  <a href="{{ url('/') }}" class="nav-brand hover:opacity-80" aria-label="Lar de Víes, inicio">
+    <img src="{{ url('/images/logo solo blanco.png') }}" width="184" height="176" alt="" decoding="async">
+  </a>
+
+  <div class="hidden items-center gap-6 md:flex">
+    <div class="flex items-center gap-6 text-xs font-medium uppercase tracking-wide lg:text-sm">
+      {% for item in navigation %}
+      <a href="{{ url(item.route) }}"
+        class="transition-colors hover:text-stone-200{% if page.active === item.id %} border-b border-white pb-0.5 text-white{% endif %}"
+        {% if page.active === item.id %}aria-current="page"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+    </div>
+    {% set languageVariant = 'desktop' %}
+    {% include "partials/language-selector.njk" %}
+    <a href="{{ url(site.bookingFallback) }}" data-booking-trigger
+      class="rounded-full bg-primary px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+      Reservar
+    </a>
+  </div>
+
+  <details class="group relative md:hidden" data-mobile-navigation>
+    <summary class="relative z-[70] flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      aria-label="Abrir menú">
+      <svg class="group-open:hidden" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16"></path>
+      </svg>
+      <svg class="hidden group-open:block" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="m6 6 12 12M18 6 6 18"></path>
+      </svg>
+    </summary>
+    <div class="fixed inset-0 z-[60] flex flex-col gap-8 bg-[#131614] px-6 pt-24 text-white">
+      <div class="flex flex-col gap-6 font-display text-2xl font-light uppercase tracking-widest">
+        {% for item in navigation %}
+        <a href="{{ url(item.route) }}"
+          class="transition-colors hover:text-primary{% if page.active === item.id %} font-medium text-primary{% endif %}"
+          {% if page.active === item.id %}aria-current="page"{% endif %}>{{ item.label }}</a>
+        {% endfor %}
+      </div>
+      <div class="h-px w-full bg-white/10"></div>
+      {% set languageVariant = 'mobile' %}
+      {% include "partials/language-selector.njk" %}
+      <a href="{{ url(site.bookingFallback) }}" data-booking-trigger
+        class="rounded-full bg-primary px-6 py-4 text-center text-sm font-bold uppercase tracking-widest text-white shadow-lg hover:bg-primary-dark">
+        Reservar ahora
+      </a>
+      <p class="mt-auto pb-12 text-center text-sm text-white/40">Lar de Víes</p>
+    </div>
+  </details>
+</nav>
