@@ -12,7 +12,7 @@ node_modules/
 playwright-report/
 test-results/
 tests/
-videos/
+/videos/
 scripts/apply_seo_updates.js
 scripts/delete_assets.js
 scripts/find_unused_assets.js
