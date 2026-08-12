@@ -942,16 +942,15 @@ function buildAdapters(cssUrl) {
 function writeBuildManifest(cssUrl, jsUrl, iconUrl, assetMap) {
   const videos = {};
   for (const [name, video] of Object.entries(config.heroVideos)) {
-    const originalHashes = {};
-    for (const [format, source] of Object.entries(video.original)) {
-      const local = path.join(root, ...source.replace(/^\//, "").split("/"));
-      originalHashes[format] = { source, sha256: crypto.createHash("sha256").update(fs.readFileSync(local)).digest("hex") };
-    }
+    // Original exports are local authoring inputs and are intentionally omitted
+    // from Vercel. Their approved hashes live in manifest-v3.json; the deploy
+    // manifest only needs stable source metadata plus the published derivatives.
+    const originals = Object.fromEntries(Object.entries(video.original).map(([format, source]) => [format, { source }]));
     const published = Object.fromEntries(Object.entries(video[video.selected]).map(([format, source]) => {
       const relative = source.replace(/^\//, "");
       return [format, publicUrl(`/${assetMap.get(relative) || relative}`)];
     }));
-    videos[name] = { selected: video.selected, originals: originalHashes, published };
+    videos[name] = { selected: video.selected, originals, published };
   }
   writeFile("build-manifest.json", `${JSON.stringify({ deployEnv, siteOrigin, basePath, css: cssUrl, js: jsUrl, icons: iconUrl, pages: config.pages.map(({ source, route, lastModified }) => ({ source, route, lastModified })), videos }, null, 2)}\n`);
 }
