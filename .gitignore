@@ -8,11 +8,10 @@ node_modules/
 *.log
 npm-debug.log*
 
-# Local source video exports. The site publishes optimized hero assets instead.
-videos/*WEB*.mp4
-videos/*2K*.mp4
-videos/*2k*.mp4
-videos/*(1).mp4
+# Local source video exports. The site publishes the assets/generated/videos/*-v3
+# derivatives instead (see site.config.cjs heroVideos + scripts/media/prepare-hero-videos.js).
+videos/*.mp4
+videos/*.webm
 
 # OS / editor
 .DS_Store

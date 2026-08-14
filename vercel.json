@@ -3,6 +3,11 @@
   "version": 2,
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "public",
+  "build": {
+    "env": {
+      "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
+    }
+  },
   "cleanUrls": false,
   "trailingSlash": true,
   "redirects": [
