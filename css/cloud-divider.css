@@ -146,21 +146,31 @@
     transform: translate3d(0, calc(var(--cloud-rise) * var(--cloud-rise-factor, 1)), 0) scaleX(-1);
 }
 
+/* Amplitude is a custom property so small screens can widen the sway:
+   3vw is a visible drift on desktop but only ~12px on a phone. */
 @keyframes cloud-drift {
     from {
-        transform: translate3d(-3vw, 0, 0);
+        transform: translate3d(calc(var(--cloud-drift-amp, 3vw) * -1), 0, 0);
     }
 
     to {
-        transform: translate3d(3vw, 0, 0);
+        transform: translate3d(var(--cloud-drift-amp, 3vw), 0, 0);
     }
 }
 
 @media (max-width: 767px) {
+
+    /* Phones: wider sway (3vw would be ~12px) and a livelier pace so the
+       drift stays as noticeable as on desktop. */
+    .cloud-divider__cloud {
+        --cloud-drift-amp: 10vw;
+    }
+
     .cloud-divider__cloud--1 {
         left: -16vw;
         width: 64vw;
         height: 20vw;
+        --cloud-drift-duration: 26s;
     }
 
     .cloud-divider__cloud--2 {
@@ -168,12 +178,14 @@
         top: 52%;
         width: 50vw;
         height: 16vw;
+        --cloud-drift-duration: 21s;
     }
 
     .cloud-divider__cloud--3 {
         right: -16vw;
         width: 60vw;
         height: 19vw;
+        --cloud-drift-duration: 30s;
     }
 
     .cloud-divider__cloud--4 {
@@ -181,6 +193,7 @@
         top: 50%;
         width: 50vw;
         height: 16vw;
+        --cloud-drift-duration: 23s;
     }
 
     .cloud-divider__cloud--5,
