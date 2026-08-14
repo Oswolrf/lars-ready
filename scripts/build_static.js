@@ -11,7 +11,10 @@ const config = require("../site.config.cjs");
 
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, "public");
-const cacheRoot = path.join(root, ".cache", "lars-assets");
+// Lives under node_modules/.cache so Vercel's build cache (which persists
+// node_modules between deployments) keeps processed images warm; entries are
+// content-hashed, so stale files are never reused.
+const cacheRoot = path.join(root, "node_modules", ".cache", "lars-assets");
 const args = new Map(process.argv.slice(2).map((argument) => {
   const [key, value = "true"] = argument.replace(/^--/, "").split("=");
   return [key, value];

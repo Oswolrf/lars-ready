@@ -4,7 +4,7 @@
   "description": "Lar de Vies Website",
   "private": true,
   "engines": {
-    "node": ">=20.19.0"
+    "node": "20.x"
   },
   "scripts": {
     "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
