@@ -150,10 +150,17 @@
 
     const ease = (t) => t * t * (3 - 2 * t);
 
+    // Mobile browsers can report window.innerHeight for the full layout
+    // viewport (behind a collapsible toolbar) while visualViewport.height
+    // reflects what's actually on screen — using the wrong one makes the
+    // seam appear already partway up the fade zone on load, so the clouds
+    // show up fully visible instead of fading in as the user scrolls.
+    const getViewportHeight = () => window.visualViewport?.height || window.innerHeight || 1;
+
     const update = () => {
         ticking = false;
 
-        const viewportHeight = window.innerHeight || 1;
+        const viewportHeight = getViewportHeight();
         // seam = fraction of the viewport height at which the divider sits
         // (1 = bottom edge, 0 = top edge).
         const seam = divider.getBoundingClientRect().top / viewportHeight;
@@ -189,6 +196,9 @@
 
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate, { passive: true });
+    // Fires as a mobile browser's toolbar collapses/expands, which changes
+    // visualViewport.height without a matching window 'resize' event.
+    window.visualViewport?.addEventListener('resize', requestUpdate, { passive: true });
     update();
 
     // Sprite generation costs a few tens of milliseconds; keep it away
