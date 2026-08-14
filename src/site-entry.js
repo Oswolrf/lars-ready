@@ -8,6 +8,7 @@ import "../js/hero-image.js";
 import "../js/back-to-top.js";
 import "../js/sticky-nav.js";
 import "../js/scroll-experience.js";
+import "../js/cloud-divider.js";
 import "../js/carousel.js";
 import "../js/otros-alojamientos-gallery.js";
 import "../js/booking-modal.js";

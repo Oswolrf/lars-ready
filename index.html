@@ -41,6 +41,7 @@
     <link href="./dist/output.css?v=20260810-brevo-fix" rel="stylesheet" />
     <link href="./css/nav-brand.css?v=20260805-surfaces-v5" rel="stylesheet" />
     <link href="./css/hero-video.css" rel="stylesheet" />
+    <link href="./css/cloud-divider.css" rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Lora:ital,wght@0,300;0,400;0,600;0,700;1,400&amp;display=swap"
         rel="stylesheet" />
@@ -385,6 +386,7 @@
     <script defer src="/js/dialog.js"></script>
     <script defer src="/js/mobile-menu.js?v=3-brevo"></script>
     <script defer src="./js/hero-video.js?v=20260720-mobile"></script>
+    <script defer src="./js/cloud-divider.js"></script>
 
     <noscript>
         <nav aria-label="Navegación sin JavaScript" class="md:hidden bg-[#131614] px-6 py-4 text-white">
@@ -426,6 +428,17 @@
             <div style="width:1px;height:40px;background:linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0));animation:scrollLine 1.8s ease-in-out infinite"></div>
         </div>
     </header>
+    <div class="cloud-divider" aria-hidden="true" data-cloud-divider>
+        <div class="cloud-divider__inner">
+            <div class="cloud-divider__mist"></div>
+            <div class="cloud-divider__cloud cloud-divider__cloud--1" data-cloud-sprite="0"></div>
+            <div class="cloud-divider__cloud cloud-divider__cloud--2" data-cloud-sprite="1"></div>
+            <div class="cloud-divider__cloud cloud-divider__cloud--3" data-cloud-sprite="2"></div>
+            <div class="cloud-divider__cloud cloud-divider__cloud--4" data-cloud-sprite="1"></div>
+            <div class="cloud-divider__cloud cloud-divider__cloud--5" data-cloud-sprite="0"></div>
+            <div class="cloud-divider__cloud cloud-divider__cloud--6" data-cloud-sprite="2"></div>
+        </div>
+    </div>
     <section id="biodiversity"
         class="py-24 px-6 md:px-20 lg:px-40 bg-background-light dark:bg-background-dark bg-paper-texture">
         <div class="max-w-4xl mx-auto text-center flex flex-col gap-8 animate-on-scroll">
