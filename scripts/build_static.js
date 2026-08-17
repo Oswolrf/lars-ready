@@ -443,7 +443,7 @@ async function applyHero($, page) {
     "aria-hidden": "true",
   });
   video.removeAttr("poster");
-  video.removeAttr("data-hero-reveal-at");
+  video.attr("data-hero-reveal-at", String(videoConfig.revealAt ?? 0));
   const normalizedStyle = stripAnimationOpacity(video.attr("style"));
   if (normalizedStyle) video.attr("style", normalizedStyle);
   else video.removeAttr("style");

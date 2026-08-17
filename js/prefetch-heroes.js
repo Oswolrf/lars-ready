@@ -13,12 +13,12 @@
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
     const reducedData = window.matchMedia('(prefers-reduced-data: reduce)');
     const heroByPath = {
-        '/': '/images/home-hero-updated-desktop-2560.webp',
-        '/la-casona/': '/images/la-casona-hero-desktop-opt-v2.webp',
-        '/las-villas-casitas-independientes/': '/images/las-villas-hero-desktop-opt-v2.webp',
-        '/el-entorno/': '/images/entorno-hero-desktop-opt-v2.webp',
+        '/': '/images/hero-first-frame-home.webp',
+        '/la-casona/': '/images/hero-first-frame-la-casona.webp',
+        '/las-villas-casitas-independientes/': '/images/hero-first-frame-las-villas.webp',
+        '/el-entorno/': '/images/hero-first-frame-entorno.webp',
         '/reservas/': '/images/reserva-hero-v2.webp',
-        '/sobre-nosotros/': '/images/sobre-nosotros-poster.webp'
+        '/sobre-nosotros/': '/images/hero-first-frame-sobre-nosotros.webp'
     };
     let pending;
     let prefetched = false;
