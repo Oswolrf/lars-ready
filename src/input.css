@@ -66,6 +66,25 @@ body.mobile-navigation-open {
     overflow: hidden;
 }
 
+/*
+ * Keep the mobile navigation in its own compositing layer. On the home page,
+ * the animated map container and its cross-origin iframe can otherwise paint
+ * above a fixed descendant of the navigation in Chromium/WebKit.
+ */
+[data-mobile-navigation-panel] {
+    isolation: isolate;
+    transform: translateZ(0);
+}
+
+@media (max-width: 767px) {
+    body.mobile-navigation-open main,
+    body.mobile-navigation-open footer,
+    body.mobile-navigation-open #sticky-cta,
+    body.mobile-navigation-open #back-to-top {
+        visibility: hidden;
+    }
+}
+
 /* Brevo newsletter ------------------------------------------------------- */
 @layer components {
     .newsletter-kicker {
