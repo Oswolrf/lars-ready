@@ -63,6 +63,7 @@
             const carousel = document.createElement('div');
             carousel.className = 'rural-gallery__carousel';
             carousel.dataset.carousel = '';
+            carousel.dataset.galleryKey = key;
             carousel.dataset.carouselPreload = 'adjacent';
             carousel.setAttribute('role', 'region');
             carousel.setAttribute('aria-label', `Galería de ${gallery.title}`);
@@ -144,25 +145,37 @@
     let activeGallery;
     let activeIndex = 0;
 
+    const getThumbnailSource = (item) => {
+        if (!item?.thumb || item.thumb.startsWith('thumb:')) return item?.src || '';
+        return item.thumb;
+    };
+
     const hydrateAdjacentThumbnails = () => {
         const length = activeGallery.images.length;
         const allowed = new Set([activeIndex, (activeIndex - 1 + length) % length, (activeIndex + 1) % length]);
         thumbs.querySelectorAll('button').forEach((button, index) => {
             const thumbnail = button.querySelector('img');
-            if (allowed.has(index) && thumbnail && !thumbnail.src) thumbnail.src = activeGallery.images[index].thumb;
+            if (allowed.has(index) && thumbnail && !thumbnail.getAttribute('src')) {
+                thumbnail.src = encodeURI(getThumbnailSource(activeGallery.images[index]));
+            }
         });
     };
 
     const setImage = (index) => {
         activeIndex = (index + activeGallery.images.length) % activeGallery.images.length;
         const item = activeGallery.images[activeIndex];
+        image.removeAttribute('srcset');
+        image.removeAttribute('sizes');
         image.src = encodeURI(item.src);
         image.alt = item.alt;
+        image.loading = 'eager';
+        image.decoding = 'async';
         count.textContent = `${activeIndex + 1} / ${activeGallery.images.length}`;
         hydrateAdjacentThumbnails();
         thumbs.querySelectorAll('button').forEach((thumb, thumbIndex) => {
             thumb.setAttribute('aria-current', String(thumbIndex === activeIndex));
         });
+        thumbs.querySelector('button[aria-current="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
     };
 
     const openGallery = (key, trigger) => {
@@ -177,14 +190,15 @@
             button.setAttribute('aria-label', `Ver imagen ${index + 1} de ${activeGallery.title}`);
             button.setAttribute('aria-current', 'false');
             const thumb = document.createElement('img');
-            thumb.dataset.src = item.thumb;
             thumb.alt = '';
-            thumb.loading = 'lazy';
+            thumb.loading = 'eager';
+            thumb.src = encodeURI(getThumbnailSource(item));
             button.appendChild(thumb);
             button.addEventListener('click', () => setImage(index));
             thumbs.appendChild(button);
         });
         modal.hidden = false;
+        modal.dataset.galleryKey = key;
         document.body.classList.add('gallery-open');
         setImage(0);
         window.LarDeViesDialog?.activate(modal, {
@@ -213,7 +227,21 @@
 
     document.addEventListener('keydown', (event) => {
         if (modal.hidden) return;
-        if (event.key === 'ArrowLeft') setImage(activeIndex - 1);
-        if (event.key === 'ArrowRight') setImage(activeIndex + 1);
+        if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            setImage(activeIndex - 1);
+        }
+        if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            setImage(activeIndex + 1);
+        }
+        if (event.key === 'Home') {
+            event.preventDefault();
+            setImage(0);
+        }
+        if (event.key === 'End') {
+            event.preventDefault();
+            setImage(activeGallery.images.length - 1);
+        }
     });
 })();
