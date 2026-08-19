@@ -1,7 +1,4 @@
 (() => {
-    const modal = document.getElementById('gallery-modal');
-    if (!modal) return;
-
     const galleries = {
         ameiro: {
             title: 'Ameiro',
@@ -63,7 +60,6 @@
             const carousel = document.createElement('div');
             carousel.className = 'rural-gallery__carousel';
             carousel.dataset.carousel = '';
-            carousel.dataset.galleryKey = key;
             carousel.dataset.carouselPreload = 'adjacent';
             carousel.setAttribute('role', 'region');
             carousel.setAttribute('aria-label', `Galería de ${gallery.title}`);
@@ -101,14 +97,6 @@
             nextButton.textContent = '›';
             carousel.appendChild(nextButton);
 
-            const openButton = document.createElement('button');
-            openButton.type = 'button';
-            openButton.className = 'rural-gallery__open';
-            openButton.dataset.galleryOpen = key;
-            openButton.setAttribute('aria-label', `Abrir galería completa de ${gallery.title}`);
-            openButton.textContent = 'Ver fotos';
-            carousel.appendChild(openButton);
-
             const footer = document.createElement('div');
             footer.className = 'rural-gallery__footer';
             const dots = document.createElement('div');
@@ -136,112 +124,4 @@
     };
 
     renderInlineCarousels();
-
-    const title = document.getElementById('gallery-modal-title');
-    const image = document.getElementById('gallery-modal-image');
-    const thumbs = document.getElementById('gallery-modal-thumbs');
-    const count = document.getElementById('gallery-modal-count');
-    const closeButton = modal.querySelector('button[data-gallery-close]');
-    let activeGallery;
-    let activeIndex = 0;
-
-    const getThumbnailSource = (item) => {
-        if (!item?.thumb || item.thumb.startsWith('thumb:')) return item?.src || '';
-        return item.thumb;
-    };
-
-    const hydrateAdjacentThumbnails = () => {
-        const length = activeGallery.images.length;
-        const allowed = new Set([activeIndex, (activeIndex - 1 + length) % length, (activeIndex + 1) % length]);
-        thumbs.querySelectorAll('button').forEach((button, index) => {
-            const thumbnail = button.querySelector('img');
-            if (allowed.has(index) && thumbnail && !thumbnail.getAttribute('src')) {
-                thumbnail.src = encodeURI(getThumbnailSource(activeGallery.images[index]));
-            }
-        });
-    };
-
-    const setImage = (index) => {
-        activeIndex = (index + activeGallery.images.length) % activeGallery.images.length;
-        const item = activeGallery.images[activeIndex];
-        image.removeAttribute('srcset');
-        image.removeAttribute('sizes');
-        image.src = encodeURI(item.src);
-        image.alt = item.alt;
-        image.loading = 'eager';
-        image.decoding = 'async';
-        count.textContent = `${activeIndex + 1} / ${activeGallery.images.length}`;
-        hydrateAdjacentThumbnails();
-        thumbs.querySelectorAll('button').forEach((thumb, thumbIndex) => {
-            thumb.setAttribute('aria-current', String(thumbIndex === activeIndex));
-        });
-        thumbs.querySelector('button[aria-current="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
-    };
-
-    const openGallery = (key, trigger) => {
-        activeGallery = galleries[key];
-        if (!activeGallery) return;
-        title.textContent = activeGallery.title;
-        thumbs.replaceChildren();
-        activeGallery.images.forEach((item, index) => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'gallery-thumb';
-            button.setAttribute('aria-label', `Ver imagen ${index + 1} de ${activeGallery.title}`);
-            button.setAttribute('aria-current', 'false');
-            const thumb = document.createElement('img');
-            thumb.alt = '';
-            thumb.loading = 'eager';
-            thumb.src = encodeURI(getThumbnailSource(item));
-            button.appendChild(thumb);
-            button.addEventListener('click', () => setImage(index));
-            thumbs.appendChild(button);
-        });
-        modal.hidden = false;
-        modal.dataset.galleryKey = key;
-        document.body.classList.add('gallery-open');
-        setImage(0);
-        window.LarDeViesDialog?.activate(modal, {
-            trigger,
-            initialFocus: closeButton,
-            onRequestClose: closeGallery
-        });
-    };
-
-    function closeGallery() {
-        if (modal.hidden) return;
-        modal.hidden = true;
-        document.body.classList.remove('gallery-open');
-        window.LarDeViesDialog?.deactivate(modal);
-    }
-
-    document.querySelectorAll('[data-gallery-open]').forEach((trigger) => {
-        trigger.addEventListener('click', () => openGallery(trigger.dataset.galleryOpen, trigger));
-    });
-
-    modal.addEventListener('click', (event) => {
-        if (event.target.closest('[data-gallery-close]')) closeGallery();
-    });
-    modal.querySelector('[data-gallery-prev]').addEventListener('click', () => setImage(activeIndex - 1));
-    modal.querySelector('[data-gallery-next]').addEventListener('click', () => setImage(activeIndex + 1));
-
-    document.addEventListener('keydown', (event) => {
-        if (modal.hidden) return;
-        if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            setImage(activeIndex - 1);
-        }
-        if (event.key === 'ArrowRight') {
-            event.preventDefault();
-            setImage(activeIndex + 1);
-        }
-        if (event.key === 'Home') {
-            event.preventDefault();
-            setImage(0);
-        }
-        if (event.key === 'End') {
-            event.preventDefault();
-            setImage(activeGallery.images.length - 1);
-        }
-    });
 })();

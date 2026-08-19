@@ -20,17 +20,12 @@ test("Rural Prado muestra un carrusel funcional en cada alojamiento", async ({ p
   await expect(ameiro.locator("[data-carousel-count]")).toHaveText("2 / 2");
   await expect(ameiro.locator("[data-carousel-track] > div").nth(1)).toHaveAttribute("aria-hidden", "false");
 
-  await page.locator('[data-rural-gallery="salgueiro"] [data-gallery-open]').click();
-  await expect(page.locator("#gallery-modal")).toBeVisible();
-  await expect(page.locator("#gallery-modal-title")).toHaveText("Salgueiro");
-  await expect(page.locator("#gallery-modal-count")).toHaveText("1 / 11");
-  await expect(page.locator("#gallery-modal-thumbs button")).toHaveCount(11);
-  await expect(page.locator("#gallery-modal-image")).toHaveAttribute("src", /salgueiro1/i);
-  await expect.poll(async () => page.locator("#gallery-modal-image").evaluate((image) => image.naturalWidth)).toBeGreaterThan(0);
-  await expect(page.locator("#gallery-modal-thumbs")).toHaveCSS("overflow-x", "auto");
-  await page.locator("[data-gallery-next]").click();
-  await expect(page.locator("#gallery-modal-count")).toHaveText("2 / 11");
-  await page.keyboard.press("Escape");
-  await expect(page.locator("#gallery-modal")).toBeHidden();
+  await expect(page.locator("[data-gallery-open]")).toHaveCount(0);
+  await expect(page.locator("#gallery-modal")).toHaveCount(0);
+  const salgueiro = page.locator('[data-rural-gallery="salgueiro"] [data-carousel]');
+  await expect(salgueiro.locator("[data-carousel-count]")).toHaveText("1 / 11");
+  await salgueiro.locator("[data-carousel-next]").click();
+  await expect(salgueiro.locator("[data-carousel-count]")).toHaveText("2 / 11");
+  await expect(salgueiro.locator("[data-carousel-track] > div").nth(1)).toHaveAttribute("aria-hidden", "false");
   expect(errors).toEqual([]);
 });
