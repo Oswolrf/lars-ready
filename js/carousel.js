@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const track = root.querySelector('[data-carousel-track]');
         const previousButton = root.querySelector('[data-carousel-prev]');
         const nextButton = root.querySelector('[data-carousel-next]');
+        const counter = root.querySelector('[data-carousel-count]');
         const selectors = Array.from(root.querySelectorAll('[data-carousel-slide]'));
         const slides = track ? Array.from(track.children) : [];
         if (!track || slides.length === 0) return;
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.toggle('opacity-40', !active);
                 button.classList.toggle('ring-transparent', !active);
             });
+            if (counter) counter.textContent = `${currentIndex + 1} / ${slides.length}`;
         };
 
         const show = (index) => {

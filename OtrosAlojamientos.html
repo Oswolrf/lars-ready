@@ -38,6 +38,29 @@
         .stay-card:hover .stay-image { transform: scale(1.035); }
         .stay-arrow { transition: transform .35s cubic-bezier(.16,1,.3,1); }
         .stay-card:hover .stay-arrow { transform: translateX(.35rem); }
+        .rural-gallery { isolation: isolate; }
+        .rural-gallery__carousel { position: relative; width: 100%; height: 100%; overflow: hidden; background: #d8d6d0; }
+        .rural-gallery__carousel:focus-visible { outline: 3px solid #526656; outline-offset: -3px; }
+        .rural-gallery__track { display: flex; width: 100%; height: 100%; transition: transform .65s cubic-bezier(.16,1,.3,1); will-change: transform; }
+        .rural-gallery__slide { position: relative; min-width: 100%; height: 100%; flex: 0 0 100%; overflow: hidden; }
+        .rural-gallery__slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .rural-gallery__control { position: absolute; top: 50%; z-index: 2; display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid rgba(255, 255, 255, .45); border-radius: 999px; background: rgba(23, 32, 25, .52); color: #fff; font-size: 1.5rem; line-height: 1; transform: translateY(-50%); cursor: pointer; transition: background .2s ease, transform .2s ease; }
+        .rural-gallery__control:hover { background: rgba(23, 32, 25, .82); }
+        .rural-gallery__control:focus-visible, .rural-gallery__open:focus-visible, .rural-gallery__dot:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+        .rural-gallery__control--prev { left: 1rem; }
+        .rural-gallery__control--next { right: 1rem; }
+        .rural-gallery__control--prev:hover { transform: translate(-.15rem, -50%); }
+        .rural-gallery__control--next:hover { transform: translate(.15rem, -50%); }
+        .rural-gallery__open { position: absolute; top: 1rem; right: 1rem; z-index: 2; padding: .65rem .85rem; border: 1px solid rgba(255, 255, 255, .45); border-radius: 999px; background: rgba(23, 32, 25, .58); color: #fff; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: background .2s ease; }
+        .rural-gallery__open:hover { background: rgba(23, 32, 25, .86); }
+        .rural-gallery__footer { position: absolute; right: 1rem; bottom: 1rem; left: 1rem; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+        .rural-gallery__dots { display: flex; align-items: center; gap: .45rem; min-height: 1rem; padding: .45rem .65rem; border-radius: 999px; background: rgba(23, 32, 25, .58); }
+        .rural-gallery__dot { width: .5rem; height: .5rem; padding: 0; border: 0; border-radius: 999px; background: rgba(255, 255, 255, .55); cursor: pointer; transition: width .2s ease, background .2s ease, transform .2s ease; }
+        .rural-gallery__dot[aria-current="true"] { width: 1.2rem; background: #fff; }
+        .rural-gallery__count { padding: .4rem .65rem; border-radius: 999px; background: rgba(23, 32, 25, .58); color: #fff; font-size: .72rem; font-variant-numeric: tabular-nums; }
+        @media (prefers-reduced-motion: reduce) {
+            .rural-gallery__track, .rural-gallery__control, .rural-gallery__dot { transition: none; }
+        }
         .gallery-trigger { appearance: none; border: 0; padding: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
         .gallery-modal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 1rem; }
         .gallery-modal[hidden] { display: none; }
@@ -196,10 +219,9 @@
 
                 <div class="grid md:grid-cols-2 gap-x-8 lg:gap-x-14 gap-y-16 md:gap-y-24">
                     <article class="stay-card group block w-full text-left md:mt-20" aria-labelledby="ameiro-title">
-                        <button type="button" class="gallery-trigger relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-gallery-open="ameiro" aria-label="Abrir galería de Ameiro">
+                        <div class="rural-gallery relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-rural-gallery="ameiro">
                             <img src="images/AMEIRO/AMEIRO1.jpeg" alt="Interior del alojamiento Ameiro" class="stay-image w-full h-full object-cover" loading="lazy" />
-                            <span class="absolute bottom-4 right-4 inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 text-[#172019]" aria-hidden="true"><span class="material-symbols-outlined">photo_library</span></span>
-                        </button>
+                        </div>
                         <div class="pt-6 border-t border-[#27312b]/20 mt-6">
                             <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="ameiro-title" class="font-display text-3xl mt-2 text-[#172019]">Ameiro</h3></div><span class="stay-arrow material-symbols-outlined mt-3" aria-hidden="true">photo_library</span></div>
                             <p class="font-display italic text-lg text-primary-dark mt-5">“Un pequeño ático con mucho HOGAR.”</p>
@@ -208,8 +230,8 @@
                         </div>
                     </article>
                     <article class="stay-card group block w-full text-left" aria-labelledby="salgueiro-title">
-                        <div class="aspect-[5/4] overflow-hidden bg-[#27312b] text-white flex items-end p-8 md:p-10" aria-hidden="true">
-                            <div><span class="text-white/55 text-[0.68rem] uppercase tracking-[0.25em]">Rural Prado</span><p class="font-display text-4xl mt-3">Salgueiro</p></div>
+                        <div class="rural-gallery relative block w-full aspect-[5/4] overflow-hidden bg-stone-200" data-rural-gallery="salgueiro">
+                            <img src="images/SALGUEIRO/SALGUEIRO1.jpg" alt="Interior del alojamiento Salgueiro" class="stay-image w-full h-full object-cover" loading="lazy" />
                         </div>
                         <div class="pt-6 border-t border-[#27312b]/20 mt-6">
                             <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="salgueiro-title" class="font-display text-3xl mt-2 text-[#172019]">Salgueiro</h3></div><span class="material-symbols-outlined mt-3 text-primary-dark" aria-hidden="true">home</span></div>
@@ -219,10 +241,9 @@
                         </div>
                     </article>
                     <article class="stay-card group block w-full text-left md:mt-8" aria-labelledby="castaneiro-title">
-                        <button type="button" class="gallery-trigger relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-gallery-open="castaneiro" aria-label="Abrir galería de Castañeiro">
+                        <div class="rural-gallery relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-rural-gallery="castaneiro">
                             <img src="images/Castañeiro/Castaéiro 3.jpeg" alt="Interior del alojamiento Castañeiro" class="stay-image w-full h-full object-cover" loading="lazy" />
-                            <span class="absolute bottom-4 right-4 inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 text-[#172019]" aria-hidden="true"><span class="material-symbols-outlined">photo_library</span></span>
-                        </button>
+                        </div>
                         <div class="pt-6 border-t border-[#27312b]/20 mt-6">
                             <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="castaneiro-title" class="font-display text-3xl mt-2 text-[#172019]">Castañeiro</h3></div><span class="stay-arrow material-symbols-outlined mt-3" aria-hidden="true">photo_library</span></div>
                             <p class="font-display italic text-lg text-primary-dark mt-5">“Espacio y comodidad”</p>
@@ -232,10 +253,9 @@
                         </div>
                     </article>
                     <article class="stay-card group block w-full text-left md:mt-20" aria-labelledby="bidueira-title">
-                        <button type="button" class="gallery-trigger relative block w-full aspect-[5/4] overflow-hidden bg-stone-200" data-gallery-open="bidueira" aria-label="Abrir galería de Bidueira">
+                        <div class="rural-gallery relative block w-full aspect-[5/4] overflow-hidden bg-stone-200" data-rural-gallery="bidueira">
                             <img src="images/BIDUEIRA/BIDUEIRA 1.jpeg" alt="Interior del alojamiento Bidueira" class="stay-image w-full h-full object-cover" loading="lazy" />
-                            <span class="absolute bottom-4 right-4 inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 text-[#172019]" aria-hidden="true"><span class="material-symbols-outlined">photo_library</span></span>
-                        </button>
+                        </div>
                         <div class="pt-6 border-t border-[#27312b]/20 mt-6">
                             <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="bidueira-title" class="font-display text-3xl mt-2 text-[#172019]">Bidueira</h3></div><span class="stay-arrow material-symbols-outlined mt-3" aria-hidden="true">photo_library</span></div>
                             <p class="font-display italic text-lg text-primary-dark mt-5">“Mirando al valle”</p>
@@ -245,10 +265,9 @@
                         </div>
                     </article>
                     <article class="stay-card group block w-full text-left md:mt-8" aria-labelledby="carballo-title">
-                        <button type="button" class="gallery-trigger relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-gallery-open="carballo" aria-label="Abrir galería de Carballo">
+                        <div class="rural-gallery relative block w-full aspect-[4/5] overflow-hidden bg-stone-200" data-rural-gallery="carballo">
                             <img src="images/CARBALLO/CARBALLO1.jpeg" alt="Interior del alojamiento Carballo" class="stay-image w-full h-full object-cover" loading="lazy" />
-                            <span class="absolute bottom-4 right-4 inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 text-[#172019]" aria-hidden="true"><span class="material-symbols-outlined">photo_library</span></span>
-                        </button>
+                        </div>
                         <div class="pt-6 border-t border-[#27312b]/20 mt-6">
                             <div class="flex justify-between gap-6"><div><span class="text-[0.68rem] uppercase tracking-[0.25em] text-stone-600">Alojamiento rural</span><h3 id="carballo-title" class="font-display text-3xl mt-2 text-[#172019]">Carballo</h3></div><span class="stay-arrow material-symbols-outlined mt-3" aria-hidden="true">photo_library</span></div>
                             <p class="font-display italic text-lg text-primary-dark mt-5">“Espacio para compartir”</p>
