@@ -12,7 +12,17 @@
  * period, a positive viewport intersection and a permissive network policy.
  */
 (() => {
-    const { playbackIsBlocked: policyBlocksPlayback } = require('./hero-video-policy.cjs');
+    // Keep this small browser-side copy self-contained so the authoring HTML
+    // pages also work when opened without the esbuild bundle. The equivalent
+    // CommonJS module remains available to Node-based validation scripts.
+    const blockedConnections = new Set(['slow-2g', '2g', '3g']);
+    const policyBlocksPlayback = ({ reducedMotion = false, connection = null } = {}) => {
+        if (reducedMotion === true) return true;
+        if (!connection) return false;
+
+        const effectiveType = String(connection.effectiveType || '').toLowerCase();
+        return connection.saveData === true || blockedConnections.has(effectiveType);
+    };
     const VIDEO_SELECTOR = 'video[data-hero-video]';
     const DEFAULT_IDLE_TIMEOUT = 2000;
     const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');

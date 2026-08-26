@@ -42,6 +42,7 @@
     <link href="/dist/output.css?v=20260810-brevo-fix" rel="stylesheet" />
     <link href="/css/nav-brand.css?v=20260805-surfaces-v5" rel="stylesheet" />
     <link href="/css/hero-video.css" rel="stylesheet" />
+    <link href="/css/location-map.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
@@ -829,12 +830,17 @@
                 </div>
             </div>
             <div id="como-llegar"
-                class="relative w-full aspect-[16/9] md:aspect-[21/9] bg-[#e8e6e1] dark:bg-[#2a2f2b] rounded-2xl overflow-hidden border border-stone-200 dark:border-white/5 shadow-inner">
-                <iframe src="https://maps.google.com/maps?q=43.3255,-7.1626&hl=es&z=14&output=embed"
-                    title="Mapa de ubicación de Lar de Víes"
-                    class="w-full h-full min-h-[500px] z-10 grayscale-[10%] hover:grayscale-0 transition-all duration-700"
+                class="location-map relative w-full aspect-[16/9] md:aspect-[21/9] bg-[#e8e6e1] dark:bg-[#2a2f2b] rounded-2xl overflow-hidden border border-stone-200 dark:border-white/5 shadow-inner">
+                <iframe title="Mapa de Lar de Víes y el Valle del Eo"
+                    src="https://maps.google.com/maps?q=Lar%20de%20V%C3%ADes%2C%20Neip%C3%ADn%2C%20A%20Pontenova%2C%20Lugo%2C%20Espa%C3%B1a&amp;ll=43.3255%2C-7.1626&amp;hl=es&amp;z=14&amp;output=embed"
+                    class="location-map__frame w-full h-full min-h-[500px] z-10"
                     style="border:0;" allowfullscreen="" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div class="location-map__tint" aria-hidden="true"></div>
+                <a class="location-map__link" href="https://www.google.com/maps/search/?api=1&amp;query=Lar%20de%20Víes%2C%20Neip%C3%ADn%2C%20A%20Pontenova%2C%20Lugo%2C%20Espa%C3%B1a" target="_blank" rel="noopener noreferrer">
+                    <span aria-hidden="true" class="material-symbols-outlined">open_in_new</span>
+                    Abrir ficha en Google Maps
+                </a>
             </div>
         </div>
     </section>
