@@ -1,0 +1,34 @@
+{
+  "_comentario": "Lista compartida por el tokenizador de Node (ingesta) y el de PHP (consulta). Ambos DEBEN leer este fichero: no copiar la lista en el código. Ver docs/chatbot-rag/01-corpus-y-chunking.md, sección 7.",
+  "es": [
+    "a", "al", "algo", "algun", "alguna", "algunas", "alguno", "algunos", "ante", "antes",
+    "aqui", "asi", "aun", "aunque", "cada", "como", "con", "contra", "cual", "cuales",
+    "cuando", "cuanto", "de", "del", "desde", "donde", "dos", "el", "ella", "ellas",
+    "ellos", "en", "entre", "era", "eran", "es", "esa", "esas", "ese", "eso", "esos",
+    "esta", "estan", "estas", "este", "esto", "estos", "fue", "fueron", "ha", "hace",
+    "hacer", "hacia", "han", "hasta", "hay", "la", "las", "le", "les", "lo", "los", "mas",
+    "me", "mi", "mis", "mucho", "muy", "ni", "no", "nos", "nuestra", "nuestro", "o", "os",
+    "otra", "otras", "otro", "otros", "para", "pero", "poco", "por", "porque", "que",
+    "quien", "se", "segun", "ser", "si", "sin", "sobre", "solo", "son", "su", "sus",
+    "tambien", "tan", "tanto", "te", "tiene", "tienen", "todo", "todos", "tu", "tus", "un",
+    "una", "uno", "unos", "vosotros", "vuestra", "vuestro", "y", "ya", "yo"
+  ],
+  "en": [
+    "a", "about", "after", "all", "also", "an", "and", "any", "are", "as", "at",
+    "be", "because", "been", "but", "by", "can", "do", "does", "for", "from", "had",
+    "has", "have", "he", "her", "here", "his", "how", "i", "if", "in", "into", "is",
+    "it", "its", "me", "more", "my", "no", "not", "of", "on", "one", "or", "our", "out",
+    "she", "so", "some", "than", "that", "the", "their", "them", "then", "there",
+    "these", "they", "this", "to", "up", "us", "was", "we", "were", "what", "when",
+    "where", "which", "who", "will", "with", "would", "you", "your"
+  ],
+  "de": [
+    "aber", "alle", "als", "am", "an", "auch", "auf", "aus", "bei", "bin", "bis", "da",
+    "das", "dass", "dem", "den", "der", "des", "die", "diese", "doch", "dort", "du",
+    "ein", "eine", "einem", "einen", "einer", "eines", "er", "es", "fur", "gegen",
+    "hab", "haben", "hat", "hier", "ich", "ihr", "im", "in", "ist", "kann", "mit",
+    "nach", "nicht", "noch", "nur", "oder", "sehr", "sein", "sich", "sie", "sind", "so",
+    "uber", "und", "uns", "unter", "von", "vor", "war", "was", "wenn", "wer", "wie",
+    "wir", "wird", "wo", "zu", "zum", "zur"
+  ]
+}

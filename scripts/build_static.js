@@ -372,6 +372,8 @@ function replaceSharedComponents($, page) {
   $("footer").first().replaceWith(render("partials/footer.njk", page));
   $("#booking-dialog, #booking-modal, [data-booking-dialog]").remove();
   $("body").append(render("partials/booking-dialog.njk", page));
+  $("[data-chat-widget]").remove();
+  $("body").append(render("partials/chat-widget.njk", page));
   if (!$("main#main-content").length) {
     const main = $("main").first();
     if (main.length) main.attr("id", "main-content");

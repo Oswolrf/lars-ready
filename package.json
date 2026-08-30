@@ -23,7 +23,9 @@
     "media:prepare": "node scripts/media/prepare-hero-videos.js",
     "media:compare": "node scripts/media/compare-hero-videos.js",
     "seo:notify": "node scripts/notify_indexnow.js",
-    "adapters:check": "node scripts/generate_adapters.js --check"
+    "adapters:check": "node scripts/generate_adapters.js --check",
+    "rag:test": "node --test tests/rag/corpus.test.js tests/rag/chat-api.test.js",
+    "rag:ingest": "node --env-file-if-exists=.env.local scripts/ingest-rag.js"
   },
   "keywords": [],
   "author": "",
@@ -44,5 +46,8 @@
     "nunjucks": "^3.2.4",
     "sharp": "^0.35.3",
     "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "ai": "7.0.85"
   }
 }
