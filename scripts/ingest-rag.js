@@ -39,22 +39,24 @@ async function supabaseRequest(pathname, options = {}) {
 }
 
 async function main() {
-  if (!process.env.AI_GATEWAY_API_KEY && !process.env.VERCEL_OIDC_TOKEN) {
-    throw new Error("Falta AI_GATEWAY_API_KEY (o VERCEL_OIDC_TOKEN) para generar embeddings");
-  }
+  const openaiApiKey = requiredEnvironment("OPENAI_API_KEY");
 
   const validRoutes = new Set(siteConfig.pages.map((page) => page.route));
   const { files, chunks } = loadCorpus({ root, validRoutes });
-  const embeddingModel = process.env.RAG_EMBEDDING_MODEL || "openai/text-embedding-3-small";
+  const embeddingModel = process.env.RAG_EMBEDDING_MODEL || "text-embedding-3-small";
   const ingestionId = crypto.randomUUID();
-  const { embedMany } = await import("ai");
+  const [{ embedMany }, { createOpenAI }] = await Promise.all([
+    import("ai"),
+    import("@ai-sdk/openai"),
+  ]);
+  const openai = createOpenAI({ apiKey: openaiApiKey });
 
   console.log(`RAG: ${files.length} documentos, ${chunks.length} fragmentos`);
   const embeddings = [];
   for (let offset = 0; offset < chunks.length; offset += EMBEDDING_BATCH_SIZE) {
     const batch = chunks.slice(offset, offset + EMBEDDING_BATCH_SIZE);
     const result = await embedMany({
-      model: embeddingModel,
+      model: openai.embedding(embeddingModel),
       values: batch.map((chunk) => chunk.content),
       maxParallelCalls: 2,
       providerOptions: { openai: { dimensions: EMBEDDING_DIMENSIONS } },

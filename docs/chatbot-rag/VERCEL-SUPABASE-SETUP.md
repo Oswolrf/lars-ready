@@ -11,7 +11,7 @@ de esta versión.
 - Base de conocimiento en `content/kb/*.md`.
 - Búsqueda híbrida en Supabase: full-text de PostgreSQL + `pgvector`.
 - Ingesta mediante `npm run rag:ingest`.
-- AI SDK con Vercel AI Gateway para embeddings y respuesta.
+- AI SDK con la API directa de OpenAI para embeddings y respuesta.
 - Sin almacenamiento de conversaciones ni datos personales.
 
 ## 1. Elegir y crear el proyecto de Supabase
@@ -28,14 +28,14 @@ No se ha conectado ninguna cuenta desde el repositorio. Cuando se elija la cuent
 La clave secreta solo va en Vercel y en `.env.local`; nunca se utiliza en el navegador.
 La tabla tiene RLS activado y no concede acceso a `anon` ni `authenticated`.
 
-## 2. Preparar AI Gateway
+## 2. Preparar OpenAI
 
-Crear una API key de AI Gateway y guardarla como `AI_GATEWAY_API_KEY`. Los modelos por
-defecto son:
+Crear una API key de OpenAI y guardarla como `OPENAI_API_KEY`. La suscripción de ChatGPT
+no incluye el consumo de la API. Los modelos por defecto son:
 
 ```text
-RAG_CHAT_MODEL=openai/gpt-5.6-luna
-RAG_EMBEDDING_MODEL=openai/text-embedding-3-small
+RAG_CHAT_MODEL=gpt-5-nano
+RAG_EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 Los identificadores son configurables para poder cambiarlos sin editar código.
@@ -45,11 +45,11 @@ Los identificadores son configurables para poder cambiarlos sin editar código.
 Crear `.env.local` en la raíz —está ignorado por Git— con:
 
 ```dotenv
-AI_GATEWAY_API_KEY=...
+OPENAI_API_KEY=...
 SUPABASE_URL=https://TU-PROYECTO.supabase.co
 SUPABASE_SECRET_KEY=sb_secret_...
-RAG_CHAT_MODEL=openai/gpt-5.6-luna
-RAG_EMBEDDING_MODEL=openai/text-embedding-3-small
+RAG_CHAT_MODEL=gpt-5-nano
+RAG_EMBEDDING_MODEL=text-embedding-3-small
 RAG_MIN_SIMILARITY=0.32
 ```
 
@@ -68,7 +68,7 @@ los fragmentos y elimina únicamente los fragmentos de ingestiones anteriores.
 Añadir en Project Settings → Environment Variables:
 
 ```text
-AI_GATEWAY_API_KEY
+OPENAI_API_KEY
 SUPABASE_URL
 SUPABASE_SECRET_KEY
 RAG_CHAT_MODEL
@@ -103,4 +103,4 @@ Casos mínimos:
 - No hay disponibilidad ni precios en tiempo real.
 - El umbral `RAG_MIN_SIMILARITY` necesita calibrarse con preguntas reales antes de publicar.
 - Antes de producción hay que revisar la política de privacidad porque los mensajes se
-  procesan mediante Vercel AI Gateway y el proveedor del modelo, aunque no se almacenen aquí.
+  procesan mediante OpenAI, aunque la aplicación solicita que las respuestas no se almacenen.

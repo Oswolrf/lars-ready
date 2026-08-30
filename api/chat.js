@@ -184,11 +184,16 @@ module.exports = async function chatHandler(request, response) {
   try {
     const history = normalizeHistory(body.history);
     const query = retrievalQuery(message, history);
-    const embeddingModel = process.env.RAG_EMBEDDING_MODEL || "openai/text-embedding-3-small";
-    const chatModel = process.env.RAG_CHAT_MODEL || "openai/gpt-5.6-luna";
-    const { embed, generateText } = await import("ai");
+    const openaiApiKey = requiredEnvironment("OPENAI_API_KEY");
+    const embeddingModel = process.env.RAG_EMBEDDING_MODEL || "text-embedding-3-small";
+    const chatModel = process.env.RAG_CHAT_MODEL || "gpt-5-nano";
+    const [{ embed, generateText }, { createOpenAI }] = await Promise.all([
+      import("ai"),
+      import("@ai-sdk/openai"),
+    ]);
+    const openai = createOpenAI({ apiKey: openaiApiKey });
     const embedded = await embed({
-      model: embeddingModel,
+      model: openai.embedding(embeddingModel),
       value: query,
       providerOptions: { openai: { dimensions: 512 } },
       abortSignal: AbortSignal.timeout(15000),
@@ -211,10 +216,17 @@ module.exports = async function chatHandler(request, response) {
     }
 
     const result = await generateText({
-      model: chatModel,
+      model: openai(chatModel),
       system: `${SYSTEM_PROMPT}\n\nCONTEXTO\n${buildContext(documents)}`,
       messages: [...history, { role: "user", content: message }],
       maxOutputTokens: 320,
+      providerOptions: {
+        openai: {
+          reasoningEffort: "minimal",
+          store: false,
+          textVerbosity: "low",
+        },
+      },
       abortSignal: AbortSignal.timeout(25000),
     });
 

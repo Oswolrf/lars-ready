@@ -33,3 +33,4 @@ assets/generated/videos/*-hero-v2.webm
 assets/generated/videos/manifest.json
 
 .env*
+!.env.example
