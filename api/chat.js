@@ -182,9 +182,6 @@ module.exports = async function chatHandler(request, response) {
   }
 
   try {
-    if (!process.env.AI_GATEWAY_API_KEY && !process.env.VERCEL_OIDC_TOKEN) {
-      throw new Error("missing_environment:AI_GATEWAY_API_KEY");
-    }
     const history = normalizeHistory(body.history);
     const query = retrievalQuery(message, history);
     const embeddingModel = process.env.RAG_EMBEDDING_MODEL || "openai/text-embedding-3-small";
@@ -227,8 +224,14 @@ module.exports = async function chatHandler(request, response) {
       abstained: false,
     });
   } catch (error) {
-    const code = error instanceof Error ? error.message.split(":")[0] : "unknown";
-    console.error("RAG chat error", { code, name: error?.name });
+    const [code, detail] = error instanceof Error
+      ? error.message.split(":", 2)
+      : ["unknown", undefined];
+    console.error("RAG chat error", {
+      code,
+      detail: code === "missing_environment" ? detail : undefined,
+      name: error?.name,
+    });
     return sendJson(response, 503, {
       error: "chat_unavailable",
       message: "No he podido conectar 🤍. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.",
