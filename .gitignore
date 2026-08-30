@@ -18,6 +18,7 @@ videos/*.webm
 Thumbs.db
 .vscode/
 .idea/
+.claude/settings.local.json
 
 # Vercel
 .vercel
@@ -34,3 +35,6 @@ assets/generated/videos/manifest.json
 
 .env*
 !.env.example
+
+# Obsolete local RAG planning documents (Cloudflare/IONOS prototype).
+docs/chatbot-rag/
