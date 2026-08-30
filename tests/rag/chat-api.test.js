@@ -4,6 +4,27 @@ const assert = require("node:assert/strict");
 const test = require("node:test");
 const handler = require("../../api/chat.js");
 
+function requestFor(message) {
+  return {
+    method: "POST",
+    body: { message, history: [] },
+    headers: {},
+    socket: { remoteAddress: `test-${message}` },
+  };
+}
+
+function responseRecorder() {
+  return {
+    headers: {},
+    setHeader(name, value) {
+      this.headers[name] = value;
+    },
+    end(body) {
+      this.body = body;
+    },
+  };
+}
+
 test("limita y limpia el historial que llega al modelo", () => {
   const history = Array.from({ length: 9 }, (_, index) => ({
     role: index % 2 ? "assistant" : "user",
@@ -30,4 +51,39 @@ test("incluye el historial reciente al recuperar una pregunta de seguimiento", (
   ]);
   assert.match(query, /Suite Valle/);
   assert.match(query, /bañera/);
+});
+
+test("responde a un saludo sin consultar el flujo RAG", async () => {
+  const response = responseRecorder();
+  await handler(requestFor("Hola"), response);
+
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body), {
+    answer: "¡Hola! ¿En qué puedo ayudarte? Puedes preguntarme por los alojamientos, la estancia, la gastronomía o el entorno de Lar de Víes.",
+    sources: [],
+    abstained: false,
+  });
+});
+
+test("distingue conversación básica de una consulta factual", () => {
+  assert.match(handler._internals.smallTalkReply("Muchas gracias"), /Gracias a ti/);
+  assert.match(handler._internals.smallTalkReply("Good morning!"), /How can I help/);
+  assert.equal(handler._internals.smallTalkReply("Hola, ¿aceptáis perros?"), null);
+});
+
+test("responde si el desayuno se paga aparte sin depender del índice RAG", async () => {
+  const response = responseRecorder();
+  await handler(requestFor("Pero el desayuno se paga aparte?"), response);
+
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body), {
+    answer: "Depende de la tarifa que elijas. El motor de reservas ofrece tarifas de solo alojamiento y tarifas con desayuno incluido; revisa el nombre y las condiciones de la tarifa antes de confirmar.",
+    sources: [{ title: "Reservas y cancelación", url: "/reservas/" }],
+    abstained: false,
+  });
+});
+
+test("mantiene las preguntas sobre el horario del desayuno en el flujo RAG", () => {
+  assert.equal(handler._internals.knownFactReply("¿A qué hora se sirve el desayuno?"), null);
+  assert.match(handler._internals.knownFactReply("Is breakfast included?").answer, /room-only rates/);
 });

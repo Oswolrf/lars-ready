@@ -12,7 +12,44 @@
     const sendButton = widget.querySelector('[data-chat-send]');
     const status = widget.querySelector('[data-chat-status]');
     const endpoint = widget.dataset.chatEndpoint || '/api/chat';
-    const history = [];
+    const sessionKey = 'lar-de-vies-chat-session-v1';
+    const maxTranscriptMessages = 16;
+    const maxHistoryMessages = 6;
+
+    const sanitizeMessages = (value, limit) => {
+        if (!Array.isArray(value)) return [];
+        return value.slice(-limit).flatMap((message) => {
+            if (!message || !['user', 'assistant'].includes(message.role)) return [];
+            const text = String(message.text || message.content || '').trim().slice(0, 1200);
+            if (!text) return [];
+            const sources = Array.isArray(message.sources)
+                ? message.sources.slice(0, 4).flatMap((source) => {
+                    if (!source || typeof source.url !== 'string') return [];
+                    return [{ title: String(source.title || 'Más información').slice(0, 120), url: source.url.slice(0, 500) }];
+                })
+                : [];
+            return [{ role: message.role, text, content: text, sources }];
+        });
+    };
+
+    const readSession = () => {
+        try {
+            const saved = JSON.parse(window.sessionStorage.getItem(sessionKey) || 'null');
+            if (!saved || saved.version !== 1) return null;
+            return {
+                open: saved.open === true,
+                messages: sanitizeMessages(saved.messages, maxTranscriptMessages),
+                history: sanitizeMessages(saved.history, maxHistoryMessages)
+                    .map(({ role, content }) => ({ role, content })),
+            };
+        } catch (_error) {
+            return null;
+        }
+    };
+
+    const restoredSession = readSession();
+    const history = restoredSession?.history || [];
+    let transcript = [];
     let busy = false;
 
     document.body.classList.add('has-chat-widget');
@@ -32,7 +69,21 @@
         }
     };
 
-    const addMessage = (role, text, sources = []) => {
+    const persistSession = () => {
+        try {
+            window.sessionStorage.setItem(sessionKey, JSON.stringify({
+                version: 1,
+                open: !panel.hidden,
+                messages: transcript.slice(-maxTranscriptMessages),
+                history: history.slice(-maxHistoryMessages),
+            }));
+        } catch (_error) {
+            // El chat sigue funcionando aunque el navegador bloquee sessionStorage.
+        }
+    };
+
+    const addMessage = (role, text, sources = [], options = {}) => {
+        const { record = true, persist = true } = options;
         const message = document.createElement('div');
         message.className = `chat-widget__message chat-widget__message--${role}`;
 
@@ -57,14 +108,38 @@
         }
 
         conversation.appendChild(message);
+        if (record) {
+            transcript.push({
+                role,
+                text: String(text).slice(0, 1200),
+                sources: validSources.map((source) => ({ title: source.title, url: source.href })),
+            });
+            transcript = transcript.slice(-maxTranscriptMessages);
+        }
+        if (persist) persistSession();
         scrollToLatest();
         return message;
     };
 
-    const setOpen = (open) => {
+    const restoreConversation = () => {
+        if (restoredSession?.messages.length) {
+            conversation.replaceChildren();
+            restoredSession.messages.forEach((message) => {
+                addMessage(message.role, message.text, message.sources, { persist: false });
+            });
+        } else {
+            const welcome = conversation.querySelector('.chat-widget__message--assistant p')?.textContent?.trim();
+            if (welcome) transcript = [{ role: 'assistant', text: welcome, sources: [] }];
+        }
+        suggestions.hidden = transcript.some((message) => message.role === 'user');
+    };
+
+    const setOpen = (open, manageFocus = true) => {
         panel.hidden = !open;
         trigger.setAttribute('aria-expanded', String(open));
         document.body.classList.toggle('chat-widget-open', open);
+        persistSession();
+        if (!manageFocus) return;
         if (open) window.setTimeout(() => input.focus(), 0);
         else trigger.focus();
     };
@@ -89,7 +164,7 @@
         suggestions.hidden = true;
         setBusy(true);
 
-        const pending = addMessage('assistant', 'Estoy consultando la información de Lar de Víes…');
+        const pending = addMessage('assistant', 'Estoy consultando la información de Lar de Víes…', [], { record: false, persist: false });
         pending.classList.add('chat-widget__message--pending');
         const controller = new AbortController();
         const timeout = window.setTimeout(() => controller.abort(), 35000);
@@ -106,11 +181,11 @@
                 throw new Error(payload.message || 'Respuesta no disponible');
             }
             pending.remove();
-            addMessage('assistant', payload.answer, Array.isArray(payload.sources) ? payload.sources : []);
             history.push({ role: 'assistant', content: payload.answer });
+            addMessage('assistant', payload.answer, Array.isArray(payload.sources) ? payload.sources : []);
         } catch (_error) {
             pending.remove();
-            addMessage('assistant', 'No he podido conectar 🤍. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.');
+            addMessage('assistant', 'No he podido conectar. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.');
             status.textContent = 'No se ha podido obtener una respuesta';
         } finally {
             window.clearTimeout(timeout);
@@ -118,6 +193,9 @@
             input.focus();
         }
     };
+
+    restoreConversation();
+    setOpen(restoredSession?.open === true, false);
 
     trigger.addEventListener('click', () => setOpen(panel.hidden));
     closeButton.addEventListener('click', () => setOpen(false));

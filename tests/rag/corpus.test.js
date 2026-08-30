@@ -27,3 +27,16 @@ test("carga todo el corpus con rutas válidas y chunks autocontenidos", () => {
     assert.ok(chunk.section.length > 0);
   }
 });
+
+test("documenta las tarifas con y sin desayuno de forma recuperable", () => {
+  const root = path.resolve(__dirname, "../..");
+  const validRoutes = new Set(siteConfig.pages.map((page) => page.route));
+  const corpus = loadCorpus({ root, validRoutes });
+  const breakfastChunk = corpus.chunks.find((chunk) => chunk.id === "reservas-y-cancelacion#desayuno-y-tarifa");
+
+  assert.ok(breakfastChunk);
+  assert.equal(breakfastChunk.source_url, "/reservas/");
+  assert.match(breakfastChunk.content, /solo alojamiento \(SA\)/);
+  assert.match(breakfastChunk.content, /desayuno incluido/);
+  assert.match(breakfastChunk.content, /depende de la tarifa seleccionada/);
+});

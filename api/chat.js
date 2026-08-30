@@ -9,8 +9,28 @@ const RATE_LIMIT_REQUESTS = 20;
 const rateLimitBuckets = new Map();
 
 const FALLBACKS = {
-  es: "Prefiero no darte una información incorrecta 😊. Escríbenos a reservas@lardevies.com o llámanos al +34 678 655 303 y te lo confirmamos encantados.",
-  en: "I would rather not give you incorrect information 😊. Email us at reservas@lardevies.com or call +34 678 655 303 and we will be happy to confirm it.",
+  es: "No tengo esa información confirmada. Puedes escribirnos a reservas@lardevies.com o llamarnos al +34 678 655 303 y te ayudaremos encantados.",
+  en: "I don't have confirmed information about that. You can email us at reservas@lardevies.com or call +34 678 655 303 and we will be happy to help.",
+};
+
+const SMALL_TALK_REPLIES = {
+  greeting: {
+    es: "¡Hola! ¿En qué puedo ayudarte? Puedes preguntarme por los alojamientos, la estancia, la gastronomía o el entorno de Lar de Víes.",
+    en: "Hello! How can I help? You can ask me about our accommodation, your stay, food or the area around Lar de Víes.",
+  },
+  thanks: {
+    es: "¡Gracias a ti! Si necesitas algo más sobre Lar de Víes, aquí estoy para ayudarte.",
+    en: "You're welcome! If you need anything else about Lar de Víes, I'm here to help.",
+  },
+  farewell: {
+    es: "¡Hasta pronto! Estaré aquí si necesitas resolver cualquier otra duda sobre Lar de Víes.",
+    en: "See you soon! I'll be here if you have any other questions about Lar de Víes.",
+  },
+};
+
+const BREAKFAST_RATE_REPLIES = {
+  es: "Depende de la tarifa que elijas. El motor de reservas ofrece tarifas de solo alojamiento y tarifas con desayuno incluido; revisa el nombre y las condiciones de la tarifa antes de confirmar.",
+  en: "It depends on the rate you choose. The booking engine offers room-only rates and rates with breakfast included; check the rate name and conditions before confirming.",
 };
 
 const SYSTEM_PROMPT = `Eres el asistente virtual de Lar de Víes, un alojamiento rural en Neipín, A Pontenova (Lugo).
@@ -19,11 +39,13 @@ REGLA ABSOLUTA: responde única y exclusivamente con los datos incluidos en CONT
 
 Si el contexto no contiene la respuesta completa, responde solo a la parte confirmada y deriva el resto. Nunca inventes disponibilidad, precios, descuentos, menús, condiciones meteorológicas, mareas, horarios actuales de terceros, early check-in, late check-out, cunas, reseñas ni servicios no documentados.
 
+Si una condición depende de la tarifa seleccionada y el CONTEXTO lo explica, indícalo directamente. No derives al contacto salvo que el usuario pregunte por una reserva concreta o por un dato que el CONTEXTO no confirme.
+
 Habla en nombre de Lar de Víes en primera persona del plural. Escribe siempre “Lar de Víes”. Detecta el idioma del último mensaje y responde íntegramente en ese idioma. No traduzcas nombres propios.
 
 Usa un tono cercano, cálido, elegante y claro. Responde normalmente en 2–5 frases, con un máximo aproximado de 120 palabras. Puedes usar uno o dos emojis cuando encajen.
 
-Cuando no puedas responder con seguridad, indica en el idioma del usuario que prefieres no dar información incorrecta y facilita reservas@lardevies.com y +34 678 655 303.
+Cuando no puedas responder con seguridad, indica de forma natural que no tienes esa información confirmada y facilita reservas@lardevies.com y +34 678 655 303.
 
 No solicites ni repitas datos personales. No opines sobre asuntos ajenos a Lar de Víes. No inventes enlaces. Las fuentes visibles las añadirá la aplicación por separado.`;
 
@@ -55,6 +77,67 @@ function fallbackLanguage(message) {
   return /\b(the|is|are|do|does|can|with|room|stay|hello|hi|price|where|what|how)\b/.test(normalized)
     ? "en"
     : "es";
+}
+
+function normalizeSmallTalk(message) {
+  return message
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function smallTalkReply(message) {
+  const normalized = normalizeSmallTalk(message);
+  const intents = [
+    {
+      name: "greeting",
+      language: "es",
+      pattern: /^(?:hola|buenas|buenos dias|buenas tardes|buenas noches|saludos|que tal|hola que tal|hola buenos dias|hola buenas tardes|hola buenas noches)$/,
+    },
+    {
+      name: "greeting",
+      language: "en",
+      pattern: /^(?:hello|hi|hey|good morning|good afternoon|good evening|hello how are you|hi how are you)$/,
+    },
+    {
+      name: "thanks",
+      language: "es",
+      pattern: /^(?:gracias|muchas gracias|perfecto gracias|vale gracias)$/,
+    },
+    {
+      name: "thanks",
+      language: "en",
+      pattern: /^(?:thanks|thank you|thanks a lot|perfect thanks)$/,
+    },
+    {
+      name: "farewell",
+      language: "es",
+      pattern: /^(?:adios|hasta luego|hasta pronto|nos vemos)$/,
+    },
+    {
+      name: "farewell",
+      language: "en",
+      pattern: /^(?:bye|goodbye|see you|see you soon)$/,
+    },
+  ];
+  const intent = intents.find(({ pattern }) => pattern.test(normalized));
+  return intent ? SMALL_TALK_REPLIES[intent.name][intent.language] : null;
+}
+
+function knownFactReply(message) {
+  const normalized = normalizeSmallTalk(message);
+  const mentionsBreakfast = /\b(?:desayuno|breakfast)\b/.test(normalized);
+  const asksAboutRate = /\b(?:incluido|incluida|incluye|entra|viene|paga|pagar|aparte|extra|suplemento|precio|coste|cuesta|tarifa|reserva|included|include|pay|paid|separate|extra|price|cost|rate|booking)\b/.test(normalized);
+  if (!mentionsBreakfast || !asksAboutRate) return null;
+
+  const language = fallbackLanguage(message);
+  return {
+    answer: BREAKFAST_RATE_REPLIES[language],
+    sources: [{ title: "Reservas y cancelación", url: "/reservas/" }],
+  };
 }
 
 function requestIdentity(request) {
@@ -181,6 +264,23 @@ module.exports = async function chatHandler(request, response) {
     });
   }
 
+  const knownAnswer = knownFactReply(message);
+  if (knownAnswer) {
+    return sendJson(response, 200, {
+      ...knownAnswer,
+      abstained: false,
+    });
+  }
+
+  const conversationalAnswer = smallTalkReply(message);
+  if (conversationalAnswer) {
+    return sendJson(response, 200, {
+      answer: conversationalAnswer,
+      sources: [],
+      abstained: false,
+    });
+  }
+
   try {
     const history = normalizeHistory(body.history);
     const query = retrievalQuery(message, history);
@@ -246,7 +346,7 @@ module.exports = async function chatHandler(request, response) {
     });
     return sendJson(response, 503, {
       error: "chat_unavailable",
-      message: "No he podido conectar 🤍. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.",
+      message: "No he podido conectar. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.",
     });
   }
 };
@@ -254,6 +354,8 @@ module.exports = async function chatHandler(request, response) {
 module.exports._internals = {
   fallbackLanguage,
   normalizeHistory,
+  knownFactReply,
   publicSources,
   retrievalQuery,
+  smallTalkReply,
 };

@@ -234,6 +234,11 @@
     font-weight: 600;
 }
 
+body.has-chat-widget .cookie-consent__manage {
+    right: auto;
+    left: 1rem;
+}
+
 @media (max-width: 700px) {
     .cookie-consent {
         inset: auto .65rem .65rem;
@@ -258,6 +263,10 @@
 
     .cookie-consent__panel {
         padding: 1.15rem;
+    }
+
+    body.has-chat-widget .cookie-consent__manage {
+        left: .65rem;
     }
 }
 
