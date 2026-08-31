@@ -76,8 +76,8 @@ test.describe('controles flotantes en móvil', () => {
     expect(await page.evaluate(() => JSON.parse(window.localStorage.getItem('lar-de-vies-cookie-consent-v1')).analytics)).toBe(true);
   });
 
-  test('el chatbot usa un icono accesible hasta 767 px y recupera el texto a 768 px', async ({ page }) => {
-    for (const width of mobileWidths) {
+  test('el chatbot usa un icono accesible en móvil y escritorio', async ({ page }) => {
+    for (const width of [...mobileWidths, 768, 1440]) {
       await page.setViewportSize({ width, height: 812 });
       await page.goto('/');
 
@@ -99,11 +99,5 @@ test.describe('controles flotantes en móvil', () => {
       expect(size.height).toBe(52);
       expect(size.labelClip).toBe('inset(50%)');
     }
-
-    await page.setViewportSize({ width: 768, height: 812 });
-    await page.goto('/');
-    const desktopTrigger = page.getByRole('button', { name: 'Pregúntanos' });
-    await expect(desktopTrigger.locator('span')).toBeVisible();
-    expect((await desktopTrigger.boundingBox()).width).toBeGreaterThan(52);
   });
 });
