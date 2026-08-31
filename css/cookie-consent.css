@@ -2,8 +2,16 @@
     position: fixed;
     z-index: 80;
     inset: auto 1rem 1rem;
+    max-width: calc(100vw - 2rem);
     color: #f7f5ef;
     font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.cookie-consent,
+.cookie-consent *,
+.cookie-consent *::before,
+.cookie-consent *::after {
+    box-sizing: border-box;
 }
 
 .cookie-consent[hidden],
@@ -14,6 +22,7 @@
 .cookie-consent__banner,
 .cookie-consent__panel {
     width: min(100%, 72rem);
+    max-width: 100%;
     margin: 0 auto;
     border: 1px solid rgba(229, 220, 207, .22);
     border-radius: 1rem;
@@ -31,6 +40,7 @@
 }
 
 .cookie-consent__copy {
+    min-width: 0;
     max-width: 52rem;
 }
 
@@ -53,20 +63,24 @@
     color: #d6d3d1;
     font-size: .78rem;
     line-height: 1.55;
+    overflow-wrap: anywhere;
 }
 
 .cookie-consent__link {
     display: inline-block;
+    max-width: 100%;
     margin-top: .45rem;
     color: #e7d6b5;
     font-size: .75rem;
     text-decoration: underline;
     text-underline-offset: .2em;
+    overflow-wrap: anywhere;
 }
 
 .cookie-consent__actions,
 .cookie-consent__panel-actions {
     display: flex;
+    min-width: 0;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
@@ -75,6 +89,7 @@
 }
 
 .cookie-consent__button {
+    max-width: 100%;
     min-height: 2.65rem;
     border: 1px solid transparent;
     border-radius: 999px;
@@ -82,6 +97,7 @@
     font-size: .7rem;
     font-weight: 600;
     letter-spacing: .04em;
+    white-space: normal;
     transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
 }
 
@@ -122,8 +138,11 @@
 
 .cookie-consent__panel {
     max-width: 34rem;
+    max-height: calc(100dvh - 2rem);
     margin-left: auto;
     padding: 1.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .cookie-consent__panel-head {
@@ -155,12 +174,17 @@
 
 .cookie-consent__category {
     display: flex;
+    min-width: 0;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     margin-top: 1rem;
     padding: 1rem 0;
     border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+.cookie-consent__category > :first-child {
+    min-width: 0;
 }
 
 .cookie-consent__category-title,
@@ -239,34 +263,71 @@ body.has-chat-widget .cookie-consent__manage {
     left: 1rem;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 767px) {
     .cookie-consent {
         inset: auto .65rem .65rem;
+        max-width: calc(100vw - 1.3rem);
     }
 
     .cookie-consent__banner {
+        max-height: calc(100dvh - 1.3rem);
         align-items: stretch;
         flex-direction: column;
         gap: 1rem;
         padding: 1.15rem;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
     .cookie-consent__actions,
     .cookie-consent__panel-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         justify-content: stretch;
     }
 
     .cookie-consent__actions .cookie-consent__button,
     .cookie-consent__panel-actions .cookie-consent__button {
-        flex: 1 1 auto;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .cookie-consent__actions .cookie-consent__button:last-child,
+    .cookie-consent__panel-actions .cookie-consent__button:last-child {
+        grid-column: 1 / -1;
     }
 
     .cookie-consent__panel {
+        width: 100%;
+        max-height: calc(100dvh - 1.3rem);
         padding: 1.15rem;
     }
 
     body.has-chat-widget .cookie-consent__manage {
         left: .65rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .cookie-consent__category {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .cookie-consent__category:not(.cookie-consent__category--toggle) .cookie-consent__status {
+        width: 100%;
+    }
+}
+
+@media (max-width: 340px) {
+    .cookie-consent__actions,
+    .cookie-consent__panel-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cookie-consent__actions .cookie-consent__button:last-child,
+    .cookie-consent__panel-actions .cookie-consent__button:last-child {
+        grid-column: auto;
     }
 }
 

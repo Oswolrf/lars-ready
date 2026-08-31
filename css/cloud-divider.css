@@ -25,6 +25,7 @@
     right: 0;
     top: clamp(-8.5rem, -13vw, -6rem);
     height: clamp(11rem, 26vw, 17rem);
+    overflow: hidden;
     transform: translate3d(0, var(--cloud-shift), 0);
 }
 
