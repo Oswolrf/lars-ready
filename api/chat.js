@@ -93,7 +93,7 @@ function normalizeSmallTalk(message) {
 
 function explicitProperty(value) {
   const normalized = normalizeSmallTalk(String(value || ""));
-  const mentionsRuralPrado = /\brural prado\b/.test(normalized);
+  const mentionsRuralPrado = /\brural (?:el )?prado\b/.test(normalized);
   const mentionsLarDeVies = /\blar de vies\b/.test(normalized);
   if (mentionsRuralPrado === mentionsLarDeVies) return null;
   return mentionsRuralPrado ? "Rural Prado" : "Lar de Víes";

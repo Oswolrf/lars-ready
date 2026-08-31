@@ -92,5 +92,6 @@ test("no atribuye a Rural Prado el desayuno de Lar de Víes", () => {
   assert.equal(handler._internals.knownFactReply("¿El desayuno está incluido?", "Rural Prado"), null);
   assert.equal(handler._internals.conversationProperty("¿El desayuno está incluido?", [], "/rural-prado/"), "Rural Prado");
   assert.equal(handler._internals.conversationProperty("¿Y Rural Prado ofrece desayuno?", [], "/"), "Rural Prado");
+  assert.equal(handler._internals.conversationProperty("Háblame de Rural el Prado", [], "/"), "Rural Prado");
   assert.match(handler._internals.retrievalQuery("¿Hay wifi?", [], "Rural Prado"), /^Establecimiento: Rural Prado/);
 });
