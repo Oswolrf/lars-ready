@@ -31,11 +31,11 @@
 
     const init = () => {
         if (document.querySelector('[data-cookie-consent]')) return;
+        if (readConsent()) return;
 
         const root = document.createElement('aside');
         root.className = 'cookie-consent';
         root.dataset.cookieConsent = '';
-        const hasConsent = Boolean(readConsent());
         root.hidden = false;
         root.innerHTML = `
             <div class="cookie-consent__banner" role="dialog" aria-modal="false" aria-labelledby="cookie-consent-title" aria-describedby="cookie-consent-description">
@@ -78,27 +78,19 @@
                     <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-save>Guardar preferencias</button>
                 </div>
             </div>
-            <button type="button" class="cookie-consent__manage" data-cookie-open hidden>Cookies</button>
         `;
         document.body.append(root);
 
         const banner = root.querySelector('.cookie-consent__banner');
         const panel = root.querySelector('[data-cookie-panel]');
         const analytics = root.querySelector('[data-cookie-analytics]');
-        const manage = root.querySelector('[data-cookie-open]');
-        banner.hidden = hasConsent;
-        manage.hidden = !hasConsent;
         const closePanel = () => {
             panel.hidden = true;
             banner.hidden = false;
-            manage.hidden = true;
         };
         const finish = (analyticsEnabled) => {
             saveConsent(analyticsEnabled);
-            root.hidden = false;
-            banner.hidden = true;
-            panel.hidden = true;
-            manage.hidden = false;
+            root.remove();
         };
         const openSettings = () => {
             const consent = readConsent();
@@ -106,7 +98,6 @@
             root.hidden = false;
             banner.hidden = true;
             panel.hidden = false;
-            manage.hidden = true;
             panel.querySelector('[data-cookie-close]')?.focus();
         };
 
@@ -115,7 +106,6 @@
         root.querySelector('[data-cookie-settings]')?.addEventListener('click', openSettings);
         root.querySelector('[data-cookie-save]')?.addEventListener('click', () => finish(analytics.checked));
         root.querySelector('[data-cookie-close]')?.addEventListener('click', closePanel);
-        manage.addEventListener('click', openSettings);
 
     };
 

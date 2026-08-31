@@ -50,24 +50,13 @@ test.describe('chatbot RAG', () => {
     expect(box.y + box.height).toBeLessThanOrEqual(812);
   });
 
-  test('separa los accesos de cookies y del chat', async ({ page }) => {
+  test('retira el aviso de cookies y mantiene accesible el chat', async ({ page }) => {
     await page.goto('/');
     await dismissCookieBanner(page);
 
-    const cookieButton = page.getByRole('button', { name: 'Cookies' });
     const chatButton = page.getByRole('button', { name: 'Pregúntanos' });
-    await expect(cookieButton).toBeVisible();
+    await expect(page.locator('[data-cookie-consent]')).toHaveCount(0);
     await expect(chatButton).toBeVisible();
-
-    const cookieBox = await cookieButton.boundingBox();
-    const chatBox = await chatButton.boundingBox();
-    expect(cookieBox).not.toBeNull();
-    expect(chatBox).not.toBeNull();
-    const overlap = cookieBox.x < chatBox.x + chatBox.width
-      && cookieBox.x + cookieBox.width > chatBox.x
-      && cookieBox.y < chatBox.y + chatBox.height
-      && cookieBox.y + cookieBox.height > chatBox.y;
-    expect(overlap).toBe(false);
   });
 
   test('conserva la conversación y el estado abierto al cambiar de página', async ({ page }) => {

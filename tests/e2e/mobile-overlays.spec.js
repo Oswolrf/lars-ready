@@ -60,16 +60,19 @@ test.describe('controles flotantes en móvil', () => {
     const panel = page.locator('[data-cookie-panel]');
     await panel.getByRole('checkbox', { name: 'Cookies de análisis' }).check();
     await panel.getByRole('button', { name: 'Guardar preferencias' }).click();
-    await expect(page.getByRole('button', { name: 'Cookies' })).toBeVisible();
+    await expect(page.locator('[data-cookie-consent]')).toHaveCount(0);
     expect(await page.evaluate(() => JSON.parse(window.localStorage.getItem('lar-de-vies-cookie-consent-v1')).analytics)).toBe(true);
 
-    await page.getByRole('button', { name: 'Cookies' }).click();
-    await panel.getByRole('button', { name: 'Rechazar opcionales' }).click();
+    await page.evaluate(() => window.localStorage.removeItem('lar-de-vies-cookie-consent-v1'));
+    await page.reload();
+    await page.locator('.cookie-consent__banner').getByRole('button', { name: 'Rechazar opcionales' }).click();
+    await expect(page.locator('[data-cookie-consent]')).toHaveCount(0);
     expect(await page.evaluate(() => JSON.parse(window.localStorage.getItem('lar-de-vies-cookie-consent-v1')).analytics)).toBe(false);
 
     await page.evaluate(() => window.localStorage.removeItem('lar-de-vies-cookie-consent-v1'));
     await page.reload();
     await page.locator('.cookie-consent__banner').getByRole('button', { name: 'Aceptar todas' }).click();
+    await expect(page.locator('[data-cookie-consent]')).toHaveCount(0);
     expect(await page.evaluate(() => JSON.parse(window.localStorage.getItem('lar-de-vies-cookie-consent-v1')).analytics)).toBe(true);
   });
 
