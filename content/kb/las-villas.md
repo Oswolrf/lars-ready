@@ -4,7 +4,7 @@ titulo: Las Villas
 url: /las-villas-casitas-independientes/
 entidad: lar-de-vies
 tipo: alojamiento
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [villas, independientes, cocina equipada, jardín privado, porche]
 ---
 

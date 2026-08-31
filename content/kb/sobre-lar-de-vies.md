@@ -4,7 +4,7 @@ titulo: Sobre Lar de Víes
 url: /sobre-nosotros/
 entidad: lar-de-vies
 tipo: servicio
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [qué es, alojamiento rural, Neipín, A Pontenova, experiencia, animales, cerveza]
 ---
 

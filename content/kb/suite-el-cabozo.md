@@ -5,7 +5,7 @@ url: /suite-el-cabozo/
 entidad: lar-de-vies
 tipo: alojamiento
 capacidad: 3
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [suite, abuhardillada, vestidor, vistas al valle, madera restaurada]
 ---
 

@@ -4,7 +4,7 @@ titulo: Ubicación y entorno
 url: /el-entorno/
 entidad: lar-de-vies
 tipo: entorno
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [Neipín, A Pontenova, As Catedrais, Taramundi, Ribadeo, rutas, playas, servicios]
 ---
 

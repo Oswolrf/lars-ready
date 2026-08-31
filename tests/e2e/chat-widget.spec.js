@@ -16,7 +16,7 @@ test.describe('chatbot RAG', () => {
 
     await trigger.click();
     await expect(page.getByRole('dialog', { name: '¿En qué podemos ayudarte?' })).toBeVisible();
-    await expect(page.getByText('Soy el asistente virtual de Lar de Víes, basado en inteligencia artificial.')).toBeVisible();
+    await expect(page.getByText('Soy el asistente virtual de Lar de Víes y Rural Prado, basado en inteligencia artificial.')).toBeVisible();
     const panel = page.locator('[data-chat-panel]');
     const panelBox = await panel.boundingBox();
     expect(panelBox).not.toBeNull();
@@ -71,7 +71,9 @@ test.describe('chatbot RAG', () => {
   });
 
   test('conserva la conversación y el estado abierto al cambiar de página', async ({ page }) => {
+    let requestBody;
     await page.route('**/api/chat', async (route) => {
+      requestBody = route.request().postDataJSON();
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -88,6 +90,7 @@ test.describe('chatbot RAG', () => {
     await page.getByLabel('Escribe tu pregunta').fill('¿Hay cenas?');
     await page.getByRole('button', { name: 'Enviar pregunta' }).click();
     await expect(page.getByText('Sí, ofrecemos cenas determinados días y según disponibilidad.')).toBeVisible();
+    expect(requestBody.page).toBe('/');
 
     await page.goto('/la-casona/');
 

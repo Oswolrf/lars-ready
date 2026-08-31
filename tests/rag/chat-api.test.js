@@ -4,10 +4,10 @@ const assert = require("node:assert/strict");
 const test = require("node:test");
 const handler = require("../../api/chat.js");
 
-function requestFor(message) {
+function requestFor(message, page = "/") {
   return {
     method: "POST",
-    body: { message, history: [] },
+    body: { message, history: [], page },
     headers: {},
     socket: { remoteAddress: `test-${message}` },
   };
@@ -59,7 +59,7 @@ test("responde a un saludo sin consultar el flujo RAG", async () => {
 
   assert.equal(response.statusCode, 200);
   assert.deepEqual(JSON.parse(response.body), {
-    answer: "¡Hola! ¿En qué puedo ayudarte? Puedes preguntarme por los alojamientos, la estancia, la gastronomía o el entorno de Lar de Víes.",
+    answer: "¡Hola! ¿En qué puedo ayudarte? Puedes preguntarme por Lar de Víes, Rural Prado, sus alojamientos o el entorno.",
     sources: [],
     abstained: false,
   });
@@ -84,6 +84,13 @@ test("responde si el desayuno se paga aparte sin depender del índice RAG", asyn
 });
 
 test("mantiene las preguntas sobre el horario del desayuno en el flujo RAG", () => {
-  assert.equal(handler._internals.knownFactReply("¿A qué hora se sirve el desayuno?"), null);
-  assert.match(handler._internals.knownFactReply("Is breakfast included?").answer, /room-only rates/);
+  assert.equal(handler._internals.knownFactReply("¿A qué hora se sirve el desayuno?", "Lar de Víes"), null);
+  assert.match(handler._internals.knownFactReply("Is breakfast included?", "Lar de Víes").answer, /room-only rates/);
+});
+
+test("no atribuye a Rural Prado el desayuno de Lar de Víes", () => {
+  assert.equal(handler._internals.knownFactReply("¿El desayuno está incluido?", "Rural Prado"), null);
+  assert.equal(handler._internals.conversationProperty("¿El desayuno está incluido?", [], "/rural-prado/"), "Rural Prado");
+  assert.equal(handler._internals.conversationProperty("¿Y Rural Prado ofrece desayuno?", [], "/"), "Rural Prado");
+  assert.match(handler._internals.retrievalQuery("¿Hay wifi?", [], "Rural Prado"), /^Establecimiento: Rural Prado/);
 });

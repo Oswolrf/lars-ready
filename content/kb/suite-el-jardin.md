@@ -5,7 +5,7 @@ url: /suite-el-jardin/
 entidad: lar-de-vies
 tipo: alojamiento
 capacidad: 4
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [suite, planta baja, adaptada, accesible, acceso al jardín, hórreo]
 ---
 

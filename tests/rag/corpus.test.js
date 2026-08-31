@@ -19,13 +19,30 @@ test("carga todo el corpus con rutas válidas y chunks autocontenidos", () => {
   const root = path.resolve(__dirname, "../..");
   const validRoutes = new Set(siteConfig.pages.map((page) => page.route));
   const corpus = loadCorpus({ root, validRoutes });
-  assert.equal(corpus.files.length, 17);
-  assert.ok(corpus.chunks.length >= 70);
+  assert.equal(corpus.files.length, 18);
+  assert.ok(corpus.chunks.length >= 80);
   assert.equal(new Set(corpus.chunks.map((chunk) => chunk.id)).size, corpus.chunks.length);
   for (const chunk of corpus.chunks) {
-    assert.ok(chunk.content.includes("Lar de Víes"));
+    const propertyName = chunk.entity === "rural-prado" ? "Rural Prado" : "Lar de Víes";
+    assert.ok(chunk.content.includes(propertyName));
     assert.ok(chunk.section.length > 0);
   }
+});
+
+test("mantiene Rural Prado separado de Lar de Víes", () => {
+  const root = path.resolve(__dirname, "../..");
+  const validRoutes = new Set(siteConfig.pages.map((page) => page.route));
+  const corpus = loadCorpus({ root, validRoutes });
+  const ruralChunks = corpus.chunks.filter((chunk) => chunk.doc_id === "rural-prado");
+
+  assert.ok(ruralChunks.length >= 10);
+  assert.ok(ruralChunks.every((chunk) => chunk.entity === "rural-prado"));
+  assert.ok(ruralChunks.every((chunk) => chunk.source_url === "/rural-prado/"));
+  assert.ok(ruralChunks.every((chunk) => chunk.content.includes("Rural Prado (San Tirso de Abres, Asturias)")));
+  assert.ok(ruralChunks.every((chunk) => !chunk.content.includes("A Pontenova, Lugo")));
+  assert.ok(ruralChunks.some((chunk) => chunk.id === "rural-prado#apartamento-salgueiro"));
+  assert.ok(ruralChunks.every((chunk) => !chunk.content.includes("Ático de Prado")));
+  assert.match(ruralChunks.find((chunk) => chunk.id === "rural-prado#informacion-no-confirmada").content, /Servicio de desayunos o cenas/);
 });
 
 test("documenta las tarifas con y sin desayuno de forma recuperable", () => {

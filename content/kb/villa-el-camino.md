@@ -5,7 +5,7 @@ url: /villa-el-camino/
 entidad: lar-de-vies
 tipo: alojamiento
 capacidad: 5
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [villa, chimenea, dos plantas, cocina equipada, sofá cama, jardín privado]
 ---
 

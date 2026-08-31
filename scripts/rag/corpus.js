@@ -75,6 +75,9 @@ function splitOversizedSection(text) {
 }
 
 function documentHeader(metadata, section) {
+  if (metadata.entidad === "rural-prado") {
+    return `${metadata.titulo} — Rural Prado (San Tirso de Abres, Asturias) · ${section}`;
+  }
   const context = metadata.tipo === "alojamiento"
     ? `${metadata.titulo} — Lar de Víes (A Pontenova, Lugo)`
     : `${metadata.titulo} — Lar de Víes`;

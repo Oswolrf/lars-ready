@@ -12,7 +12,9 @@
     const sendButton = widget.querySelector('[data-chat-send]');
     const status = widget.querySelector('[data-chat-status]');
     const endpoint = widget.dataset.chatEndpoint || '/api/chat';
-    const sessionKey = 'lar-de-vies-chat-session-v1';
+    const pageContext = window.location.pathname;
+    const isRuralPradoPage = /^\/rural-prado\/?$/i.test(pageContext);
+    const sessionKey = 'lar-de-vies-chat-session-v2';
     const maxTranscriptMessages = 16;
     const maxHistoryMessages = 6;
 
@@ -164,7 +166,10 @@
         suggestions.hidden = true;
         setBusy(true);
 
-        const pending = addMessage('assistant', 'Estoy consultando la información de Lar de Víes…', [], { record: false, persist: false });
+        const pendingLabel = isRuralPradoPage
+            ? 'Estoy consultando la información de Rural Prado…'
+            : 'Estoy consultando la información de nuestros alojamientos…';
+        const pending = addMessage('assistant', pendingLabel, [], { record: false, persist: false });
         pending.classList.add('chat-widget__message--pending');
         const controller = new AbortController();
         const timeout = window.setTimeout(() => controller.abort(), 35000);
@@ -173,7 +178,7 @@
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message, history: previousHistory }),
+                body: JSON.stringify({ message, history: previousHistory, page: pageContext }),
                 signal: controller.signal,
             });
             const payload = await response.json().catch(() => ({}));

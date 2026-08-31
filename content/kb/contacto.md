@@ -3,7 +3,7 @@ id: contacto
 titulo: Contacto
 entidad: lar-de-vies
 tipo: contacto
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [email, teléfono, contactar, escribir, atención]
 ---
 

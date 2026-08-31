@@ -4,7 +4,7 @@ titulo: La Casona
 url: /la-casona/
 entidad: lar-de-vies
 tipo: alojamiento
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [casona, suites, sin cocina, zonas comunes]
 ---
 

@@ -3,7 +3,7 @@ id: estancia
 titulo: La estancia en Lar de Víes
 entidad: lar-de-vies
 tipo: politica
-actualizado: 2026-08-28
+actualizado: 2026-08-31
 tags: [check-in, check-out, mascotas, niños, familias, fumar, accesibilidad, cunas]
 ---
 
