@@ -1,3 +1,5 @@
+import { t } from './i18n.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightbox-img');
@@ -42,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryImages.forEach((src, index) => {
             const button = document.createElement('button');
             button.type = 'button';
-            button.setAttribute('aria-label', `Ver imagen ${index + 1}`);
+            button.setAttribute('aria-label', t('Ver imagen {number}', { number: index + 1 }));
             button.setAttribute('aria-current', String(index === currentGalleryIndex));
 
             const thumbnail = document.createElement('img');

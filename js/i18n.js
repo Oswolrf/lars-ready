@@ -1,0 +1,122 @@
+const messages = {
+    en: {
+        'Más información': 'More information',
+        'Preparando respuesta': 'Preparing response',
+        'Estoy consultando la información de Rural Prado…': 'I am checking Rural Prado information…',
+        'Estoy consultando la información de nuestros alojamientos…': 'I am checking our accommodation information…',
+        'No he podido conectar. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.': 'I could not connect. Please try again in a moment or email us at reservas@lardevies.com.',
+        'No se ha podido obtener una respuesta': 'A response could not be obtained',
+        'carrusel': 'carousel',
+        'diapositiva': 'slide',
+        '{current} de {total}': '{current} of {total}',
+        'Ver imagen {number}': 'View image {number}',
+        'Ver imagen {number} de {title}': 'View image {number} of {title}',
+        'Galería de {title}': '{title} gallery',
+        'Seleccionar imagen': 'Select image',
+        'Imagen anterior': 'Previous image',
+        'Imagen siguiente': 'Next image',
+        'Abrir menú': 'Open menu',
+        'Cerrar menú': 'Close menu',
+        'Llamar al {phone}': 'Call {phone}',
+        'Introduce una dirección de correo válida.': 'Enter a valid email address.',
+        'Debes aceptar el envío de la newsletter.': 'You must consent to receiving the newsletter.',
+        'Te hemos enviado un correo para confirmar tu suscripción. Revisa tu bandeja de entrada y, si no lo encuentras, la carpeta de spam.': 'We have sent you an email to confirm your subscription. Check your inbox and, if you cannot find it, your spam folder.',
+        'La solicitud está tardando demasiado. Comprueba tu conexión e inténtalo de nuevo.': 'The request is taking too long. Check your connection and try again.',
+        'No hemos podido cargar el servicio de suscripción. Comprueba tu conexión e inténtalo de nuevo.': 'We could not load the subscription service. Check your connection and try again.',
+        'Tu privacidad importa': 'Your privacy matters',
+        'Usamos cookies técnicas necesarias para que la web funcione y recordar tus preferencias. Las cookies de análisis son opcionales y no se activan sin tu permiso.': 'We use essential technical cookies to make the website work and remember your preferences. Analytics cookies are optional and are not enabled without your permission.',
+        'Más información en la política de privacidad': 'More information in the privacy policy',
+        'Rechazar opcionales': 'Reject optional cookies',
+        'Configurar': 'Settings',
+        'Aceptar todas': 'Accept all',
+        'Preferencias': 'Preferences',
+        'Gestionar cookies': 'Manage cookies',
+        'Cerrar preferencias': 'Close preferences',
+        'Puedes cambiar estas preferencias en cualquier momento. Las cookies necesarias no se pueden desactivar porque son imprescindibles para el funcionamiento de la web.': 'You can change these preferences at any time. Essential cookies cannot be disabled because they are required for the website to work.',
+        'Cookies necesarias': 'Essential cookies',
+        'Permiten navegar, reservar y guardar tu elección de cookies.': 'They let you browse, book and save your cookie choices.',
+        'Siempre activas': 'Always active',
+        'Cookies de análisis': 'Analytics cookies',
+        'Nos ayudan a entender cómo se utiliza la web para mejorarla.': 'They help us understand how the website is used so we can improve it.',
+        'Guardar preferencias': 'Save preferences',
+        'Contacto': 'Contact',
+        'Estancia': 'Your stay',
+        'Gastronomía': 'Food and dining',
+        'La Casona': 'The Manor House',
+        'Las Villas': 'Private Villas',
+        'Reservas y cancelación': 'Bookings and cancellation',
+        'Servicios': 'Services',
+        'Sobre Lar de Víes': 'About Lar de Víes',
+        'Ubicación y entorno': 'Location and surroundings',
+    },
+    de: {
+        'Más información': 'Mehr erfahren',
+        'Preparando respuesta': 'Antwort wird vorbereitet',
+        'Estoy consultando la información de Rural Prado…': 'Ich prüfe die Informationen zu Rural Prado…',
+        'Estoy consultando la información de nuestros alojamientos…': 'Ich prüfe die Informationen zu unseren Unterkünften…',
+        'No he podido conectar. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.': 'Die Verbindung konnte nicht hergestellt werden. Versuchen Sie es gleich noch einmal oder schreiben Sie uns an reservas@lardevies.com.',
+        'No se ha podido obtener una respuesta': 'Es konnte keine Antwort abgerufen werden',
+        'carrusel': 'Karussell',
+        'diapositiva': 'Folie',
+        '{current} de {total}': '{current} von {total}',
+        'Ver imagen {number}': 'Bild {number} ansehen',
+        'Ver imagen {number} de {title}': 'Bild {number} von {title} ansehen',
+        'Galería de {title}': 'Galerie von {title}',
+        'Seleccionar imagen': 'Bild auswählen',
+        'Imagen anterior': 'Vorheriges Bild',
+        'Imagen siguiente': 'Nächstes Bild',
+        'Abrir menú': 'Menü öffnen',
+        'Cerrar menú': 'Menü schließen',
+        'Llamar al {phone}': '{phone} anrufen',
+        'Introduce una dirección de correo válida.': 'Geben Sie eine gültige E-Mail-Adresse ein.',
+        'Debes aceptar el envío de la newsletter.': 'Sie müssen dem Erhalt des Newsletters zustimmen.',
+        'Te hemos enviado un correo para confirmar tu suscripción. Revisa tu bandeja de entrada y, si no lo encuentras, la carpeta de spam.': 'Wir haben Ihnen eine E-Mail zur Bestätigung Ihres Abonnements gesendet. Prüfen Sie Ihren Posteingang und gegebenenfalls den Spam-Ordner.',
+        'La solicitud está tardando demasiado. Comprueba tu conexión e inténtalo de nuevo.': 'Die Anfrage dauert zu lange. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
+        'No hemos podido cargar el servicio de suscripción. Comprueba tu conexión e inténtalo de nuevo.': 'Der Newsletter-Dienst konnte nicht geladen werden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
+        'Tu privacidad importa': 'Ihre Privatsphäre ist wichtig',
+        'Usamos cookies técnicas necesarias para que la web funcione y recordar tus preferencias. Las cookies de análisis son opcionales y no se activan sin tu permiso.': 'Wir verwenden technisch notwendige Cookies, damit die Website funktioniert und Ihre Einstellungen gespeichert werden. Analyse-Cookies sind optional und werden ohne Ihre Einwilligung nicht aktiviert.',
+        'Más información en la política de privacidad': 'Weitere Informationen in der Datenschutzerklärung',
+        'Rechazar opcionales': 'Optionale Cookies ablehnen',
+        'Configurar': 'Einstellungen',
+        'Aceptar todas': 'Alle akzeptieren',
+        'Preferencias': 'Einstellungen',
+        'Gestionar cookies': 'Cookies verwalten',
+        'Cerrar preferencias': 'Einstellungen schließen',
+        'Puedes cambiar estas preferencias en cualquier momento. Las cookies necesarias no se pueden desactivar porque son imprescindibles para el funcionamiento de la web.': 'Sie können diese Einstellungen jederzeit ändern. Notwendige Cookies können nicht deaktiviert werden, da sie für den Betrieb der Website erforderlich sind.',
+        'Cookies necesarias': 'Notwendige Cookies',
+        'Permiten navegar, reservar y guardar tu elección de cookies.': 'Sie ermöglichen Navigation, Buchungen und das Speichern Ihrer Cookie-Auswahl.',
+        'Siempre activas': 'Immer aktiv',
+        'Cookies de análisis': 'Analyse-Cookies',
+        'Nos ayudan a entender cómo se utiliza la web para mejorarla.': 'Sie helfen uns zu verstehen, wie die Website genutzt wird, damit wir sie verbessern können.',
+        'Guardar preferencias': 'Einstellungen speichern',
+        'Contacto': 'Kontakt',
+        'Estancia': 'Ihr Aufenthalt',
+        'Gastronomía': 'Gastronomie',
+        'La Casona': 'Das Herrenhaus',
+        'Las Villas': 'Private Villen',
+        'Reservas y cancelación': 'Buchung und Stornierung',
+        'Servicios': 'Serviceleistungen',
+        'Sobre Lar de Víes': 'Über Lar de Víes',
+        'Ubicación y entorno': 'Lage und Umgebung',
+    },
+};
+
+export function getLocale() {
+    const locale = document.documentElement.lang.toLowerCase().split('-')[0];
+    return locale === 'en' || locale === 'de' ? locale : 'es';
+}
+
+export function t(key, variables = {}) {
+    const template = messages[getLocale()]?.[key] || key;
+    return Object.entries(variables).reduce(
+        (value, [name, replacement]) => value.replaceAll(`{${name}}`, String(replacement)),
+        template
+    );
+}
+
+export function localePath(route) {
+    const locale = getLocale();
+    if (locale === 'es') return route;
+    const pathname = route.startsWith('/') ? route : `/${route}`;
+    return `/${locale}${pathname}`;
+}

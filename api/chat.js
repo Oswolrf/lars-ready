@@ -4,33 +4,39 @@ const crypto = require("node:crypto");
 
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_HISTORY_MESSAGES = 6;
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const MAX_REQUEST_BODY_BYTES = 16 * 1024;
+const MAX_HISTORY_TOKEN_LENGTH = 128;
+const RATE_LIMIT_WINDOW_SECONDS = 10 * 60;
 const RATE_LIMIT_REQUESTS = 20;
-const rateLimitBuckets = new Map();
 
 const FALLBACKS = {
   es: "No tengo esa información confirmada. Puedes escribirnos a reservas@lardevies.com o llamarnos al +34 678 655 303 y te ayudaremos encantados.",
   en: "I don't have confirmed information about that. You can email us at reservas@lardevies.com or call +34 678 655 303 and we will be happy to help.",
+  de: "Dazu liegen mir keine bestätigten Informationen vor. Schreiben Sie uns an reservas@lardevies.com oder rufen Sie uns unter +34 678 655 303 an; wir helfen Ihnen gerne weiter.",
 };
 
 const SMALL_TALK_REPLIES = {
   greeting: {
     es: "¡Hola! ¿En qué puedo ayudarte? Puedes preguntarme por Lar de Víes, Rural Prado, sus alojamientos o el entorno.",
     en: "Hello! How can I help? You can ask me about Lar de Víes, Rural Prado, their accommodation or the surrounding area.",
+    de: "Hallo! Wie kann ich Ihnen helfen? Sie können mich zu Lar de Víes, Rural Prado, den Unterkünften oder der Umgebung fragen.",
   },
   thanks: {
     es: "¡Gracias a ti! Si necesitas algo más sobre Lar de Víes o Rural Prado, aquí estoy para ayudarte.",
     en: "You're welcome! If you need anything else about Lar de Víes or Rural Prado, I'm here to help.",
+    de: "Sehr gerne! Wenn Sie noch etwas zu Lar de Víes oder Rural Prado wissen möchten, helfe ich Ihnen gerne weiter.",
   },
   farewell: {
     es: "¡Hasta pronto! Estaré aquí si necesitas resolver cualquier otra duda sobre Lar de Víes o Rural Prado.",
     en: "See you soon! I'll be here if you have any other questions about Lar de Víes or Rural Prado.",
+    de: "Bis bald! Bei weiteren Fragen zu Lar de Víes oder Rural Prado bin ich gerne für Sie da.",
   },
 };
 
 const BREAKFAST_RATE_REPLIES = {
   es: "Depende de la tarifa que elijas. El motor de reservas ofrece tarifas de solo alojamiento y tarifas con desayuno incluido; revisa el nombre y las condiciones de la tarifa antes de confirmar.",
   en: "It depends on the rate you choose. The booking engine offers room-only rates and rates with breakfast included; check the rate name and conditions before confirming.",
+  de: "Das hängt vom gewählten Tarif ab. Das Buchungssystem bietet Tarife nur für die Unterkunft sowie Tarife inklusive Frühstück an; prüfen Sie vor der Bestätigung den Tarifnamen und die Bedingungen.",
 };
 
 const SYSTEM_PROMPT = `Eres el asistente virtual de Lar de Víes, en Neipín, A Pontenova (Lugo), y de Rural Prado, en San Tirso de Abres (Asturias).
@@ -65,6 +71,23 @@ function parseBody(request) {
   return {};
 }
 
+function bodyExceedsLimit(request) {
+  const declaredLength = Number(request.headers["content-length"]);
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_REQUEST_BODY_BYTES) return true;
+
+  try {
+    if (typeof request.body === "string") {
+      return Buffer.byteLength(request.body, "utf8") > MAX_REQUEST_BODY_BYTES;
+    }
+    if (request.body && typeof request.body === "object") {
+      return Buffer.byteLength(JSON.stringify(request.body), "utf8") > MAX_REQUEST_BODY_BYTES;
+    }
+  } catch (_error) {
+    return true;
+  }
+  return false;
+}
+
 function normalizeHistory(value) {
   if (!Array.isArray(value)) return [];
   return value.slice(-MAX_HISTORY_MESSAGES).flatMap((message) => {
@@ -76,9 +99,9 @@ function normalizeHistory(value) {
 
 function fallbackLanguage(message) {
   const normalized = ` ${message.toLowerCase()} `;
-  return /\b(the|is|are|do|does|can|with|room|stay|hello|hi|price|where|what|how)\b/.test(normalized)
-    ? "en"
-    : "es";
+  if (/\b(der|die|das|ist|sind|haben|mit|zimmer|aufenthalt|hallo|preis|wo|was|wie|frühstück|buchung)\b/.test(normalized)) return "de";
+  if (/\b(the|is|are|do|does|can|with|room|stay|hello|hi|price|where|what|how)\b/.test(normalized)) return "en";
+  return "es";
 }
 
 function normalizeSmallTalk(message) {
@@ -91,6 +114,36 @@ function normalizeSmallTalk(message) {
     .trim();
 }
 
+function canonicalHistory(history) {
+  return JSON.stringify(normalizeHistory(history));
+}
+
+function signHistory(history, secret) {
+  return crypto.createHmac("sha256", secret)
+    .update("chat-history:v1:")
+    .update(canonicalHistory(history))
+    .digest("base64url");
+}
+
+function verifyHistoryToken(history, token, secret) {
+  if (typeof token !== "string" || !token || token.length > MAX_HISTORY_TOKEN_LENGTH) return false;
+  const expected = Buffer.from(signHistory(history, secret), "utf8");
+  const received = Buffer.from(token, "utf8");
+  return expected.length === received.length && crypto.timingSafeEqual(expected, received);
+}
+
+function signedChatPayload(payload, history, message, secret) {
+  const nextHistory = normalizeHistory([
+    ...history,
+    { role: "user", content: message },
+    { role: "assistant", content: payload.answer },
+  ]);
+  return {
+    ...payload,
+    historyToken: signHistory(nextHistory, secret),
+  };
+}
+
 function explicitProperty(value) {
   const normalized = normalizeSmallTalk(String(value || ""));
   const mentionsRuralPrado = /\brural (?:el )?prado\b/.test(normalized);
@@ -100,7 +153,7 @@ function explicitProperty(value) {
 }
 
 function pageProperty(value) {
-  const pathname = String(value || "").trim().split(/[?#]/, 1)[0];
+  const pathname = String(value || "").trim().split(/[?#]/, 1)[0].replace(/^\/(?:en|de)(?=\/)/i, "");
   if (/^\/rural-prado\/?$/i.test(pathname)) return "Rural Prado";
   if (/^\/reservas\/?$/i.test(pathname) || !pathname.startsWith("/")) return null;
   return "Lar de Víes";
@@ -129,6 +182,11 @@ function smallTalkReply(message) {
       pattern: /^(?:hello|hi|hey|good morning|good afternoon|good evening|hello how are you|hi how are you)$/,
     },
     {
+      name: "greeting",
+      language: "de",
+      pattern: /^(?:hallo|guten morgen|guten tag|guten abend|hallo wie geht es dir|hallo wie geht es ihnen)$/,
+    },
+    {
       name: "thanks",
       language: "es",
       pattern: /^(?:gracias|muchas gracias|perfecto gracias|vale gracias)$/,
@@ -137,6 +195,11 @@ function smallTalkReply(message) {
       name: "thanks",
       language: "en",
       pattern: /^(?:thanks|thank you|thanks a lot|perfect thanks)$/,
+    },
+    {
+      name: "thanks",
+      language: "de",
+      pattern: /^(?:danke|vielen dank|besten dank|perfekt danke)$/,
     },
     {
       name: "farewell",
@@ -148,6 +211,11 @@ function smallTalkReply(message) {
       language: "en",
       pattern: /^(?:bye|goodbye|see you|see you soon)$/,
     },
+    {
+      name: "farewell",
+      language: "de",
+      pattern: /^(?:tschuss|auf wiedersehen|bis bald|bis spater)$/,
+    },
   ];
   const intent = intents.find(({ pattern }) => pattern.test(normalized));
   return intent ? SMALL_TALK_REPLIES[intent.name][intent.language] : null;
@@ -155,8 +223,8 @@ function smallTalkReply(message) {
 
 function knownFactReply(message, propertyContext) {
   const normalized = normalizeSmallTalk(message);
-  const mentionsBreakfast = /\b(?:desayuno|breakfast)\b/.test(normalized);
-  const asksAboutRate = /\b(?:incluido|incluida|incluye|entra|viene|paga|pagar|aparte|extra|suplemento|precio|coste|cuesta|tarifa|reserva|included|include|pay|paid|separate|extra|price|cost|rate|booking)\b/.test(normalized);
+  const mentionsBreakfast = /\b(?:desayuno|breakfast|fruhstuck)\b/.test(normalized);
+  const asksAboutRate = /\b(?:incluido|incluida|incluye|entra|viene|paga|pagar|aparte|extra|suplemento|precio|coste|cuesta|tarifa|reserva|included|include|pay|paid|separate|price|cost|rate|booking|inklusive|enthalten|zahlen|preis|tarif|buchung)\b/.test(normalized);
   if (!mentionsBreakfast || !asksAboutRate || propertyContext !== "Lar de Víes") return null;
 
   const language = fallbackLanguage(message);
@@ -166,21 +234,31 @@ function knownFactReply(message, propertyContext) {
   };
 }
 
-function requestIdentity(request) {
-  const forwarded = String(request.headers["x-forwarded-for"] || "").split(",")[0].trim();
+function requestIdentity(request, secret) {
+  const forwarded = String(
+    request.headers["x-vercel-forwarded-for"] || request.headers["x-forwarded-for"] || "",
+  ).split(",")[0].trim();
   const raw = forwarded || request.socket?.remoteAddress || "unknown";
-  return crypto.createHash("sha256").update(raw).digest("hex").slice(0, 24);
+  return crypto.createHmac("sha256", secret).update(`rate-limit:${raw}`).digest("hex").slice(0, 32);
 }
 
-function withinRateLimit(identity) {
-  const now = Date.now();
-  const bucket = rateLimitBuckets.get(identity);
-  if (!bucket || now - bucket.startedAt >= RATE_LIMIT_WINDOW_MS) {
-    rateLimitBuckets.set(identity, { startedAt: now, count: 1 });
-    return true;
-  }
-  bucket.count += 1;
-  return bucket.count <= RATE_LIMIT_REQUESTS;
+async function withinRateLimit(identity) {
+  const supabaseUrl = requiredBaseUrl("SUPABASE_URL");
+  const secretKey = requiredEnvironment("SUPABASE_SECRET_KEY");
+  const response = await fetch(`${supabaseUrl}/rest/v1/rpc/consume_chat_rate_limit`, {
+    method: "POST",
+    headers: supabaseHeaders(secretKey),
+    body: JSON.stringify({
+      p_identity_hash: identity,
+      p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
+      p_max_requests: RATE_LIMIT_REQUESTS,
+    }),
+    signal: AbortSignal.timeout(5000),
+  });
+  if (!response.ok) throw new Error(`supabase_rate_limit:${response.status}`);
+  const allowed = await response.json();
+  if (typeof allowed !== "boolean") throw new Error("supabase_rate_limit:invalid_response");
+  return allowed;
 }
 
 function isAllowedOrigin(request) {
@@ -204,22 +282,38 @@ function isAllowedOrigin(request) {
 function requiredEnvironment(name) {
   const value = process.env[name]?.trim();
   if (!value) throw new Error(`missing_environment:${name}`);
-  return value.replace(/\/$/, "");
+  return value;
 }
 
-async function retrieveDocuments({ query, embedding, propertyContext }) {
-  const supabaseUrl = requiredEnvironment("SUPABASE_URL");
-  const secretKey = requiredEnvironment("SUPABASE_SECRET_KEY");
+function requiredBaseUrl(name) {
+  return requiredEnvironment(name).replace(/\/+$/, "");
+}
+
+function historySigningSecret() {
+  const secret = requiredEnvironment("CHAT_HISTORY_SECRET");
+  if (Buffer.byteLength(secret, "utf8") < 32) {
+    throw new Error("weak_environment:CHAT_HISTORY_SECRET");
+  }
+  return secret;
+}
+
+function supabaseHeaders(secretKey) {
   const legacyAuthorization = secretKey.startsWith("eyJ")
     ? { Authorization: `Bearer ${secretKey}` }
     : {};
+  return {
+    apikey: secretKey,
+    "Content-Type": "application/json",
+    ...legacyAuthorization,
+  };
+}
+
+async function retrieveDocuments({ query, embedding, propertyContext }) {
+  const supabaseUrl = requiredBaseUrl("SUPABASE_URL");
+  const secretKey = requiredEnvironment("SUPABASE_SECRET_KEY");
   const response = await fetch(`${supabaseUrl}/rest/v1/rpc/match_rag_documents`, {
     method: "POST",
-    headers: {
-      apikey: secretKey,
-      "Content-Type": "application/json",
-      ...legacyAuthorization,
-    },
+    headers: supabaseHeaders(secretKey),
     body: JSON.stringify({
       p_query_text: query,
       p_query_embedding: embedding,
@@ -276,11 +370,8 @@ module.exports = async function chatHandler(request, response) {
     return sendJson(response, 405, { error: "method_not_allowed" });
   }
   if (!isAllowedOrigin(request)) return sendJson(response, 403, { error: "origin_not_allowed" });
-  if (!withinRateLimit(requestIdentity(request))) {
-    return sendJson(response, 429, {
-      error: "rate_limit",
-      message: "Has enviado muchos mensajes seguidos. Espera unos minutos e inténtalo de nuevo.",
-    });
+  if (bodyExceedsLimit(request)) {
+    return sendJson(response, 413, { error: "payload_too_large" });
   }
 
   let body;
@@ -298,22 +389,56 @@ module.exports = async function chatHandler(request, response) {
   }
 
   const history = normalizeHistory(body.history);
+  let signingSecret;
+  try {
+    signingSecret = historySigningSecret();
+  } catch (error) {
+    console.error("Chat security configuration error", {
+      code: error instanceof Error ? error.message.split(":", 1)[0] : "unknown",
+    });
+    return sendJson(response, 503, {
+      error: "chat_unavailable",
+      message: "No he podido conectar. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.",
+    });
+  }
+  if (history.length && !verifyHistoryToken(history, body.historyToken, signingSecret)) {
+    return sendJson(response, 400, { error: "invalid_history" });
+  }
+
+  try {
+    if (!await withinRateLimit(requestIdentity(request, signingSecret))) {
+      response.setHeader("Retry-After", String(RATE_LIMIT_WINDOW_SECONDS));
+      return sendJson(response, 429, {
+        error: "rate_limit",
+        message: "Has enviado muchos mensajes seguidos. Espera unos minutos e inténtalo de nuevo.",
+      });
+    }
+  } catch (error) {
+    console.error("Chat rate limit error", {
+      code: error instanceof Error ? error.message.split(":", 1)[0] : "unknown",
+    });
+    return sendJson(response, 503, {
+      error: "chat_unavailable",
+      message: "No he podido conectar. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.",
+    });
+  }
+
   const propertyContext = conversationProperty(message, history, body.page);
   const knownAnswer = knownFactReply(message, propertyContext);
   if (knownAnswer) {
-    return sendJson(response, 200, {
+    return sendJson(response, 200, signedChatPayload({
       ...knownAnswer,
       abstained: false,
-    });
+    }, history, message, signingSecret));
   }
 
   const conversationalAnswer = smallTalkReply(message);
   if (conversationalAnswer) {
-    return sendJson(response, 200, {
+    return sendJson(response, 200, signedChatPayload({
       answer: conversationalAnswer,
       sources: [],
       abstained: false,
-    });
+    }, history, message, signingSecret));
   }
 
   try {
@@ -342,11 +467,11 @@ module.exports = async function chatHandler(request, response) {
 
     if (abstained) {
       const language = fallbackLanguage(message);
-      return sendJson(response, 200, {
+      return sendJson(response, 200, signedChatPayload({
         answer: FALLBACKS[language],
         sources: [],
         abstained: true,
-      });
+      }, history, message, signingSecret));
     }
 
     const result = await generateText({
@@ -364,11 +489,11 @@ module.exports = async function chatHandler(request, response) {
       abortSignal: AbortSignal.timeout(25000),
     });
 
-    return sendJson(response, 200, {
+    return sendJson(response, 200, signedChatPayload({
       answer: result.text.trim(),
       sources: publicSources(documents),
       abstained: false,
-    });
+    }, history, message, signingSecret));
   } catch (error) {
     const [code, detail] = error instanceof Error
       ? error.message.split(":", 2)
@@ -386,13 +511,20 @@ module.exports = async function chatHandler(request, response) {
 };
 
 module.exports._internals = {
+  bodyExceedsLimit,
+  canonicalHistory,
   conversationProperty,
   explicitProperty,
   fallbackLanguage,
+  historySigningSecret,
   normalizeHistory,
   knownFactReply,
   pageProperty,
   publicSources,
+  requestIdentity,
   retrievalQuery,
+  signHistory,
+  signedChatPayload,
   smallTalkReply,
+  verifyHistoryToken,
 };

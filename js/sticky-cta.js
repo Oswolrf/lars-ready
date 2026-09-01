@@ -2,6 +2,8 @@
  * Lar de Víes - sticky booking CTA.
  * Opt-out: <body data-sticky-cta="off">.
  */
+import { t } from './i18n.js';
+
 (() => {
     const DEFAULT_BOOKING_URL = typeof __LAR_BOOKING_FALLBACK__ === 'string'
         ? __LAR_BOOKING_FALLBACK__
@@ -66,7 +68,7 @@
         const phoneLink = document.createElement('a');
         phoneLink.className = 'sticky-cta__phone';
         phoneLink.href = PHONE_HREF;
-        phoneLink.setAttribute('aria-label', `Llamar al ${PHONE_DISPLAY}`);
+        phoneLink.setAttribute('aria-label', t('Llamar al {phone}', { phone: PHONE_DISPLAY }));
         phoneLink.dataset.cta = 'sticky-phone';
         phoneLink.innerHTML = `${PHONE_ICON}<span>${PHONE_DISPLAY}</span>`;
 

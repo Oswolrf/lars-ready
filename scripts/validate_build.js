@@ -4,12 +4,19 @@ const fs = require("node:fs");
 const path = require("node:path");
 const cheerio = require("cheerio");
 const config = require("../site.config.cjs");
+const i18n = require("../i18n.config.cjs");
 
 const root = path.resolve(__dirname, "..");
 const output = path.resolve(root, process.argv[2] || "public");
 const expectedEnv = process.argv[3] || "production";
 const errors = [];
 const generatedDocuments = new Map();
+const pages = Object.values(i18n.locales).flatMap((locale) => config.pages.map((page) => ({
+  ...page,
+  baseRoute: page.route,
+  route: i18n.localeRoute(page.route, locale.code),
+  locale: locale.code,
+})));
 
 function add(file, message) {
   errors.push(`${file}: ${message}`);
@@ -69,7 +76,7 @@ function validateLocalReference(file, value) {
   if (/^assets\/media\//.test(clean) && !/-[a-f0-9]{12}\.[a-z0-9]+$/i.test(clean)) add(file, `activo media sin huella: ${value}`);
 }
 
-for (const page of config.pages) {
+for (const page of pages) {
   const relative = outputPath(page.route);
   const file = path.join(contentRoot, ...relative.split("/"));
   if (!fs.existsSync(file)) {
@@ -80,7 +87,7 @@ for (const page of config.pages) {
   const $ = cheerio.load(html, { scriptingEnabled: false });
   generatedDocuments.set(relative, { file, html, $ });
   if (!/^<!doctype html>/i.test(html.trimStart())) add(relative, "falta doctype HTML5");
-  if ($("html").attr("lang") !== "es") add(relative, "el idioma del documento debe ser es");
+  if ($("html").attr("lang") !== page.locale) add(relative, `el idioma del documento debe ser ${page.locale}`);
   if ($("head > title").length !== 1 || !$('head > title').text().trim()) add(relative, "debe tener un title único y no vacío");
   if ($('meta[name="description"]').length !== 1 || !$('meta[name="description"]').attr("content")?.trim()) add(relative, "debe tener una meta description única y no vacía");
   const ids = new Set();
@@ -107,7 +114,7 @@ for (const page of config.pages) {
   if ($("main#main-content").length !== 1) add(relative, "debe tener exactamente un main#main-content");
   if ($("h1").length !== 1) add(relative, `debe tener un H1; encontrados ${$("h1").length}`);
   if (!$('a[href="#main-content"]').length) add(relative, "falta skip link");
-  if (!$('nav[aria-label="Navegación principal"]').length) add(relative, "falta nombre de navegación principal");
+  if (!$("nav#main-nav[aria-label]").attr("aria-label")?.trim()) add(relative, "falta nombre de navegación principal");
   if (!$('[data-booking-dialog]').length) add(relative, "falta selector de reserva estático");
   if (/fonts\.googleapis|fonts\.gstatic|cdnjs\.cloudflare|unpkg\.com|transparenttextures\.com/i.test(html)) add(relative, "conserva CDN visual o de animación");
   if (/material-symbols-outlined/.test(html)) add(relative, "conserva la fuente completa de Material Symbols");
@@ -201,7 +208,7 @@ if (jsPath && fs.existsSync(path.join(contentRoot, ...jsPath.split("/")))) {
   for (const match of javascript.matchAll(/["'`](\/[^"'`]+)["'`]/g)) {
     const value = match[1];
     const pathname = value.split(/[?#]/, 1)[0];
-    const configuredRoute = config.pages.some((page) => pathname === `${manifest.basePath === "/" ? "" : manifest.basePath.replace(/\/$/, "")}${page.route}`);
+    const configuredRoute = pages.some((page) => pathname === `${manifest.basePath === "/" ? "" : manifest.basePath.replace(/\/$/, "")}${page.route}`);
     if (/\.(?:avif|gif|ico|jpe?g|js|mp4|png|svg|webm|webp|woff2)$/i.test(pathname) || configuredRoute) {
       validateLocalReference(path.basename(jsPath), value);
     }
@@ -238,5 +245,5 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Build ${expectedEnv}: ${config.pages.length} rutas canónicas verificadas`);
+console.log(`Build ${expectedEnv}: ${pages.length} rutas canónicas verificadas`);
 console.log("HTML, indexación, activos, reservas y adaptadores: OK");

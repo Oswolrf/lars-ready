@@ -10,9 +10,11 @@ de esta versión.
 - Función privada `POST /api/chat` en Vercel.
 - Base de conocimiento en `content/kb/*.md`.
 - Búsqueda híbrida en Supabase: full-text de PostgreSQL + `pgvector`.
+- Rate limit global y atómico en Supabase: 20 solicitudes por IP seudonimizada cada 10 minutos.
 - Ingesta mediante `npm run rag:ingest`.
 - AI SDK con la API directa de OpenAI para embeddings y respuesta.
-- Sin almacenamiento de conversaciones ni datos personales.
+- Historial del navegador firmado con HMAC para impedir que el cliente invente mensajes del asistente.
+- Cuerpos HTTP limitados a 16 KiB y sin almacenamiento deliberado de conversaciones en la aplicación.
 
 ## 1. Elegir y crear el proyecto de Supabase
 
@@ -48,6 +50,7 @@ Crear `.env.local` en la raíz —está ignorado por Git— con:
 OPENAI_API_KEY=...
 SUPABASE_URL=https://TU-PROYECTO.supabase.co
 SUPABASE_SECRET_KEY=sb_secret_...
+CHAT_HISTORY_SECRET=UNA_CADENA_ALEATORIA_DE_AL_MENOS_32_BYTES
 RAG_CHAT_MODEL=gpt-5-nano
 RAG_EMBEDDING_MODEL=text-embedding-3-small
 RAG_MIN_SIMILARITY=0.32
@@ -71,6 +74,7 @@ Añadir en Project Settings → Environment Variables:
 OPENAI_API_KEY
 SUPABASE_URL
 SUPABASE_SECRET_KEY
+CHAT_HISTORY_SECRET
 RAG_CHAT_MODEL
 RAG_EMBEDDING_MODEL
 RAG_MIN_SIMILARITY
@@ -89,6 +93,10 @@ curl -X POST http://localhost:3000/api/chat \
   -d '{"message":"¿Aceptáis perros?","history":[]}'
 ```
 
+La primera respuesta incluye `historyToken`. En las preguntas siguientes, el cliente debe
+reenviar ese token junto con el historial exacto recibido; un historial alterado devuelve
+`400 invalid_history`.
+
 Casos mínimos:
 
 - “¿Aceptáis perros?” debe responder apoyándose en el corpus.
@@ -98,9 +106,9 @@ Casos mínimos:
 
 ## Límites deliberados de esta fase
 
-- El rate limit es por instancia de Vercel, adecuado para pruebas pero no global.
+- El rate limit global requiere haber ejecutado la versión actual de `supabase/rag-schema.sql`.
 - No se guardan conversaciones.
 - No hay disponibilidad ni precios en tiempo real.
 - El umbral `RAG_MIN_SIMILARITY` necesita calibrarse con preguntas reales antes de publicar.
-- Antes de producción hay que revisar la política de privacidad porque los mensajes se
-  procesan mediante OpenAI, aunque la aplicación solicita que las respuestas no se almacenen.
+- La política de privacidad y el aviso del widget informan de que OpenAI y Supabase procesan
+  las consultas; conviene validar el texto final con la asesoría responsable de privacidad.

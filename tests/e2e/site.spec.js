@@ -28,7 +28,7 @@ test("todos los CTA abren siempre el selector con ambas propiedades", async ({ p
   await expect(dialog).not.toBeVisible();
 });
 
-test("el selector de idioma usa banderas y no enlaza traducciones inexistentes", async ({ page }, testInfo) => {
+test("el selector de idioma enlaza las tres versiones", async ({ page }, testInfo) => {
   await page.goto("/");
   if (testInfo.project.name === "mobile") {
     await page.locator("[data-mobile-navigation] > summary").click();
@@ -38,10 +38,23 @@ test("el selector de idioma usa banderas y no enlaza traducciones inexistentes",
   await summary.click();
   await expect(selector).toHaveAttribute("open", "");
   await expect(selector.locator('[lang="es"][aria-current="true"]')).toHaveCount(1);
-  await expect(selector.locator('[lang="en"][aria-disabled="true"]')).toHaveCount(1);
-  await expect(selector.locator('[lang="de"][aria-disabled="true"]')).toHaveCount(1);
+  await expect(selector.locator('[lang="en"]')).toHaveAttribute("href", "/en/");
+  await expect(selector.locator('[lang="de"]')).toHaveAttribute("href", "/de/");
   await expect(selector.locator(".language-flag")).toHaveCount(4);
 });
+
+for (const locale of ["en", "de"]) {
+  test(`la portada ${locale} tiene contenido, metadatos y enlaces localizados`, async ({ page }) => {
+    await page.goto(`/${locale}/`, { waitUntil: "domcontentloaded" });
+    await expect(page.locator("html")).toHaveAttribute("lang", locale);
+    await expect(page.locator(`.language-selector [lang="${locale}"][aria-current="true"]`)).toHaveCount(2);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", new RegExp(`/${locale}/$`));
+    await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveCount(1);
+    await expect(page.locator("nav#main-nav a").filter({ hasText: locale === "en" ? "Home" : "Startseite" })).toHaveCount(2);
+  });
+}
 
 test("la reserva funciona sin JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });

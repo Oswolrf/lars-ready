@@ -70,6 +70,7 @@ test.describe('chatbot RAG', () => {
           answer: 'Sí, ofrecemos cenas determinados días y según disponibilidad.',
           sources: [{ title: 'Gastronomía', url: '/sobre-nosotros/' }],
           abstained: false,
+          historyToken: 'test-signed-history-token',
         }),
       });
     });
@@ -80,6 +81,7 @@ test.describe('chatbot RAG', () => {
     await page.getByRole('button', { name: 'Enviar pregunta' }).click();
     await expect(page.getByText('Sí, ofrecemos cenas determinados días y según disponibilidad.')).toBeVisible();
     expect(requestBody.page).toBe('/');
+    expect(requestBody.historyToken).toBe('');
 
     await page.goto('/la-casona/');
 
@@ -89,6 +91,6 @@ test.describe('chatbot RAG', () => {
     await expect(conversation.getByText('¿Hay cenas?', { exact: true })).toBeVisible();
     await expect(conversation.getByText('Sí, ofrecemos cenas determinados días y según disponibilidad.')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Pregúntanos' })).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.getByText('El chat se conserva en esta pestaña.')).toBeVisible();
+    await expect(page.getByText(/el historial visible se conserva en esta pestaña/i)).toBeVisible();
   });
 });

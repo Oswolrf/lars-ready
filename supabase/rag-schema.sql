@@ -26,7 +26,20 @@ create table if not exists public.rag_documents (
   ) stored
 );
 
+create table if not exists public.rag_chat_rate_limits (
+  identity_hash text primary key,
+  window_started_at timestamptz not null default now(),
+  request_count integer not null default 0 check (request_count >= 0),
+  updated_at timestamptz not null default now(),
+  constraint rag_chat_rate_limits_identity_hash_check
+    check (identity_hash ~ '^[a-f0-9]{32}$')
+);
+
 alter table public.rag_documents enable row level security;
+alter table public.rag_chat_rate_limits enable row level security;
+
+create index if not exists rag_chat_rate_limits_updated_at_idx
+  on public.rag_chat_rate_limits (updated_at);
 
 create index if not exists rag_documents_fts_idx
   on public.rag_documents using gin (fts);
@@ -113,12 +126,72 @@ as $$
   limit (select result_limit from query_settings);
 $$;
 
+create or replace function public.consume_chat_rate_limit(
+  p_identity_hash text,
+  p_window_seconds integer default 600,
+  p_max_requests integer default 20
+)
+returns boolean
+language plpgsql
+volatile
+security invoker
+set search_path = ''
+as $$
+declare
+  effective_window integer := least(greatest(coalesce(p_window_seconds, 600), 60), 86400);
+  effective_limit integer := least(greatest(coalesce(p_max_requests, 20), 1), 1000);
+  current_count integer;
+begin
+  if p_identity_hash is null or p_identity_hash !~ '^[a-f0-9]{32}$' then
+    return false;
+  end if;
+
+  insert into public.rag_chat_rate_limits as rate_limit (
+    identity_hash,
+    window_started_at,
+    request_count,
+    updated_at
+  ) values (
+    p_identity_hash,
+    now(),
+    1,
+    now()
+  )
+  on conflict (identity_hash) do update
+  set
+    window_started_at = case
+      when rate_limit.window_started_at <= now() - make_interval(secs => effective_window) then now()
+      else rate_limit.window_started_at
+    end,
+    request_count = case
+      when rate_limit.window_started_at <= now() - make_interval(secs => effective_window) then 1
+      else rate_limit.request_count + 1
+    end,
+    updated_at = now()
+  returning request_count into current_count;
+
+  if random() < 0.01 then
+    delete from public.rag_chat_rate_limits
+    where updated_at < now() - interval '2 days';
+  end if;
+
+  return current_count <= effective_limit;
+end;
+$$;
+
 revoke all on table public.rag_documents from public, anon, authenticated;
 grant select, insert, update, delete on table public.rag_documents
+  to service_role;
+revoke all on table public.rag_chat_rate_limits from public, anon, authenticated;
+grant select, insert, update, delete on table public.rag_chat_rate_limits
   to service_role;
 revoke execute on function public.match_rag_documents(text, extensions.vector, integer)
   from public, anon, authenticated;
 grant execute on function public.match_rag_documents(text, extensions.vector, integer)
+  to service_role;
+revoke execute on function public.consume_chat_rate_limit(text, integer, integer)
+  from public, anon, authenticated;
+grant execute on function public.consume_chat_rate_limit(text, integer, integer)
   to service_role;
 
 comment on table public.rag_documents is
@@ -126,3 +199,9 @@ comment on table public.rag_documents is
 
 comment on function public.match_rag_documents(text, extensions.vector, integer) is
   'Búsqueda híbrida privada: pgvector + full-text español con Reciprocal Rank Fusion.';
+
+comment on table public.rag_chat_rate_limits is
+  'Contadores efímeros y seudonimizados para limitar el abuso del chatbot.';
+
+comment on function public.consume_chat_rate_limit(text, integer, integer) is
+  'Consume de forma atómica una solicitud del límite global del chatbot.';

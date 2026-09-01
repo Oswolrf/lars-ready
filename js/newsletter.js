@@ -5,6 +5,8 @@
  * URL either as `data-brevo-src` on the form or on an empty script placeholder.
  * Existing eager script tags remain supported during migration.
  */
+import { t } from './i18n.js';
+
 (() => {
     const DEFAULT_BREVO_SRC = 'https://sibforms.com/forms/end-form/build/main.js';
 
@@ -124,7 +126,7 @@
         const loader = form.querySelector('.newsletter-loader');
         const successText = successPanel.querySelector('.sib-form-message-panel__inner-text');
         const errorText = errorPanel.querySelector('.sib-form-message-panel__inner-text');
-        const successMessage = 'Te hemos enviado un correo para confirmar tu suscripción. Revisa tu bandeja de entrada y, si no lo encuentras, la carpeta de spam.';
+        const successMessage = t('Te hemos enviado un correo para confirmar tu suscripción. Revisa tu bandeja de entrada y, si no lo encuentras, la carpeta de spam.');
         const loadingTimeoutMs = 20000;
         let loadingTimeout;
         let loadingRuntime = false;
@@ -142,12 +144,12 @@
             let firstInvalid;
             const emailValid = Boolean(emailInput?.value.trim()) && emailInput.validity.valid;
             if (emailInput) emailInput.setAttribute('aria-invalid', String(!emailValid));
-            if (emailError) emailError.textContent = emailValid ? '' : 'Introduce una dirección de correo válida.';
+            if (emailError) emailError.textContent = emailValid ? '' : t('Introduce una dirección de correo válida.');
             if (!emailValid) firstInvalid = emailInput;
 
             const consentValid = Boolean(consentCheckbox?.checked);
             if (consentCheckbox) consentCheckbox.setAttribute('aria-invalid', String(!consentValid));
-            if (consentError) consentError.textContent = consentValid ? '' : 'Debes aceptar el envío de la newsletter.';
+            if (consentError) consentError.textContent = consentValid ? '' : t('Debes aceptar el envío de la newsletter.');
             if (!consentValid && !firstInvalid) firstInvalid = consentCheckbox;
             return { valid: emailValid && consentValid, firstInvalid };
         };
@@ -202,7 +204,7 @@
             loadingTimeout = window.setTimeout(() => {
                 if (successPanel.classList.contains('sib-form-message-panel--active')) return;
                 showRuntimeError(
-                    'La solicitud está tardando demasiado. Comprueba tu conexión e inténtalo de nuevo.'
+                    t('La solicitud está tardando demasiado. Comprueba tu conexión e inténtalo de nuevo.')
                 );
             }, loadingTimeoutMs);
         };
@@ -236,7 +238,7 @@
                     }
                 }).catch(() => {
                     showRuntimeError(
-                        'No hemos podido cargar el servicio de suscripción. Comprueba tu conexión e inténtalo de nuevo.',
+                        t('No hemos podido cargar el servicio de suscripción. Comprueba tu conexión e inténtalo de nuevo.'),
                         true
                     );
                 });

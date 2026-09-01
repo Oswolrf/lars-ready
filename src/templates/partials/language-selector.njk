@@ -1,12 +1,28 @@
 <details class="language-selector language-selector--{{ languageVariant }}" data-language-selector>
-  <summary class="language-selector__trigger" aria-label="Seleccionar idioma. Idioma actual: Español">
+  <summary class="language-selector__trigger" aria-label="{{ t('Seleccionar idioma') }}. {{ t('Idioma actual') }}: {{ locale.label }}">
     <span class="language-flag" aria-hidden="true">
+      {% if locale.code === 'en' %}
+      <svg viewBox="0 0 60 30" focusable="false">
+        <rect width="60" height="30" fill="#012169"></rect>
+        <path d="M0 0 60 30M60 0 0 30" stroke="#fff" stroke-width="6"></path>
+        <path d="M0 0 60 30M60 0 0 30" stroke="#c8102e" stroke-width="3.5"></path>
+        <path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"></path>
+        <path d="M30 0v30M0 15h60" stroke="#c8102e" stroke-width="6"></path>
+      </svg>
+      {% elif locale.code === 'de' %}
+      <svg viewBox="0 0 5 3" focusable="false">
+        <rect width="5" height="3" fill="#181818"></rect>
+        <rect width="5" height="2" y="1" fill="#dd0000"></rect>
+        <rect width="5" height="1" y="2" fill="#ffce00"></rect>
+      </svg>
+      {% else %}
       <svg viewBox="0 0 3 2" focusable="false">
         <rect width="3" height="2" fill="#aa151b"></rect>
         <rect width="3" height="1" y="0.5" fill="#f1bf00"></rect>
       </svg>
+      {% endif %}
     </span>
-    <span class="sr-only">Español</span>
+    <span class="sr-only">{{ locale.label }}</span>
     <svg class="language-selector__chevron" viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
       <path d="m6 8 4 4 4-4"></path>
     </svg>
@@ -16,7 +32,7 @@
     <p class="language-selector__heading" id="language-selector-heading-{{ languageVariant }}">Idioma</p>
     <ul class="language-selector__list">
       <li>
-        <a class="language-selector__item is-current" href="{{ url(page.route) }}" lang="es" aria-current="true">
+        <a class="language-selector__item{% if locale.code === 'es' %} is-current{% endif %}" href="{{ languageUrl(page.baseRoute, 'es') }}" lang="es"{% if locale.code === 'es' %} aria-current="true"{% endif %} hreflang="es">
           <span class="language-flag" aria-hidden="true">
             <svg viewBox="0 0 3 2" focusable="false">
               <rect width="3" height="2" fill="#aa151b"></rect>
@@ -24,13 +40,13 @@
             </svg>
           </span>
           <span>Español</span>
-          <svg class="language-selector__check" viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <svg class="language-selector__check{% if locale.code !== 'es' %} hidden{% endif %}" viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <path d="m5 10 3 3 7-7"></path>
           </svg>
         </a>
       </li>
       <li>
-        <span class="language-selector__item is-disabled" lang="en" aria-disabled="true" title="Versión en inglés próximamente">
+        <a class="language-selector__item{% if locale.code === 'en' %} is-current{% endif %}" href="{{ languageUrl(page.baseRoute, 'en') }}" lang="en"{% if locale.code === 'en' %} aria-current="true"{% endif %} hreflang="en">
           <span class="language-flag" aria-hidden="true">
             <svg viewBox="0 0 60 30" focusable="false">
               <rect width="60" height="30" fill="#012169"></rect>
@@ -41,11 +57,11 @@
             </svg>
           </span>
           <span>English</span>
-          <small>Próximamente</small>
-        </span>
+          <svg class="language-selector__check{% if locale.code !== 'en' %} hidden{% endif %}" viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 10 3 3 7-7"></path></svg>
+        </a>
       </li>
       <li>
-        <span class="language-selector__item is-disabled" lang="de" aria-disabled="true" title="Versión en alemán próximamente">
+        <a class="language-selector__item{% if locale.code === 'de' %} is-current{% endif %}" href="{{ languageUrl(page.baseRoute, 'de') }}" lang="de"{% if locale.code === 'de' %} aria-current="true"{% endif %} hreflang="de">
           <span class="language-flag" aria-hidden="true">
             <svg viewBox="0 0 5 3" focusable="false">
               <rect width="5" height="3" fill="#181818"></rect>
@@ -54,8 +70,8 @@
             </svg>
           </span>
           <span>Deutsch</span>
-          <small>Próximamente</small>
-        </span>
+          <svg class="language-selector__check{% if locale.code !== 'de' %} hidden{% endif %}" viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 10 3 3 7-7"></path></svg>
+        </a>
       </li>
     </ul>
   </div>

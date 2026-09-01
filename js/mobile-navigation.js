@@ -1,4 +1,6 @@
 /** Accesibilidad y cierre del menú móvil basado en <details>. */
+import { t } from './i18n.js';
+
 (() => {
     const navigation = document.querySelector('[data-mobile-navigation]');
     if (!(navigation instanceof HTMLDetailsElement)) return;
@@ -7,7 +9,7 @@
 
     const sync = () => {
         summary.setAttribute('aria-expanded', String(navigation.open));
-        summary.setAttribute('aria-label', navigation.open ? 'Cerrar menú' : 'Abrir menú');
+        summary.setAttribute('aria-label', t(navigation.open ? 'Cerrar menú' : 'Abrir menú'));
         document.body.classList.toggle('mobile-navigation-open', navigation.open);
     };
 

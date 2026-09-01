@@ -158,7 +158,7 @@ const pages = [
     title: "Villa Jazmín en A Pontenova, Lugo | Lar de Víes", description: "Villa rural para hasta 4 personas con cocina, porche, jardín aromático privado y vistas abiertas al Valle del Eo.", ogTitle: "Villa Jazmín | Lar de Víes", image: "/images/Jazmin/jazmin-1.webp", imageAlt: "Villa Jazmín con jardín privado en Lar de Víes", entity: "larDeVies",
   },
   {
-    source: "politica-de-privacidad.html", route: "/politica-privacidad/", active: null, lastModified: "2026-08-11", indexable: false,
+    source: "politica-de-privacidad.html", route: "/politica-privacidad/", active: null, lastModified: "2026-08-31", indexable: false,
     nav: "solid",
     title: "Política de privacidad | Lar de Víes", description: "Información sobre privacidad y tratamiento de datos personales en el sitio web de Lar de Víes.", ogTitle: "Política de privacidad | Lar de Víes", image: "/images/home-hero-updated-desktop-2560.webp", imageAlt: "Lar de Víes", entity: "larDeVies",
   },

@@ -1,9 +1,11 @@
+import { localePath, t } from './i18n.js';
+
 (() => {
     'use strict';
 
     const STORAGE_KEY = 'lar-de-vies-cookie-consent-v1';
     const BASE_PATH = typeof __LAR_BASE_PATH__ !== 'undefined' ? __LAR_BASE_PATH__ : '/';
-    const privacyUrl = `${BASE_PATH === '/' ? '' : BASE_PATH}politica-privacidad/`;
+    const privacyUrl = `${BASE_PATH === '/' ? '' : BASE_PATH.replace(/\/$/, '')}${localePath('/politica-privacidad/')}`;
 
     const readConsent = () => {
         try {
@@ -40,42 +42,42 @@
         root.innerHTML = `
             <div class="cookie-consent__banner" role="dialog" aria-modal="false" aria-labelledby="cookie-consent-title" aria-describedby="cookie-consent-description">
                 <div class="cookie-consent__copy">
-                    <p id="cookie-consent-title" class="cookie-consent__title">Tu privacidad importa</p>
-                    <p id="cookie-consent-description" class="cookie-consent__text">Usamos cookies técnicas necesarias para que la web funcione y recordar tus preferencias. Las cookies de análisis son opcionales y no se activan sin tu permiso.</p>
-                    <a class="cookie-consent__link" href="${privacyUrl}">Más información en la política de privacidad</a>
+                    <p id="cookie-consent-title" class="cookie-consent__title">${t('Tu privacidad importa')}</p>
+                    <p id="cookie-consent-description" class="cookie-consent__text">${t('Usamos cookies técnicas necesarias para que la web funcione y recordar tus preferencias. Las cookies de análisis son opcionales y no se activan sin tu permiso.')}</p>
+                    <a class="cookie-consent__link" href="${privacyUrl}">${t('Más información en la política de privacidad')}</a>
                 </div>
                 <div class="cookie-consent__actions">
-                    <button type="button" class="cookie-consent__button cookie-consent__button--secondary" data-cookie-reject>Rechazar opcionales</button>
-                    <button type="button" class="cookie-consent__button cookie-consent__button--quiet" data-cookie-settings>Configurar</button>
-                    <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>Aceptar todas</button>
+                    <button type="button" class="cookie-consent__button cookie-consent__button--secondary" data-cookie-reject>${t('Rechazar opcionales')}</button>
+                    <button type="button" class="cookie-consent__button cookie-consent__button--quiet" data-cookie-settings>${t('Configurar')}</button>
+                    <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>${t('Aceptar todas')}</button>
                 </div>
             </div>
             <div class="cookie-consent__panel" data-cookie-panel hidden role="dialog" aria-modal="true" aria-labelledby="cookie-settings-title">
                 <div class="cookie-consent__panel-head">
                     <div>
-                        <p class="cookie-consent__eyebrow">Preferencias</p>
-                        <h2 id="cookie-settings-title" class="cookie-consent__panel-title">Gestionar cookies</h2>
+                        <p class="cookie-consent__eyebrow">${t('Preferencias')}</p>
+                        <h2 id="cookie-settings-title" class="cookie-consent__panel-title">${t('Gestionar cookies')}</h2>
                     </div>
-                    <button type="button" class="cookie-consent__close" data-cookie-close aria-label="Cerrar preferencias">×</button>
+                    <button type="button" class="cookie-consent__close" data-cookie-close aria-label="${t('Cerrar preferencias')}">×</button>
                 </div>
-                <p class="cookie-consent__text">Puedes cambiar estas preferencias en cualquier momento. Las cookies necesarias no se pueden desactivar porque son imprescindibles para el funcionamiento de la web.</p>
+                <p class="cookie-consent__text">${t('Puedes cambiar estas preferencias en cualquier momento. Las cookies necesarias no se pueden desactivar porque son imprescindibles para el funcionamiento de la web.')}</p>
                 <div class="cookie-consent__category">
                     <div>
-                        <p class="cookie-consent__category-title">Cookies necesarias</p>
-                        <p class="cookie-consent__category-text">Permiten navegar, reservar y guardar tu elección de cookies.</p>
+                        <p class="cookie-consent__category-title">${t('Cookies necesarias')}</p>
+                        <p class="cookie-consent__category-text">${t('Permiten navegar, reservar y guardar tu elección de cookies.')}</p>
                     </div>
-                    <span class="cookie-consent__status">Siempre activas</span>
+                    <span class="cookie-consent__status">${t('Siempre activas')}</span>
                 </div>
                 <label class="cookie-consent__category cookie-consent__category--toggle" for="cookie-analytics">
                     <span>
-                        <span class="cookie-consent__category-title">Cookies de análisis</span>
-                        <span class="cookie-consent__category-text">Nos ayudan a entender cómo se utiliza la web para mejorarla.</span>
+                        <span class="cookie-consent__category-title">${t('Cookies de análisis')}</span>
+                        <span class="cookie-consent__category-text">${t('Nos ayudan a entender cómo se utiliza la web para mejorarla.')}</span>
                     </span>
                     <input id="cookie-analytics" type="checkbox" data-cookie-analytics>
                 </label>
                 <div class="cookie-consent__panel-actions">
-                    <button type="button" class="cookie-consent__button cookie-consent__button--secondary" data-cookie-reject>Rechazar opcionales</button>
-                    <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-save>Guardar preferencias</button>
+                    <button type="button" class="cookie-consent__button cookie-consent__button--secondary" data-cookie-reject>${t('Rechazar opcionales')}</button>
+                    <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-save>${t('Guardar preferencias')}</button>
                 </div>
             </div>
         `;

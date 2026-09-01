@@ -8,6 +8,7 @@ const esbuild = require("esbuild");
 const nunjucks = require("nunjucks");
 const sharp = require("sharp");
 const config = require("../site.config.cjs");
+const i18n = require("../i18n.config.cjs");
 
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, "public");
@@ -64,6 +65,10 @@ const navigation = [
   { id: "entorno", label: "Entorno", route: "/el-entorno/" },
   { id: "nosotros", label: "Sobre nosotros", route: "/sobre-nosotros/" },
 ];
+
+const localeEntries = Object.values(i18n.locales);
+const knownRoutes = new Set(config.pages.map((page) => page.route));
+const translatableAttributes = ["alt", "aria-label", "placeholder", "title", "data-sticky-cta-label", "data-book-label", "data-label", "data-chat-suggestion"];
 
 const sourceRoute = new Map(config.pages.map((page) => [normalizeSlashes(page.source), page.route]));
 const redirectRoute = new Map(config.redirects.map((redirect) => [redirect.from, redirect.to]));
@@ -123,11 +128,16 @@ function canonicalUrl(route) {
 }
 
 function render(template, page = {}, extra = {}) {
+  const locale = i18n.locales[page.locale || "es"];
   return templates.render(template, {
     page,
     site: config.site,
     properties: config.properties,
     navigation,
+    locale,
+    locales: localeEntries,
+    languageUrl: (route, localeCode) => publicUrl(i18n.localeRoute(route, localeCode)),
+    t: (value) => i18n.translate(locale.code, value),
     deployEnv,
     url: publicUrl,
     ...extra,
@@ -175,25 +185,74 @@ function routeForLocalLink(page, value) {
   }
   const withoutLeading = normalized.replace(/^\//, "");
   const cleanRoute = sourceRoute.get(withoutLeading) || redirectRoute.get(normalized) || normalized;
-  return publicUrl(`${cleanRoute}${suffix}`);
+  const route = page.locale && page.locale !== "es" && knownRoutes.has(cleanRoute)
+    ? i18n.localeRoute(cleanRoute, page.locale)
+    : cleanRoute;
+  return publicUrl(`${route}${suffix}`);
+}
+
+function localizedPage(page, localeCode) {
+  const locale = i18n.locales[localeCode];
+  const translated = { ...page };
+  for (const key of ["title", "description", "ogTitle", "imageAlt"]) {
+    translated[key] = i18n.translate(localeCode, page[key]);
+  }
+  translated.baseRoute = page.route;
+  translated.route = i18n.localeRoute(page.route, localeCode);
+  translated.locale = localeCode;
+  translated.language = locale.language;
+  translated.ogLocale = locale.ogLocale;
+  return translated;
+}
+
+function translateDocument($, localeCode) {
+  if (localeCode === "es") return;
+  const translate = (value) => i18n.translate(localeCode, String(value || "").replace(/\s+/g, " ").trim());
+  $("body *").contents().each((_, node) => {
+    if (node.type !== "text") return;
+    const parent = $(node).parent();
+    if (parent.closest("style, script, noscript, svg, .material-symbols-outlined, .material-icon").length) return;
+    const original = $(node).text();
+    const trimmed = original.replace(/\s+/g, " ").trim();
+    const translated = translate(trimmed);
+    if (!trimmed || translated === trimmed) return;
+    const leading = original.match(/^\s*/)?.[0] || "";
+    const trailing = original.match(/\s*$/)?.[0] || "";
+    node.data = `${leading}${translated}${trailing}`;
+  });
+  $(translatableAttributes.map((attribute) => `[${attribute}]`).join(",")).each((_, node) => {
+    const element = $(node);
+    for (const attribute of translatableAttributes) {
+      const original = element.attr(attribute);
+      if (!original) continue;
+      const translated = translate(original);
+      if (translated !== original) element.attr(attribute, translated);
+    }
+  });
 }
 
 function normalizeUrlAttributes($, page) {
+  const bookingFallback = i18n.localeRoute(config.site.bookingFallback, page.locale || "es");
   $("a[href]").each((_, element) => {
     const anchor = $(element);
     const href = anchor.attr("href");
     if (!href) return;
     if (href.includes("direct-book.com")) {
+      if (page.locale && page.locale !== "es") {
+        const bookingUrl = new URL(href);
+        bookingUrl.searchParams.set("locale", page.locale);
+        anchor.attr("href", bookingUrl.href);
+      }
       if (!anchor.closest("#elegir-alojamiento").length && !anchor.is("[data-booking-property]")) {
-        anchor.attr("href", publicUrl(config.site.bookingFallback)).attr("data-booking-trigger", "");
+        anchor.attr("href", publicUrl(bookingFallback)).attr("data-booking-trigger", "");
       }
       return;
     }
     anchor.attr("href", routeForLocalLink(page, href));
   });
 
-  $("[data-sticky-cta-url]").attr("data-sticky-cta-url", publicUrl(config.site.bookingFallback));
-  $(`a[href="${publicUrl(config.site.bookingFallback)}"]`).attr("data-booking-trigger", "");
+  $("[data-sticky-cta-url]").attr("data-sticky-cta-url", publicUrl(bookingFallback));
+  $(`a[href="${publicUrl(bookingFallback)}"]`).attr("data-booking-trigger", "");
 
   $("link[href]").each((_, element) => {
     const node = $(element);
@@ -240,13 +299,22 @@ function applyMetadata($, page) {
   upsertMeta($, 'meta[name="description"]', { name: "description", content: page.description });
   upsertMeta($, 'meta[name="robots"]', { name: "robots", content: robots });
   upsertLink($, 'link[rel="canonical"]', { rel: "canonical", href: canonicalUrl(page.route) });
+  $('link[rel="alternate"][hreflang]').remove();
+  for (const locale of localeEntries) {
+    $("head").append(`<link rel="alternate" hreflang="${locale.code}" href="${canonicalUrl(i18n.localeRoute(page.baseRoute, locale.code))}">`);
+  }
+  $("head").append(`<link rel="alternate" hreflang="x-default" href="${canonicalUrl(page.baseRoute)}">`);
   upsertMeta($, 'meta[property="og:title"]', { property: "og:title", content: page.ogTitle || page.title });
   upsertMeta($, 'meta[property="og:description"]', { property: "og:description", content: page.description });
   upsertMeta($, 'meta[property="og:type"]', { property: "og:type", content: "website" });
   upsertMeta($, 'meta[property="og:url"]', { property: "og:url", content: canonicalUrl(page.route) });
   upsertMeta($, 'meta[property="og:image"]', { property: "og:image", content: `${siteOrigin}${publicUrl(page.image)}` });
   upsertMeta($, 'meta[property="og:image:alt"]', { property: "og:image:alt", content: page.imageAlt });
-  upsertMeta($, 'meta[property="og:locale"]', { property: "og:locale", content: config.site.locale });
+  upsertMeta($, 'meta[property="og:locale"]', { property: "og:locale", content: page.ogLocale });
+  $('meta[property="og:locale:alternate"]').remove();
+  for (const locale of localeEntries.filter((locale) => locale.code !== page.locale)) {
+    $("head").append(`<meta property="og:locale:alternate" content="${locale.ogLocale}">`);
+  }
   upsertMeta($, 'meta[property="og:site_name"]', { property: "og:site_name", content: config.site.name });
   upsertMeta($, 'meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
   upsertMeta($, 'meta[name="twitter:title"]', { name: "twitter:title", content: page.ogTitle || page.title });
@@ -259,17 +327,19 @@ function applyMetadata($, page) {
 }
 
 function applyStructuredData($, page) {
-  const websiteId = `${siteOrigin}${publicUrl("/#website")}`;
-  const larId = `${siteOrigin}${publicUrl("/#lar-de-vies")}`;
-  const ruralId = `${siteOrigin}${publicUrl("/rural-prado/#rural-prado")}`;
+  const localizedHome = i18n.localeRoute("/", page.locale);
+  const localizedRural = i18n.localeRoute("/rural-prado/", page.locale);
+  const websiteId = `${siteOrigin}${publicUrl(`${localizedHome}#website`)}`;
+  const larId = `${siteOrigin}${publicUrl(`${localizedHome}#lar-de-vies`)}`;
+  const ruralId = `${siteOrigin}${publicUrl(`${localizedRural}#rural-prado`)}`;
   const pageUrl = canonicalUrl(page.route);
   const graph = [
     {
       "@type": "WebSite",
       "@id": websiteId,
-      url: `${siteOrigin}${publicUrl("/")}`,
+      url: `${siteOrigin}${publicUrl(localizedHome)}`,
       name: config.site.name,
-      inLanguage: config.site.language,
+      inLanguage: page.language,
     },
   ];
 
@@ -278,7 +348,7 @@ function applyStructuredData($, page) {
       "@type": "LodgingBusiness",
       "@id": larId,
       name: config.properties.larDeVies.name,
-      url: `${siteOrigin}${publicUrl("/")}`,
+      url: `${siteOrigin}${publicUrl(localizedHome)}`,
       image: `${siteOrigin}${publicUrl(page.image)}`,
       telephone: "+34678655303",
       email: "reservas@lardevies.com",
@@ -318,7 +388,7 @@ function applyStructuredData($, page) {
     url: pageUrl,
     name: page.title,
     description: page.description,
-    inLanguage: config.site.language,
+    inLanguage: page.language,
     isPartOf: { "@id": websiteId },
     primaryImageOfPage: { "@type": "ImageObject", url: `${siteOrigin}${publicUrl(page.image)}` },
   };
@@ -351,10 +421,10 @@ function applyStructuredData($, page) {
     });
   }
 
-  if (page.route !== "/") {
-    const items = [{ "@type": "ListItem", position: 1, name: "Inicio", item: `${siteOrigin}${publicUrl("/")}` }];
-    if (page.source.startsWith("suites/")) items.push({ "@type": "ListItem", position: 2, name: "La Casona", item: canonicalUrl("/la-casona/") });
-    if (page.source.startsWith("villas/")) items.push({ "@type": "ListItem", position: 2, name: "Las Villas", item: canonicalUrl("/las-villas-casitas-independientes/") });
+  if (page.baseRoute !== "/") {
+    const items = [{ "@type": "ListItem", position: 1, name: i18n.translate(page.locale, "Inicio"), item: `${siteOrigin}${publicUrl(localizedHome)}` }];
+    if (page.source.startsWith("suites/")) items.push({ "@type": "ListItem", position: 2, name: i18n.translate(page.locale, "La Casona"), item: canonicalUrl(i18n.localeRoute("/la-casona/", page.locale)) });
+    if (page.source.startsWith("villas/")) items.push({ "@type": "ListItem", position: 2, name: i18n.translate(page.locale, "Las Villas"), item: canonicalUrl(i18n.localeRoute("/las-villas-casitas-independientes/", page.locale)) });
     items.push({ "@type": "ListItem", position: items.length + 1, name: (page.ogTitle || page.title).split("|")[0].trim(), item: pageUrl });
     graph.push({ "@type": "BreadcrumbList", "@id": `${pageUrl}#breadcrumbs`, itemListElement: items });
   }
@@ -845,8 +915,9 @@ async function buildPage(page, cssUrl, jsUrl) {
   const sourceHtml = fs.readFileSync(sourcePath, "utf8");
   const $ = cheerio.load(sourceHtml, { decodeEntities: false });
   $("base").remove();
-  applyMetadata($, page);
   replaceSharedComponents($, page);
+  translateDocument($, page.locale);
+  applyMetadata($, page);
   normalizeUrlAttributes($, page);
   $('link[rel="preload"][as="image"]').remove();
   await applyHero($, page);
@@ -855,7 +926,8 @@ async function buildPage(page, cssUrl, jsUrl) {
   await enhanceImages($, page);
   deferCarouselImages($);
   replaceScriptsAndStyles($, cssUrl, jsUrl);
-  $("html").attr({ lang: "es", "data-base-path": basePath, "data-deploy-env": deployEnv }).addClass("no-js");
+  if (page.nav === "solid") $("body").attr("data-sticky-cta", "off");
+  $("html").attr({ lang: page.locale, "data-base-path": basePath, "data-deploy-env": deployEnv }).addClass("no-js");
   const document = $.html()
     .replaceAll(config.site.defaultOrigin, siteOrigin)
     .replaceAll(".material-symbols-outlined", ".material-icon");
@@ -894,8 +966,12 @@ function buildRedirectFallbacks(cssUrl) {
 }
 
 function buildSitemapAndRobots() {
-  const urls = config.pages.filter((page) => page.indexable !== false).map((page) => `  <url>\n    <loc>${canonicalUrl(page.route)}</loc>\n    <lastmod>${page.lastModified}</lastmod>\n  </url>`).join("\n");
-  writeFile("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
+  const urls = config.pages.filter((page) => page.indexable !== false).flatMap((page) => localeEntries.map((locale) => {
+    const route = i18n.localeRoute(page.route, locale.code);
+    const alternates = localeEntries.map((alternate) => `    <xhtml:link rel="alternate" hreflang="${alternate.code}" href="${canonicalUrl(i18n.localeRoute(page.route, alternate.code))}" />`).join("\n");
+    return `  <url>\n    <loc>${canonicalUrl(route)}</loc>\n    <lastmod>${page.lastModified}</lastmod>\n${alternates}\n    <xhtml:link rel="alternate" hreflang="x-default" href="${canonicalUrl(page.route)}" />\n  </url>`;
+  })).join("\n");
+  writeFile("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`);
   const robots = isPreview
     ? `User-agent: *\nAllow: /\n\nSitemap: ${siteOrigin}${publicUrl("/sitemap.xml")}\n`
     : `User-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: Claude-SearchBot\nAllow: /\n\nUser-agent: Claude-User\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Perplexity-User\nAllow: /\n\nUser-agent: GPTBot\nDisallow: /\n\nUser-agent: ClaudeBot\nDisallow: /\n\nUser-agent: *\nAllow: /\n\nSitemap: ${siteOrigin}${publicUrl("/sitemap.xml")}\n`;
@@ -957,7 +1033,8 @@ function writeBuildManifest(cssUrl, jsUrl, iconUrl, assetMap) {
     }));
     videos[name] = { selected: video.selected, originals, published };
   }
-  writeFile("build-manifest.json", `${JSON.stringify({ deployEnv, siteOrigin, basePath, css: cssUrl, js: jsUrl, icons: iconUrl, pages: config.pages.map(({ source, route, lastModified }) => ({ source, route, lastModified })), videos }, null, 2)}\n`);
+  const pages = localeEntries.flatMap((locale) => config.pages.map(({ source, route, lastModified }) => ({ source, route: i18n.localeRoute(route, locale.code), baseRoute: route, locale: locale.code, lastModified })));
+  writeFile("build-manifest.json", `${JSON.stringify({ deployEnv, siteOrigin, basePath, css: cssUrl, js: jsUrl, icons: iconUrl, pages, videos }, null, 2)}\n`);
 }
 
 function nestBuildForBasePath() {
@@ -979,7 +1056,9 @@ async function main() {
   ensureDirectory(output);
   ensureDirectory(cacheRoot);
   const [cssUrl, jsUrl] = await Promise.all([buildCss(), buildJs()]);
-  for (const page of config.pages) await buildPage(page, cssUrl, jsUrl);
+  for (const locale of localeEntries) {
+    for (const page of config.pages) await buildPage(localizedPage(page, locale.code), cssUrl, jsUrl);
+  }
   buildSpecialPages(cssUrl, jsUrl);
   const iconUrl = buildIconSprite();
   for (const htmlFile of walkFiles(output).filter((file) => file.endsWith(".html"))) {
@@ -994,7 +1073,7 @@ async function main() {
   writeBuildManifest(cssUrl, jsUrl, iconUrl, assetMap);
   nestBuildForBasePath();
   console.log(`Paquete estático ${deployEnv} preparado en ${output}`);
-  console.log(`Rutas: ${config.pages.length}; iconos: ${usedIcons.size}; activos fuente: ${referencedFiles.size}`);
+  console.log(`Rutas: ${config.pages.length * localeEntries.length}; iconos: ${usedIcons.size}; activos fuente: ${referencedFiles.size}`);
 }
 
 function walkFiles(directory) {

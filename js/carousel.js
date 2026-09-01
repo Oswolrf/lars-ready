@@ -3,6 +3,8 @@
  * Markup contract: [data-carousel] containing [data-carousel-track],
  * [data-carousel-prev], [data-carousel-next] and [data-carousel-slide].
  */
+import { t } from './i18n.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -40,15 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let touchStartX;
         let touchStartY;
 
-        root.setAttribute('aria-roledescription', 'carrusel');
+        root.setAttribute('aria-roledescription', t('carrusel'));
         if (!root.hasAttribute('tabindex')) root.tabIndex = 0;
         if (reduceMotion) track.style.transition = 'none';
 
         slides.forEach((slide, index) => {
             slide.setAttribute('role', 'group');
-            slide.setAttribute('aria-roledescription', 'diapositiva');
+            slide.setAttribute('aria-roledescription', t('diapositiva'));
             if (!slide.hasAttribute('aria-label')) {
-                slide.setAttribute('aria-label', `${index + 1} de ${slides.length}`);
+                slide.setAttribute('aria-label', t('{current} de {total}', { current: index + 1, total: slides.length }));
             }
         });
 

@@ -1,3 +1,5 @@
+import { t } from './i18n.js';
+
 (() => {
     const galleries = {
         ameiro: {
@@ -64,7 +66,7 @@
             carousel.dataset.carousel = '';
             carousel.dataset.carouselPreload = 'adjacent';
             carousel.setAttribute('role', 'region');
-            carousel.setAttribute('aria-label', `Galería de ${gallery.title}`);
+            carousel.setAttribute('aria-label', t('Galería de {title}', { title: gallery.title }));
 
             const track = document.createElement('div');
             track.className = 'rural-gallery__track';
@@ -87,7 +89,7 @@
             previousButton.type = 'button';
             previousButton.className = 'rural-gallery__control rural-gallery__control--prev';
             previousButton.dataset.carouselPrev = '';
-            previousButton.setAttribute('aria-label', 'Imagen anterior');
+            previousButton.setAttribute('aria-label', t('Imagen anterior'));
             previousButton.textContent = '‹';
             carousel.appendChild(previousButton);
 
@@ -95,7 +97,7 @@
             nextButton.type = 'button';
             nextButton.className = 'rural-gallery__control rural-gallery__control--next';
             nextButton.dataset.carouselNext = '';
-            nextButton.setAttribute('aria-label', 'Imagen siguiente');
+            nextButton.setAttribute('aria-label', t('Imagen siguiente'));
             nextButton.textContent = '›';
             carousel.appendChild(nextButton);
 
@@ -104,13 +106,13 @@
             const dots = document.createElement('div');
             dots.className = 'rural-gallery__dots';
             dots.setAttribute('role', 'group');
-            dots.setAttribute('aria-label', 'Seleccionar imagen');
+            dots.setAttribute('aria-label', t('Seleccionar imagen'));
             gallery.images.forEach((item, index) => {
                 const dot = document.createElement('button');
                 dot.type = 'button';
                 dot.className = 'rural-gallery__dot';
                 dot.dataset.carouselSlide = String(index);
-                dot.setAttribute('aria-label', `Ver imagen ${index + 1} de ${gallery.title}`);
+                dot.setAttribute('aria-label', t('Ver imagen {number} de {title}', { number: index + 1, title: gallery.title }));
                 dot.setAttribute('aria-current', String(index === 0));
                 dots.appendChild(dot);
             });
