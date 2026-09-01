@@ -116,6 +116,21 @@ for (const page of pages) {
   if (!$('a[href="#main-content"]').length) add(relative, "falta skip link");
   if (!$("nav#main-nav[aria-label]").attr("aria-label")?.trim()) add(relative, "falta nombre de navegación principal");
   if (!$('[data-booking-dialog]').length) add(relative, "falta selector de reserva estático");
+  for (const locale of Object.values(i18n.locales)) {
+    const expectedRoute = i18n.localeRoute(page.baseRoute, locale.code);
+    const expectedHref = manifest.basePath === "/"
+      ? expectedRoute
+      : `${manifest.basePath}${expectedRoute.replace(/^\//, "")}`;
+    const languageLinks = $(`[data-language-selector] a[hreflang="${locale.code}"]`);
+    if (!languageLinks.length) {
+      add(relative, `falta enlace de idioma ${locale.code}`);
+      continue;
+    }
+    languageLinks.each((_, element) => {
+      const href = $(element).attr("href");
+      if (href !== expectedHref) add(relative, `enlace ${locale.code} inesperado: ${href}; se esperaba ${expectedHref}`);
+    });
+  }
   if (/fonts\.googleapis|fonts\.gstatic|cdnjs\.cloudflare|unpkg\.com|transparenttextures\.com/i.test(html)) add(relative, "conserva CDN visual o de animación");
   if (/material-symbols-outlined/.test(html)) add(relative, "conserva la fuente completa de Material Symbols");
   if (manifest.basePath !== "/") {

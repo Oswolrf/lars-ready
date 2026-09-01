@@ -237,6 +237,9 @@ function normalizeUrlAttributes($, page) {
     const anchor = $(element);
     const href = anchor.attr("href");
     if (!href) return;
+    // These URLs already target an explicit locale. Rewriting them using the
+    // current page locale would turn the Spanish option on /en/ into /en/.
+    if (anchor.closest("[data-language-selector]").length) return;
     if (href.includes("direct-book.com")) {
       if (page.locale && page.locale !== "es") {
         const bookingUrl = new URL(href);
