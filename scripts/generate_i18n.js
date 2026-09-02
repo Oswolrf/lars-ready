@@ -64,7 +64,7 @@ function collectStrings() {
 }
 
 const protectedNames = [
-  "Lar de Víes", "Lar de Vies", "Rural Prado", "A Pontenova", "Neipín",
+  "Lar de Víes", "Lar de Vies", "La Casona", "Las Villas", "Rural Prado", "A Pontenova", "Neipín",
   "San Tirso de Abres", "OpenAI", "Supabase", "Ameiro", "Bidueira", "Carballo",
   "Castañeiro", "Salgueiro", "El Cabozo", "El Jardín", "El Valle", "La Capilla",
   "La Panera", "Villa Camelia", "Villa El Camino", "Villa Jazmín",
@@ -72,7 +72,7 @@ const protectedNames = [
 
 function protectNames(text) {
   const names = [];
-  let protectedText = text;
+  let protectedText = text.replace(/\bla Casona\b/g, "La Casona");
   for (const name of protectedNames) {
     protectedText = protectedText.split(name).join(`[[LAR${names.length}]]`);
     names.push(name);
