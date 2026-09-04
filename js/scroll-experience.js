@@ -108,9 +108,8 @@
         const philosophyTitle = document.querySelector('section.bg-primary-dark h2');
         register(philosophyTitle, { distance: 24, duration: 760 });
 
-        document.querySelectorAll('footer > *').forEach((element, index) => {
-            register(element, { distance: 32, duration: 600, delay: Math.min(index * 70, 280) });
-        });
+        // Keep footer navigation visible: content at the page bottom may never
+        // reach the observer's inset reveal area on taller viewports.
     };
 
     const initialise = () => {
