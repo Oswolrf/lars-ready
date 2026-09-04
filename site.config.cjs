@@ -158,6 +158,11 @@ const pages = [
     title: "Villa Jazmín en A Pontenova, Lugo | Lar de Víes", description: "Villa rural para hasta 4 personas con cocina, porche, jardín aromático privado y vistas abiertas al Valle del Eo.", ogTitle: "Villa Jazmín | Lar de Víes", image: "/images/Jazmin/jazmin-1.webp", imageAlt: "Villa Jazmín con jardín privado en Lar de Víes", entity: "larDeVies",
   },
   {
+    source: "politica-de-cookies.html", route: "/politica-cookies/", active: null, lastModified: "2026-09-04", indexable: false,
+    nav: "solid",
+    title: "Política de cookies | Lar de Víes", description: "Información sobre el uso de cookies y tecnologías similares en el sitio web de Lar de Víes.", ogTitle: "Política de cookies | Lar de Víes", image: "/images/home-hero-updated-desktop-2560.webp", imageAlt: "Lar de Víes", entity: "larDeVies",
+  },
+  {
     source: "politica-de-privacidad.html", route: "/politica-privacidad/", active: null, lastModified: "2026-08-31", indexable: false,
     nav: "solid",
     title: "Política de privacidad | Lar de Víes", description: "Información sobre privacidad y tratamiento de datos personales en el sitio web de Lar de Víes.", ogTitle: "Política de privacidad | Lar de Víes", image: "/images/home-hero-updated-desktop-2560.webp", imageAlt: "Lar de Víes", entity: "larDeVies",
@@ -189,6 +194,7 @@ const redirects = [
   { from: "/Reserva", to: "/reservas/", status: 301 },
   { from: "/sobre-nosotros.html", to: "/sobre-nosotros/", status: 301 },
   { from: "/politica-de-privacidad.html", to: "/politica-privacidad/", status: 301 },
+  { from: "/politica-de-cookies.html", to: "/politica-cookies/", status: 301 },
   { from: "/aviso-legal.html", to: "/aviso-legal/", status: 301 },
   { from: "/zonas-comunes.html", to: "/zonas-comunes/", status: 301 },
   { from: "/suites/la-panera.html", to: "/suite-la-panera/", status: 301 },
