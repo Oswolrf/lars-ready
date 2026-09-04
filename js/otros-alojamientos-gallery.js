@@ -17,13 +17,9 @@ import { t } from './i18n.js';
                 { src: 'images/SALGUEIRO/SALGUEIRO2.jpeg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO2.jpeg', alt: 'Baño de Salgueiro' },
                 { src: 'images/SALGUEIRO/SALGUEIRO3.jpeg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO3.jpeg', alt: 'Comedor de Salgueiro' },
                 { src: 'images/SALGUEIRO/SALGUEIRO4.jpeg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO4.jpeg', alt: 'Zona de estar y cocina de Salgueiro' },
-                { src: 'images/SALGUEIRO/SALGUEIRO5.jpg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO5.jpg', alt: 'Dormitorio de Salgueiro' },
-                { src: 'images/SALGUEIRO/SALGUEIRO6.jpg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO6.jpg', alt: 'Baño de Salgueiro' },
-                { src: 'images/SALGUEIRO/SALGUEIRO7.jpg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO7.jpg', alt: 'Comedor de Salgueiro' },
                 { src: 'images/SALGUEIRO/SALGUEIRO8.jpeg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO8.jpeg', alt: 'Dormitorio de Salgueiro' },
                 { src: 'images/SALGUEIRO/SALGUEIRO9.jpg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO9.jpg', alt: 'Comedor de Salgueiro' },
-                { src: 'images/SALGUEIRO/SALGUEIRO10.jpeg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO10.jpeg', alt: 'Zona de estar de Salgueiro' },
-                { src: 'images/SALGUEIRO/SALGUEIRO11.jpg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO11.jpg', alt: 'Dormitorio de Salgueiro' }
+                { src: 'images/SALGUEIRO/SALGUEIRO10.jpeg', thumb: 'thumb:images/SALGUEIRO/SALGUEIRO10.jpeg', alt: 'Zona de estar de Salgueiro' }
             ]
         },
         bidueira: {

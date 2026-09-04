@@ -139,11 +139,11 @@ const pages = [
   },
   {
     source: "suites/el-valle.html", route: "/suite-el-valle/", active: "casona", lastModified: "2026-08-11",
-    title: "Suite El Valle en A Pontenova, Lugo | Lar de Víes", description: "Suite rural para hasta 4 personas inspirada en los hórreos gallegos, con claraboyas y vistas al paisaje del Valle del Eo.", ogTitle: "Suite El Valle | Lar de Víes", image: "/images/Valle/valle-1.webp", imageAlt: "Suite El Valle con vistas panorámicas en Lar de Víes", entity: "larDeVies",
+    title: "Suite El Valle en A Pontenova, Lugo | Lar de Víes", description: "Suite rural para hasta 4 personas inspirada en los hórreos gallegos, con claraboyas y vistas al paisaje del Valle del Eo.", ogTitle: "Suite El Valle | Lar de Víes", image: "/images/Valle/valle-hero-cama.webp", imageAlt: "Suite El Valle con vistas panorámicas en Lar de Víes", entity: "larDeVies",
   },
   {
     source: "suites/el-jardin.html", route: "/suite-el-jardin/", active: "casona", lastModified: "2026-08-11",
-    title: "Suite El Jardín en A Pontenova, Lugo | Lar de Víes", description: "Suite rural adaptada para hasta 4 personas, con zona de estar y acceso directo al exterior de La Casona de Lar de Víes.", ogTitle: "Suite El Jardín | Lar de Víes", image: "/images/Jardin/jardin-2.webp", imageAlt: "Suite El Jardín con acceso directo al exterior", entity: "larDeVies",
+    title: "Suite El Jardín en A Pontenova, Lugo | Lar de Víes", description: "Suite rural adaptada para hasta 4 personas, con zona de estar y acceso directo al exterior de La Casona de Lar de Víes.", ogTitle: "Suite El Jardín | Lar de Víes", image: "/images/Jardin/jardin-hero-entrada.webp", imageAlt: "Suite El Jardín con acceso directo al exterior", entity: "larDeVies",
   },
   {
     source: "villas/el-camino.html", route: "/villa-el-camino/", active: "villas", lastModified: "2026-08-11",
