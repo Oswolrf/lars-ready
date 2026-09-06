@@ -3,13 +3,18 @@ id: gastronomia
 titulo: Gastronomía en Lar de Víes
 entidad: lar-de-vies
 tipo: servicio
-actualizado: 2026-08-31
-tags: [desayuno, cenas, menú, alergias, intolerancias, barbacoa, restaurantes]
+actualizado: 2026-09-06
+tags: [desayuno, cenas, menú, precio desayuno, contratación desayuno, alergias, intolerancias, barbacoa, restaurantes]
 ---
 
 ## Desayuno
 
-Lar de Víes ofrece servicio de desayuno.
+Lar de Víes ofrece servicio de desayuno para sus huéspedes.
+
+- Precio: **12 EUR por adulto y 6 EUR por niño**.
+- El desayuno puede contratarse únicamente al realizar la reserva en la web oficial o una
+  vez que el huésped ya está alojado en Lar de Víes, pudiendo contratarlo día a día.
+- No se debe indicar que el desayuno puede reservarse previamente por otros canales.
 
 - Horario habitual: **09:15 – 11:00 h**.
 - Si el horario se modifica puntualmente, prevalece la información que facilite el equipo
@@ -18,9 +23,17 @@ Lar de Víes ofrece servicio de desayuno.
 
 ## Cenas
 
-Lar de Víes ofrece servicio de cenas para sus huéspedes **determinados días**. Las cenas
-son una parte importante de la experiencia de la casa: cocina casera y cuidada, con
-presencia de cocina tradicional gallega y producto de la zona.
+El servicio de cenas de Lar de Víes es exclusivo para huéspedes alojados. Las cenas se
+contratan directamente durante la estancia en el alojamiento y son una parte importante de
+la experiencia de la casa: cocina casera y cuidada, con presencia de cocina tradicional
+gallega y producto de la zona.
+
+- Hay servicio de cenas los **lunes, martes, jueves, viernes y sábados**.
+- No hay servicio de cenas los **miércoles ni los domingos**.
+- Cada día que haya servicio se envía a los huéspedes un menú con diferentes platos para
+  elegir.
+- No se debe ofrecer el restaurante o el servicio de cenas a personas que no estén alojadas
+  en Lar de Víes.
 
 - Horario habitual aproximado: **20:15 – 22:45 h**.
 - El servicio puede variar según el día y la temporada, por lo que **nunca se puede

@@ -176,7 +176,7 @@ test("responde si el desayuno se paga aparte sin depender del índice RAG", asyn
 
   assert.equal(response.statusCode, 200);
   const payload = JSON.parse(response.body);
-  assert.equal(payload.answer, "Depende de la tarifa que elijas. El motor de reservas ofrece tarifas de solo alojamiento y tarifas con desayuno incluido; revisa el nombre y las condiciones de la tarifa antes de confirmar.");
+  assert.equal(payload.answer, "El desayuno cuesta 12 EUR por adulto y 6 EUR por niño. Puedes contratarlo al reservar en nuestra web oficial o, una vez alojado en Lar de Víes, solicitarlo día a día; no se reserva previamente por otros canales. El motor de reservas también ofrece tarifas de solo alojamiento y tarifas con desayuno incluido: revisa el nombre y las condiciones de la tarifa antes de confirmar.");
   assert.deepEqual(payload.sources, [{ title: "Reservas y cancelación", url: "/reservas/" }]);
   assert.equal(payload.abstained, false);
   assert.equal(typeof payload.historyToken, "string");

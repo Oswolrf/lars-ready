@@ -4,8 +4,8 @@ titulo: Sobre Lar de Víes
 url: /sobre-nosotros/
 entidad: lar-de-vies
 tipo: servicio
-actualizado: 2026-08-31
-tags: [qué es, alojamiento rural, Neipín, A Pontenova, experiencia, animales, cerveza]
+actualizado: 2026-09-06
+tags: [qué es, alojamiento rural, Neipín, A Pontenova, experiencia, animales, cerveza, miel, grupos, convivencias, retiros]
 ---
 
 ## Qué es Lar de Víes
@@ -47,8 +47,20 @@ No se puede garantizar que un animal concreto vaya a estar presente durante una 
 
 ## Cerveza artesanal NEIPA
 
-Lar de Víes dispone de su propia cerveza artesanal, NEIPA, que forma parte de la
-experiencia gastronómica de la casa.
+Lar de Víes dispone de productos propios o seleccionados, como su cerveza artesanal NEIPA,
+miel casera y otros productos. Para solicitar, comprar o consultar la disponibilidad de estos
+productos hay que contactar directamente con el equipo de Lar de Víes.
+
+## Grupos, convivencias y retiros
+
+Lar de Víes dispone de opciones especialmente pensadas para grupos, convivencias, retiros,
+encuentros y estancias similares. Es posible preparar menús cerrados para grupos, utilizar
+espacios amplios para reuniones y momentos compartidos, y plantear actividades durante la
+estancia.
+
+La propuesta puede personalizarse según las necesidades del grupo. Para preparar una opción
+a medida hay que contactar con el equipo de Lar de Víes. No se deben inventar precios,
+actividades concretas, condiciones ni disponibilidad.
 
 ## Lo que destacan las reseñas
 

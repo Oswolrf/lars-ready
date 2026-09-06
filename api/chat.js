@@ -34,9 +34,9 @@ const SMALL_TALK_REPLIES = {
 };
 
 const BREAKFAST_RATE_REPLIES = {
-  es: "Depende de la tarifa que elijas. El motor de reservas ofrece tarifas de solo alojamiento y tarifas con desayuno incluido; revisa el nombre y las condiciones de la tarifa antes de confirmar.",
-  en: "It depends on the rate you choose. The booking engine offers room-only rates and rates with breakfast included; check the rate name and conditions before confirming.",
-  de: "Das hängt vom gewählten Tarif ab. Das Buchungssystem bietet Tarife nur für die Unterkunft sowie Tarife inklusive Frühstück an; prüfen Sie vor der Bestätigung den Tarifnamen und die Bedingungen.",
+  es: "El desayuno cuesta 12 EUR por adulto y 6 EUR por niño. Puedes contratarlo al reservar en nuestra web oficial o, una vez alojado en Lar de Víes, solicitarlo día a día; no se reserva previamente por otros canales. El motor de reservas también ofrece tarifas de solo alojamiento y tarifas con desayuno incluido: revisa el nombre y las condiciones de la tarifa antes de confirmar.",
+  en: "Breakfast costs EUR 12 per adult and EUR 6 per child. You can add it when booking on our official website or request it day by day once staying at Lar de Víes; it cannot be booked in advance through other channels. The booking engine also offers room-only rates and rates with breakfast included, so check the rate name and conditions before confirming.",
+  de: "Das Frühstück kostet 12 EUR pro Erwachsenen und 6 EUR pro Kind. Sie können es bei der Buchung über unsere offizielle Website hinzufügen oder während Ihres Aufenthalts in Lar de Víes täglich anfragen; eine vorherige Buchung über andere Kanäle ist nicht möglich. Das Buchungssystem bietet außerdem Tarife nur für die Unterkunft sowie Tarife inklusive Frühstück an. Prüfen Sie vor der Bestätigung den Tarifnamen und die Bedingungen.",
 };
 
 const SYSTEM_PROMPT = `Eres el asistente virtual de Lar de Víes, en Neipín, A Pontenova (Lugo), y de Rural Prado, en San Tirso de Abres (Asturias).

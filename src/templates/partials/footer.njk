@@ -1,29 +1,40 @@
-<footer class="border-t border-white/10 bg-[#222e26] px-6 pb-32 pt-20 text-white md:px-12 md:pb-20">
-  <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 md:grid-cols-4">
-    <section aria-labelledby="footer-site-title" class="flex flex-col gap-6">
-      <img src="{{ url('/images/logo solo blanco.png') }}" width="92" height="88" alt="" loading="lazy" decoding="async">
-      <p id="footer-site-title" class="sr-only">Lar de Víes</p>
-      <p class="text-sm leading-relaxed text-stone-400">Turismo rural en la Reserva de la Biosfera Río Eo, Oscos y Terras de Burón.</p>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <section id="sib-form-container" class="footer-newsletter" aria-labelledby="newsletter-title">
+      <div class="footer-newsletter-copy">
+        <p id="newsletter-title" class="footer-newsletter-title">Historias para volver al norte</p>
+        <p class="newsletter-intro">Escapadas con calma y rincones del valle del Eo, en tu correo.</p>
+      </div>
+      <div class="footer-newsletter-controls">
+        <div id="error-message" class="sib-form-message-panel newsletter-message newsletter-message--error" role="alert" aria-live="assertive"><span class="sib-form-message-panel__inner-text">No hemos podido validar tu suscripción. Revisa los datos e inténtalo de nuevo.</span></div>
+        <div id="success-message" class="sib-form-message-panel newsletter-message newsletter-message--success" role="status" aria-live="polite"><span class="sib-form-message-panel__inner-text">Tu suscripción se ha realizado correctamente.</span></div>
+        <form id="sib-form" class="newsletter-form" method="post" action="https://a87793f8.sibforms.com/serve/MUIFAMmnAonPZ14KvJ_GH-G9DtBlGjSXS0Y1Ob4YSzUDiq5A4VLnFrs0KyNIbs-BJgiZxHyTytU94ABvcR5e9mq7u_AHVmjr-psvxs2x546E2A4idhb3WQjnxsxMgYFRj3PcuVAvE2AFwQfcoa2uKIYgr_X_UgKT-E8J1bGI6yU-rN-weHyAmCKi7uPpVkUR8rFjNPZVOmhu1HIn0A==" data-type="subscription" data-newsletter-form novalidate>
+          <div class="newsletter-field">
+            <label for="EMAIL" class="newsletter-label">Correo electrónico</label>
+            <div class="newsletter-input-row">
+              <input id="EMAIL" class="input newsletter-input" name="EMAIL" type="email" autocomplete="email" inputmode="email" placeholder="tu@email.com" aria-describedby="newsletter-email-error" required>
+              <button class="newsletter-submit" type="submit"><span>Suscribirme</span><span class="material-symbols-outlined footer-arrow" aria-hidden="true">arrow_forward</span></button>
+            </div>
+          </div>
+          <p id="newsletter-email-error" class="newsletter-error" aria-live="polite"></p>
+          <div class="newsletter-consent-row">
+            <input id="OPT_IN" class="newsletter-checkbox" name="OPT_IN" type="checkbox" value="1" aria-describedby="newsletter-consent-error" required>
+            <label for="OPT_IN">Acepto recibir la newsletter.</label>
+            <a href="{{ url('/politica-privacidad/') }}">Política de privacidad</a>
+          </div>
+          <p id="newsletter-consent-error" class="newsletter-error" aria-live="polite"></p>
+          <input class="input--hidden" name="email_address_check" type="text" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input name="locale" type="hidden" value="{{ locale.code }}">
+        </form>
+      </div>
     </section>
 
-    <nav aria-label="Explorar" class="flex flex-col gap-3 text-sm text-stone-400">
-      <p class="mb-3 text-sm font-bold uppercase tracking-widest text-stone-300">Explorar</p>
-      {% for item in navigation %}<a class="transition-colors hover:text-primary" href="{{ url(item.route) }}">{{ item.label }}</a>{% endfor %}
-      <a class="transition-colors hover:text-primary" href="{{ url('/reservas/') }}">Reservas</a>
-    </nav>
-
-    <section aria-labelledby="footer-contact-title">
-      <p id="footer-contact-title" class="mb-6 text-sm font-bold uppercase tracking-widest text-stone-300">{% if page.entity === 'ruralPrado' %}Reservas{% else %}Contacto{% endif %}</p>
-      {% if page.entity === 'ruralPrado' %}
-      <a href="{{ url(site.bookingFallback) }}" data-booking-trigger class="text-sm text-stone-400 underline underline-offset-4 hover:text-white">Elegir alojamiento</a>
-      {% else %}
-      <address class="flex flex-col gap-3 text-sm not-italic text-stone-400">
-        <span>Neipín, A Pontenova<br>Galicia, 27721 España</span>
-        <a class="hover:text-white" href="tel:+34678655303">+34 678 655 303</a>
-        <a class="hover:text-white" href="mailto:reservas@lardevies.com">reservas@lardevies.com</a>
-      </address>
-      {% endif %}
-      <div class="mt-6 flex items-center gap-4">
+    <div class="footer-main">
+    <section aria-labelledby="footer-site-title" class="footer-brand">
+      <div class="footer-logo-frame"><img class="footer-logo" src="{{ url('/images/logo solo blanco.png') }}" width="1254" height="1254" sizes="161px" alt="" loading="lazy" decoding="async"></div>
+      <p id="footer-site-title" class="sr-only">Lar de Víes</p>
+      <p class="footer-description">Turismo rural en la Reserva de la Biosfera Río Eo, Oscos y Terras de Burón.</p>
+      <div class="footer-socials">
         <a class="opacity-60 transition-opacity hover:opacity-100" href="https://www.instagram.com/lardevies" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Lar de Víes">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r=".75" fill="currentColor" stroke="none"></circle></svg>
         </a>
@@ -36,36 +47,40 @@
       </div>
     </section>
 
-    <section id="sib-form-container" aria-labelledby="newsletter-title">
-      <p class="newsletter-kicker">Newsletter</p>
-      <p id="newsletter-title" class="mb-3 font-serif text-2xl leading-tight text-white">Historias para volver al norte</p>
-      <p class="newsletter-intro">Novedades de Lar de Víes, escapadas con calma y rincones del valle del Eo, directamente en tu correo.</p>
-      <div id="error-message" class="sib-form-message-panel newsletter-message newsletter-message--error" role="alert" aria-live="assertive"><span class="sib-form-message-panel__inner-text">No hemos podido validar tu suscripción. Revisa los datos e inténtalo de nuevo.</span></div>
-      <div id="success-message" class="sib-form-message-panel newsletter-message newsletter-message--success" role="status" aria-live="polite"><span class="sib-form-message-panel__inner-text">Tu suscripción se ha realizado correctamente.</span></div>
-      <form id="sib-form" class="newsletter-form" method="post" action="https://a87793f8.sibforms.com/serve/MUIFAMmnAonPZ14KvJ_GH-G9DtBlGjSXS0Y1Ob4YSzUDiq5A4VLnFrs0KyNIbs-BJgiZxHyTytU94ABvcR5e9mq7u_AHVmjr-psvxs2x546E2A4idhb3WQjnxsxMgYFRj3PcuVAvE2AFwQfcoa2uKIYgr_X_UgKT-E8J1bGI6yU-rN-weHyAmCKi7uPpVkUR8rFjNPZVOmhu1HIn0A==" data-type="subscription" data-newsletter-form novalidate>
-        <div class="newsletter-field">
-          <label for="EMAIL" class="sr-only">Correo electrónico</label>
-          <input id="EMAIL" class="input newsletter-input" name="EMAIL" type="email" autocomplete="email" inputmode="email" placeholder="tu@email.com" aria-describedby="newsletter-email-error" required>
-          <button class="newsletter-submit" type="submit">Suscribirme</button>
-        </div>
-        <p id="newsletter-email-error" class="newsletter-error" aria-live="polite"></p>
-        <div class="newsletter-consent-row">
-          <input id="OPT_IN" class="newsletter-checkbox" name="OPT_IN" type="checkbox" value="1" aria-describedby="newsletter-consent-error" required>
-          <label for="OPT_IN">Acepto recibir la newsletter.</label>
-          <a href="{{ url('/politica-privacidad/') }}">Leer la política de privacidad</a>
-        </div>
-        <p id="newsletter-consent-error" class="newsletter-error" aria-live="polite"></p>
-        <input class="input--hidden" name="email_address_check" type="text" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <input name="locale" type="hidden" value="{{ locale.code }}">
-      </form>
+    <nav aria-label="Explorar" class="footer-explore">
+      <p class="footer-heading">Explorar</p>
+      <div class="footer-links">
+        {% for item in navigation %}{% if item.id !== 'inicio' %}<a href="{{ url(item.route) }}">{{ item.label }}</a>{% endif %}{% endfor %}
+      </div>
+    </nav>
+
+    <nav aria-label="Para tu estancia" class="footer-resources">
+      <p class="footer-heading">Para tu estancia</p>
+      <div class="footer-links">
+        <a href="{{ url('/images/guias/guia-turistica-es.pdf') }}" target="_blank" rel="noopener noreferrer">Guía turística - Español</a>
+        <a href="{{ url('/images/guias/tourist-guide-en.pdf') }}" target="_blank" rel="noopener noreferrer">Guía turística - Inglés</a>
+      </div>
+    </nav>
+
+    <section aria-labelledby="footer-contact-title" class="footer-contact">
+      <p id="footer-contact-title" class="footer-heading">{% if page.entity === 'ruralPrado' %}Reservas{% else %}Contacto y reservas{% endif %}</p>
+      {% if page.entity !== 'ruralPrado' %}
+      <address class="footer-address">
+        <a href="tel:+34678655303">+34 678 655 303</a>
+        <a href="mailto:reservas@lardevies.com">reservas@lardevies.com</a>
+        <span>Neipín, A Pontenova<br>Galicia, 27721 España</span>
+      </address>
+      {% endif %}
+      <a href="{{ url(site.bookingFallback) }}" data-booking-trigger class="footer-booking"><span>{% if page.entity === 'ruralPrado' %}Elegir alojamiento{% else %}Reservar{% endif %}</span><span class="material-symbols-outlined footer-arrow" aria-hidden="true">arrow_forward</span></a>
     </section>
-  </div>
-  <div class="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/20 pt-6 text-sm text-stone-300 lg:flex-row">
+    </div>
+  <div class="footer-bottom">
     <p>© 2026 Lar de Víes. Todos los derechos reservados.</p>
-    <nav aria-label="Información legal" class="flex flex-col items-center gap-x-6 gap-y-1 text-stone-100 sm:flex-row sm:flex-wrap sm:justify-center">
+    <nav aria-label="Información legal" class="footer-legal">
       <a class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href="{{ url('/aviso-legal/') }}">Aviso legal</a>
       <a class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href="{{ url('/politica-cookies/') }}">Política de cookies</a>
       <a class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white" href="{{ url('/politica-privacidad/') }}">Política de privacidad</a>
     </nav>
+  </div>
   </div>
 </footer>

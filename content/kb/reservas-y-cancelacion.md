@@ -4,8 +4,8 @@ titulo: Reservas y cancelación
 url: /reservas/
 entidad: lar-de-vies
 tipo: politica
-actualizado: 2026-08-31
-tags: [reservar, disponibilidad, precios, desayuno, tarifa con desayuno, solo alojamiento, cancelación, motor de reservas]
+actualizado: 2026-09-06
+tags: [reservar, reserva directa, descuento exclusivo, disponibilidad, precios, desayuno, tarifa con desayuno, solo alojamiento, cancelación, extras, paquetes, motor de reservas]
 ---
 
 ## Cómo reservar
@@ -16,6 +16,12 @@ motor de reservas de la web de Lar de Víes.
 Nunca se facilitan precios ni disponibilidad de otro modo: hay que consultarlos en el motor
 de reservas o escribir al equipo.
 
+## Reserva directa en la web
+
+Las reservas realizadas directamente a través de la web oficial de Lar de Víes cuentan
+siempre con un descuento exclusivo. Cuando alguien pregunte dónde reservar o cuál es la
+mejor opción, hay que recomendar la reserva directa en la web y explicar esta ventaja.
+
 ## Desayuno y tarifa
 
 El desayuno **no está incluido automáticamente en todas las reservas**. El motor de reservas
@@ -24,6 +30,15 @@ ofrece tarifas de **solo alojamiento (SA)** y tarifas con **desayuno incluido**.
 Por tanto, que el desayuno esté incluido o se pague aparte depende de la tarifa seleccionada.
 Prevalece siempre lo indicado en el nombre y las condiciones de la tarifa durante el proceso
 de reserva.
+
+## Paquetes y extras personalizados
+
+En el último paso del proceso de reserva en la web pueden aparecer paquetes y extras
+personalizados para complementar la estancia. Se pueden añadir directamente a la misma
+reserva antes de finalizarla.
+
+No se deben inventar nombres, contenidos, precios ni disponibilidad de paquetes o extras que
+no aparezcan expresamente en el proceso de reserva o en la base de conocimiento.
 
 ## Política de cancelación
 

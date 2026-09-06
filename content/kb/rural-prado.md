@@ -4,8 +4,8 @@ titulo: Rural Prado
 url: /rural-prado/
 entidad: rural-prado
 tipo: alojamiento
-actualizado: 2026-08-31
-tags: [Rural Prado, San Tirso de Abres, apartamentos, Ameiro, Salgueiro, Castañeiro, Bidueira, Carballo, accesibilidad]
+actualizado: 2026-09-06
+tags: [Rural Prado, San Tirso de Abres, apartamentos, Ameiro, Salgueiro, Castañeiro, Bidueira, Carballo, accesibilidad, desayunos, cenas]
 ---
 
 ## Identidad y ubicación
@@ -43,6 +43,14 @@ Todos los apartamentos de Rural Prado disponen de:
 - Vistas al entorno y al valle.
 
 El complejo también cuenta con lavandería, jardín y terraza.
+
+## Desayunos y cenas
+
+Rural Prado **no ofrece desayunos ni cenas**. Esta información es específica de Rural Prado y
+no debe confundirse con los servicios de Lar de Víes.
+
+Si alguien quiere venir a Lar de Víes, puede llamar al **+34 678 655 303** para contactar
+con el equipo.
 
 ## Apartamento Ameiro
 
@@ -102,7 +110,6 @@ consultar Google Maps.
 Para Rural Prado no están confirmados los siguientes datos y deben consultarse con el equipo:
 
 - Política de mascotas y posibles suplementos.
-- Servicio de desayunos o cenas.
 - Aparcamiento y sus condiciones.
 - Métodos de pago.
 - Aire acondicionado o ventilación adicional.

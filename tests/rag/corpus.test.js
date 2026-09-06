@@ -42,7 +42,8 @@ test("mantiene Rural Prado separado de Lar de Víes", () => {
   assert.ok(ruralChunks.every((chunk) => !chunk.content.includes("A Pontenova, Lugo")));
   assert.ok(ruralChunks.some((chunk) => chunk.id === "rural-prado#apartamento-salgueiro"));
   assert.ok(ruralChunks.every((chunk) => !chunk.content.includes("Ático de Prado")));
-  assert.match(ruralChunks.find((chunk) => chunk.id === "rural-prado#informacion-no-confirmada").content, /Servicio de desayunos o cenas/);
+  assert.doesNotMatch(ruralChunks.find((chunk) => chunk.id === "rural-prado#informacion-no-confirmada").content, /Servicio de desayunos o cenas/);
+  assert.match(ruralChunks.find((chunk) => chunk.id === "rural-prado#desayunos-y-cenas").content, /no ofrece desayunos ni cenas/);
 });
 
 test("documenta las tarifas con y sin desayuno de forma recuperable", () => {
@@ -56,4 +57,20 @@ test("documenta las tarifas con y sin desayuno de forma recuperable", () => {
   assert.match(breakfastChunk.content, /solo alojamiento \(SA\)/);
   assert.match(breakfastChunk.content, /desayuno incluido/);
   assert.match(breakfastChunk.content, /depende de la tarifa seleccionada/);
+});
+
+test("recupera las reglas nuevas de gastronomía y Rural Prado", () => {
+  const root = path.resolve(__dirname, "../..");
+  const validRoutes = new Set(siteConfig.pages.map((page) => page.route));
+  const corpus = loadCorpus({ root, validRoutes });
+  const gastronomy = corpus.chunks.find((chunk) => chunk.id === "gastronomia#desayuno");
+  const dinners = corpus.chunks.find((chunk) => chunk.id === "gastronomia#cenas");
+  const rural = corpus.chunks.find((chunk) => chunk.id === "rural-prado#desayunos-y-cenas");
+
+  assert.match(gastronomy.content, /12 EUR por adulto y 6 EUR por niño/);
+  assert.match(gastronomy.content, /web oficial/);
+  assert.match(dinners.content, /lunes, martes, jueves, viernes y sábados/);
+  assert.match(dinners.content, /exclusivo para huéspedes alojados/);
+  assert.match(rural.content, /no ofrece desayunos ni cenas/);
+  assert.match(rural.content, /\+34 678 655 303/);
 });
