@@ -22,6 +22,42 @@ const expectInsideViewport = async (locator) => {
 };
 
 test.describe('controles flotantes en móvil', () => {
+  test('el menú móvil cubre el viewport y queda por encima del contenido', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/');
+
+    const navigation = page.locator('[data-mobile-navigation]');
+    const panel = page.locator('[data-mobile-navigation-panel]');
+    await navigation.locator('summary').click();
+    await expect(panel).toBeVisible();
+    await expect(panel).toHaveAttribute('aria-hidden', 'false');
+
+    const state = await panel.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const sample = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+      return {
+        left: rect.left,
+        top: rect.top,
+        right: rect.right,
+        bottom: rect.bottom,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        zIndex: Number.parseInt(getComputedStyle(element).zIndex, 10),
+        sampleInsidePanel: sample === element || element.contains(sample),
+      };
+    });
+
+    expect(state.left).toBe(0);
+    expect(state.top).toBe(0);
+    expect(state.right).toBe(state.viewportWidth);
+    expect(state.bottom).toBe(state.viewportHeight);
+    expect(state.zIndex).toBeGreaterThan(40);
+    expect(state.sampleInsidePanel).toBe(true);
+
+    await page.keyboard.press('Escape');
+    await expect(panel).toBeHidden();
+  });
+
   test('el aviso y el panel de cookies no amplían ni rebasan el viewport', async ({ page }) => {
     for (const width of mobileWidths) {
       await page.setViewportSize({ width, height: 812 });

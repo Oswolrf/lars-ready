@@ -30,22 +30,34 @@
         <path d="m6 6 12 12M18 6 6 18"></path>
       </svg>
     </summary>
-    <div class="fixed inset-0 z-[60] flex flex-col gap-8 bg-[#131614] px-6 pt-24 text-white">
-      <div class="flex flex-col gap-6 font-display text-2xl font-light uppercase tracking-widest">
-        {% for item in navigation %}
-        <a href="{{ url(item.route) }}"
-          class="transition-colors hover:text-primary{% if page.active === item.id %} font-medium text-primary{% endif %}"
-          {% if page.active === item.id %}aria-current="page"{% endif %}>{{ item.label }}</a>
-        {% endfor %}
-      </div>
-      <div class="h-px w-full bg-white/10"></div>
-      {% set languageVariant = 'mobile' %}
-      {% include "partials/language-selector.njk" %}
-      <a href="{{ url(site.bookingFallback) }}" data-booking-trigger
-        class="rounded-full bg-primary px-6 py-4 text-center text-sm font-bold uppercase tracking-widest text-white shadow-lg hover:bg-primary-dark">
-        Reservar ahora
-      </a>
-      <p class="mt-auto pb-12 text-center text-sm text-white/40">Lar de Víes</p>
-    </div>
   </details>
 </nav>
+
+{# Keep the overlay outside the fixed nav stacking context. A backdrop-filter on
+   the scrolled nav can otherwise contain fixed descendants and let page content
+   paint over the menu on mobile browsers. #}
+<div id="mobile-navigation-panel" data-mobile-navigation-panel role="dialog" aria-modal="true"
+  aria-label="Menú principal" aria-hidden="true" hidden
+  class="hidden fixed inset-0 z-[100] flex flex-col gap-8 overflow-y-auto overscroll-contain bg-[#131614] px-6 pb-[calc(3rem+env(safe-area-inset-bottom))] pt-[calc(6rem+env(safe-area-inset-top))] text-white">
+  <button type="button" data-mobile-navigation-close aria-label="Cerrar menú"
+    class="absolute right-4 top-[calc(1rem+env(safe-area-inset-top))] z-10 flex min-h-11 min-w-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="m6 6 12 12M18 6 6 18"></path>
+    </svg>
+  </button>
+  <div class="flex flex-col gap-6 font-display text-2xl font-light uppercase tracking-widest">
+    {% for item in navigation %}
+    <a href="{{ url(item.route) }}"
+      class="transition-colors hover:text-primary{% if page.active === item.id %} font-medium text-primary{% endif %}"
+      {% if page.active === item.id %}aria-current="page"{% endif %}>{{ item.label }}</a>
+    {% endfor %}
+  </div>
+  <div class="h-px w-full bg-white/10"></div>
+  {% set languageVariant = 'mobile' %}
+  {% include "partials/language-selector.njk" %}
+  <a href="{{ url(site.bookingFallback) }}" data-booking-trigger
+    class="rounded-full bg-primary px-6 py-4 text-center text-sm font-bold uppercase tracking-widest text-white shadow-lg hover:bg-primary-dark">
+    Reservar ahora
+  </a>
+  <p class="mt-auto text-center text-sm text-white/40">Lar de Víes</p>
+</div>
