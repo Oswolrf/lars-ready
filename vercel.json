@@ -26,6 +26,7 @@
     { "source": "/Reserva", "destination": "/reservas/", "statusCode": 301 },
     { "source": "/sobre-nosotros.html", "destination": "/sobre-nosotros/", "statusCode": 301 },
     { "source": "/politica-de-privacidad.html", "destination": "/politica-privacidad/", "statusCode": 301 },
+    { "source": "/politica-de-cookies.html", "destination": "/politica-cookies/", "statusCode": 301 },
     { "source": "/aviso-legal.html", "destination": "/aviso-legal/", "statusCode": 301 },
     { "source": "/zonas-comunes.html", "destination": "/zonas-comunes/", "statusCode": 301 },
     { "source": "/suites/la-panera.html", "destination": "/suite-la-panera/", "statusCode": 301 },

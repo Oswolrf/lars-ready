@@ -24,6 +24,7 @@ Thumbs.db
 .vercel
 public/
 .cache/
+supabase/.temp/
 playwright-report/
 test-results/
 .lighthouseci/

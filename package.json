@@ -24,8 +24,12 @@
     "media:compare": "node scripts/media/compare-hero-videos.js",
     "seo:notify": "node scripts/notify_indexnow.js",
     "adapters:check": "node scripts/generate_adapters.js --check",
-    "rag:test": "node --test tests/rag/corpus.test.js tests/rag/chat-api.test.js",
-    "rag:ingest": "node --env-file-if-exists=.env.local scripts/ingest-rag.js"
+    "rag:test": "node --test tests/rag/corpus.test.js tests/rag/chat-api.test.js tests/rag/chat-deployment.test.js",
+    "chat:prepare": "node scripts/prepare_chat_server.js",
+    "chat:test:browser": "node --test tests/rag/chat-browser.test.cjs",
+    "rag:ingest": "node --env-file-if-exists=.env.local scripts/ingest-rag.js",
+    "chat:prepare:supabase": "node scripts/prepare_supabase_chat.cjs",
+    "chat:test:supabase": "node --test tests/rag/supabase-edge.test.mjs"
   },
   "keywords": [],
   "author": "",

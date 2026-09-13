@@ -1,0 +1,20 @@
+VERSIÓN DE PRUEBAS PARA IONOS — SOLO WEBP — 7 de septiembre de 2026
+
+Sube el contenido de WEB-PARA-SUBIR a una carpeta de pruebas del alojamiento. Conserva las subcarpetas e incluye .htaccess. Esta guía no se sube.
+
+Usa el gestor de IONOS: crea las subcarpetas y carga los archivos en su ubicación correspondiente, por tandas inferiores al límite que indique el gestor. La copia ya no contiene AVIF; las fotos mantienen sus tamaños adaptados a diferentes pantallas. Los logotipos, iconos y otros recursos especiales conservan sus formatos necesarios.
+
+Si ya has subido la versión anterior, reemplaza TODAS las páginas HTML de todos los idiomas y los recursos de esta copia, no solo las imágenes. Después puedes eliminar únicamente los archivos .avif de la copia de pruebas remota; no los borres antes de actualizar las páginas. También se han reducido los tamaños WebP. Consulta IMAGENES-ANTIGUAS-PRESCINDIBLES.txt para retirar solo las variantes anteriores que ya no se publican, después de actualizar las páginas.
+
+PRUEBA SIN MODIFICAR EL DOMINIO DEFINITIVO
+Asocia únicamente el dominio técnico de IONOS a la carpeta de pruebas. No cambies lardevies.com ni sus DNS. La web espera servirse en la raíz del dominio técnico, no bajo /web-lardevies/ en la URL.
+La compilación lleva noindex y robots.txt bloquea el rastreo. Estas medidas no son una contraseña ni impiden el acceso público. Los metadatos y enlaces absolutos aún usan https://lardevies.com: falta confirmar la dirección técnica completa para adaptar esos valores. No uses esta copia de pruebas como publicación definitiva; habrá que regenerar en modo producción.
+
+CHATBOT
+Sigue configurado para https://chat.lardevies.com/api/chat. Su disponibilidad no se ha verificado y debe autorizar el origen del dominio técnico para responder desde las pruebas. Consulta CHATBOT-SERVIDOR-EXTERNO.md; esa guía tampoco se sube.
+
+VALIDACIÓN
+La compilación de pruebas, sus 57 rutas canónicas, los enlaces a recursos, HTML y comprobaciones de aceptación han pasado. Falta verificar el funcionamiento real en IONOS, incluidos Apache, redirecciones, reservas, newsletter y chat.
+
+TAMAÑOS SIMPLIFICADOS
+Fotos: 320, 768 y hasta 1280 px. Cabeceras: 768 y hasta 1920 px. Si el original es menor, se conserva su ancho sin ampliarlo. Miniaturas: 160 y 320 px; logotipos conservan sus variantes específicas. No se han cambiado los estilos ni las dimensiones de presentación de las imágenes.

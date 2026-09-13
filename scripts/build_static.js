@@ -9,6 +9,7 @@ const nunjucks = require("nunjucks");
 const sharp = require("sharp");
 const config = require("../site.config.cjs");
 const i18n = require("../i18n.config.cjs");
+const { chatDeployConfig } = require("./chat_deploy_config.cjs");
 
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, "public");
@@ -23,6 +24,7 @@ const args = new Map(process.argv.slice(2).map((argument) => {
 const deployEnv = args.get("env") || process.env.DEPLOY_ENV || "production";
 const siteOrigin = (process.env.SITE_ORIGIN || config.site.defaultOrigin).replace(/\/$/, "");
 const basePath = normalizeBasePath(process.env.BASE_PATH || "/");
+const chat = chatDeployConfig(process.env.CHAT_API_URL, basePath);
 const isPreview = deployEnv !== "production";
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -36,7 +38,7 @@ const contentSecurityPolicy = [
   "img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com",
   "media-src 'self'",
   "frame-src https://maps.google.com https://www.google.com",
-  "connect-src 'self' https://sibforms.com https://*.sibforms.com",
+  `connect-src 'self' https://sibforms.com https://*.sibforms.com${chat.origin ? ` ${chat.origin}` : ""}`,
   "form-action 'self' https://*.sibforms.com https://direct-book.com",
   "upgrade-insecure-requests",
 ].join("; ");
@@ -139,6 +141,7 @@ function render(template, page = {}, extra = {}) {
     languageUrl: (route, localeCode) => publicUrl(i18n.localeRoute(route, localeCode)),
     t: (value) => i18n.translate(locale.code, value),
     deployEnv,
+    chatEndpoint: chat.endpoint,
     url: publicUrl,
     ...extra,
   });
@@ -508,9 +511,7 @@ async function applyHero($, page) {
   const variantSet = (responsive, format, fallback) => responsive?.variants
     ? responsive.variants[format].map((variant) => `${variant.url} ${variant.width}w`).join(", ")
     : fallback;
-  const mobileAvif = variantSet(mobileResponsive, "avif", posterMobile);
   const mobileWebp = variantSet(mobileResponsive, "webp", posterMobile);
-  const desktopAvif = variantSet(desktopResponsive, "avif", posterDesktop);
   const desktopWebp = variantSet(desktopResponsive, "webp", posterDesktop);
   video.attr({
     preload: "none",
@@ -526,9 +527,9 @@ async function applyHero($, page) {
   video.find("source").remove();
   video.append(`<source data-src="${publicUrl(selected.webm)}" type="video/webm">`);
   video.append(`<source data-src="${publicUrl(selected.mp4)}" type="video/mp4">`);
-  video.before(`<picture class="hero-poster" aria-hidden="true"><source type="image/avif" media="(max-width: 767px)" srcset="${mobileAvif}" sizes="100vw"><source type="image/webp" media="(max-width: 767px)" srcset="${mobileWebp}" sizes="100vw"><source type="image/avif" media="(min-width: 768px)" srcset="${desktopAvif}" sizes="100vw"><source type="image/webp" media="(min-width: 768px)" srcset="${desktopWebp}" sizes="100vw"><img src="${posterDesktop}" alt="" fetchpriority="high" decoding="async"></picture>`);
-  $("head").append(`<link rel="preload" as="image" type="image/avif" imagesrcset="${mobileAvif}" imagesizes="100vw" media="(max-width: 767px)" fetchpriority="high">`);
-  $("head").append(`<link rel="preload" as="image" type="image/avif" imagesrcset="${desktopAvif}" imagesizes="100vw" media="(min-width: 768px)" fetchpriority="high">`);
+  video.before(`<picture class="hero-poster" aria-hidden="true"><source type="image/webp" media="(max-width: 767px)" srcset="${mobileWebp}" sizes="100vw"><source type="image/webp" media="(min-width: 768px)" srcset="${desktopWebp}" sizes="100vw"><img src="${posterDesktop}" alt="" fetchpriority="high" decoding="async"></picture>`);
+  $("head").append(`<link rel="preload" as="image" type="image/webp" imagesrcset="${mobileWebp}" imagesizes="100vw" media="(max-width: 767px)" fetchpriority="high">`);
+  $("head").append(`<link rel="preload" as="image" type="image/webp" imagesrcset="${desktopWebp}" imagesizes="100vw" media="(min-width: 768px)" fetchpriority="high">`);
   for (const asset of [videoConfig.poster.mobile, videoConfig.poster.desktop, selected.webm, selected.mp4]) {
     referencedFiles.add(decodeURIComponent(asset.replace(/^\//, "")));
   }
@@ -575,19 +576,19 @@ async function createResponsiveVariants(sourceRelative, profile = "content") {
     const requestedWidths = isBrandAsset
       ? [80, 160, 320, 640]
       : profile === "hero"
-      ? [480, 768, 1280, 1920]
-      : profile === "gallery"
-        ? [160, 320, 768, 1280]
-        : [320, 480, 768, 1280];
+      ? [768, 1920]
+      : profile === "thumbnail"
+        ? [160, 320]
+        : [320, 768, 1280];
     const maximum = requestedWidths.at(-1);
     const widths = [...new Set([
       ...requestedWidths,
       ...(metadata.width < maximum ? [metadata.width] : []),
     ].filter((width) => width <= metadata.width))].sort((a, b) => a - b);
     const stem = path.basename(normalized, path.extname(normalized)).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
-    const variants = { avif: [], webp: [] };
+    const variants = { webp: [] };
     for (const width of widths) {
-      for (const format of ["avif", "webp"]) {
+      for (const format of ["webp"]) {
         const encoderProfile = profile === "hero" ? "-hero-v2" : "";
         const filename = `${stem}-${sourceHash}${encoderProfile}-${width}.${format}`;
         const cacheFile = path.join(cacheRoot, filename);
@@ -596,9 +597,7 @@ async function createResponsiveVariants(sourceRelative, profile = "content") {
         ensureDirectory(path.dirname(outputFile));
         if (!fs.existsSync(cacheFile)) {
           const pipeline = sharp(source, { failOn: "none" }).resize({ width, withoutEnlargement: true });
-          const buffer = format === "avif"
-            ? await pipeline.avif({ quality: profile === "hero" ? 40 : 52, effort: 4 }).toBuffer()
-            : await pipeline.webp({ quality: profile === "hero" ? 72 : 78, effort: 4 }).toBuffer();
+          const buffer = await pipeline.webp({ quality: profile === "hero" ? 72 : 78, effort: 4 }).toBuffer();
           fs.writeFileSync(cacheFile, buffer);
         }
         fs.copyFileSync(cacheFile, outputFile);
@@ -620,7 +619,8 @@ async function enhanceImages($, page) {
     referencedFiles.add(sourceRelative);
     const inHero = image.closest("header, .hero-viewport, [data-hero]").length > 0 || image.attr("fetchpriority") === "high";
     const inGallery = image.closest("[data-carousel], [data-gallery], [data-gallery-open], [data-lightbox]").length > 0;
-    const responsive = await createResponsiveVariants(sourceRelative, inHero ? "hero" : inGallery ? "gallery" : "content");
+    const isCarouselThumbnail = image.closest("[data-carousel-slide]").length > 0;
+    const responsive = await createResponsiveVariants(sourceRelative, isCarouselThumbnail ? "thumbnail" : inHero ? "hero" : inGallery ? "gallery" : "content");
     if (!responsive) continue;
     image.attr({ width: String(responsive.width), height: String(responsive.height), decoding: image.attr("decoding") || "async" });
     const inCriticalChrome = image.closest("nav#main-nav").length > 0;
@@ -628,7 +628,6 @@ async function enhanceImages($, page) {
     if (inCriticalChrome && !image.attr("loading")) image.attr("loading", "eager");
     if (!responsive.variants || image.parent().is("picture")) continue;
     const isBrandAsset = /(?:logo|favicon|apple-touch)/i.test(sourceRelative);
-    const isCarouselThumbnail = image.closest("[data-carousel-slide]").length > 0;
     const sizes = image.attr("sizes") || (isCarouselThumbnail
       ? "80px"
       : isBrandAsset && image.closest("nav#main-nav").length
@@ -640,17 +639,15 @@ async function enhanceImages($, page) {
           : inHero
             ? "100vw"
       : "(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw");
-    const avif = responsive.variants.avif.map((variant) => `${variant.url} ${variant.width}w`).join(", ");
     const webp = responsive.variants.webp.map((variant) => `${variant.url} ${variant.width}w`).join(", ");
     if (inHero && !$('link[rel="preload"][as="image"]').length) {
-      const fallback = responsive.variants.avif.at(-1)?.url;
+      const fallback = responsive.variants.webp.at(-1)?.url;
       if (fallback) {
-        $("head").append(`<link rel="preload" as="image" type="image/avif" href="${fallback}" imagesrcset="${avif}" imagesizes="${sizes}" fetchpriority="high">`);
+        $("head").append(`<link rel="preload" as="image" type="image/webp" href="${fallback}" imagesrcset="${webp}" imagesizes="${sizes}" fetchpriority="high">`);
       }
     }
     image.attr({ srcset: webp, sizes });
     image.wrap("<picture></picture>");
-    image.before(`<source type="image/avif" srcset="${avif}" sizes="${sizes}">`);
     image.before(`<source type="image/webp" srcset="${webp}" sizes="${sizes}">`);
     if (inCriticalChrome) image.attr("fetchpriority", "high");
   }
@@ -867,6 +864,30 @@ async function copyReferencedFiles() {
     if (![".avif", ".gif", ".ico", ".jpeg", ".jpg", ".mp4", ".pdf", ".png", ".svg", ".webm", ".webp"].includes(extension)) continue;
     const source = path.join(root, ...normalizeSlashes(file).split("/"));
     if (!fs.existsSync(source) || !fs.statSync(source).isFile()) throw new Error(`Falta el activo referenciado: ${file}`);
+    // Reuse an existing full-resolution derivative instead of publishing another
+    // fallback copy. Keep originals when resizing would reduce their resolution,
+    // and keep brand assets and animated images unchanged.
+    if ([".webp", ".png"].includes(extension) && !/(?:logo|favicon|apple-touch)/i.test(file)) {
+      const metadata = await sharp(source).metadata();
+      if ((metadata.pages || 1) === 1) {
+        const candidates = [];
+        for (const profile of ["content", "gallery", "hero"]) {
+          const cached = responsiveCache.get(`${normalizeSlashes(file)}:${profile}`);
+          if (!cached) continue;
+          const responsive = await cached;
+          for (const variant of responsive?.variants?.webp || []) {
+            if (variant.width !== metadata.width) continue;
+            const relative = relativeFromBuiltUrl(variant.url);
+            candidates.push({ relative, bytes: fs.statSync(path.join(output, relative)).size });
+          }
+        }
+        candidates.sort((a, b) => a.bytes - b.bytes);
+        if (candidates[0]?.bytes < fs.statSync(source).size) {
+          assetMap.set(normalizeSlashes(file), candidates[0].relative);
+          continue;
+        }
+      }
+    }
     if ([".jpeg", ".jpg"].includes(extension)) {
       const responsive = await createResponsiveVariants(file, "gallery");
       if (responsive?.variants?.webp?.length) {
@@ -1040,6 +1061,26 @@ function writeBuildManifest(cssUrl, jsUrl, iconUrl, assetMap) {
   writeFile("build-manifest.json", `${JSON.stringify({ deployEnv, siteOrigin, basePath, css: cssUrl, js: jsUrl, icons: iconUrl, pages, videos }, null, 2)}\n`);
 }
 
+function removeUnusedImageVariants() {
+  // Run after URL rewriting: gallery data and deferred srcsets are references too.
+  const extensions = new Set([".html", ".css", ".js", ".json", ".xml", ".txt"]);
+  const publishedText = walkFiles(output)
+    .filter((file) => extensions.has(path.extname(file)))
+    .map((file) => fs.readFileSync(file, "utf8")).join("\n");
+  const directory = path.join(output, "assets", "images");
+  let count = 0;
+  let bytes = 0;
+  for (const file of walkFiles(directory)) {
+    if (!/\.(avif|webp)$/.test(file) || publishedText.includes(path.basename(file))) continue;
+    const resolved = fs.realpathSync(file);
+    if (!resolved.startsWith(`${fs.realpathSync(directory)}${path.sep}`)) throw new Error(`Imagen fuera de salida: ${file}`);
+    bytes += fs.statSync(file).size;
+    fs.unlinkSync(file);
+    count++;
+  }
+  console.log(`Variantes sin uso retiradas: ${count} (${(bytes / 1e6).toFixed(2)} MB)`);
+}
+
 function nestBuildForBasePath() {
   if (basePath === "/") return;
   const mountName = basePath.replace(/^\/+|\/+$/g, "");
@@ -1074,6 +1115,7 @@ async function main() {
   const { assetMap, thumbnailMap } = await copyReferencedFiles();
   rewritePublishedAssetUrls(assetMap, thumbnailMap);
   writeBuildManifest(cssUrl, jsUrl, iconUrl, assetMap);
+  removeUnusedImageVariants();
   nestBuildForBasePath();
   console.log(`Paquete estático ${deployEnv} preparado en ${output}`);
   console.log(`Rutas: ${config.pages.length * localeEntries.length}; iconos: ${usedIcons.size}; activos fuente: ${referencedFiles.size}`);

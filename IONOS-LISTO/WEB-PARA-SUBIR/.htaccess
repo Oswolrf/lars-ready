@@ -1,0 +1,60 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+ErrorDocument 410 /410.html
+Redirect 301 /otros-alojamientos/ /rural-prado/
+Redirect 301 /otros-alojamientos /rural-prado/
+Redirect 301 /OtrosAlojamientos.html /rural-prado/
+Redirect 301 /LaCasona.html /la-casona/
+Redirect 301 /LaCasona /la-casona/
+Redirect 301 /Lasvillas.html /las-villas-casitas-independientes/
+Redirect 301 /Lasvillas /las-villas-casitas-independientes/
+Redirect 301 /OtrosAlojamientos /rural-prado/
+Redirect 301 /Entorno.html /el-entorno/
+Redirect 301 /Entorno /el-entorno/
+Redirect 301 /Reserva.html /reservas/
+Redirect 301 /Reserva /reservas/
+Redirect 301 /sobre-nosotros.html /sobre-nosotros/
+Redirect 301 /politica-de-privacidad.html /politica-privacidad/
+Redirect 301 /politica-de-cookies.html /politica-cookies/
+Redirect 301 /aviso-legal.html /aviso-legal/
+Redirect 301 /zonas-comunes.html /zonas-comunes/
+Redirect 301 /suites/la-panera.html /suite-la-panera/
+Redirect 301 /suites/la-panera /suite-la-panera/
+Redirect 301 /suites/el-cabozo.html /suite-el-cabozo/
+Redirect 301 /suites/el-cabozo /suite-el-cabozo/
+Redirect 301 /suites/la-capilla.html /suite-la-capilla/
+Redirect 301 /suites/la-capilla /suite-la-capilla/
+Redirect 301 /suites/el-valle.html /suite-el-valle/
+Redirect 301 /suites/el-valle /suite-el-valle/
+Redirect 301 /suites/el-jardin.html /suite-el-jardin/
+Redirect 301 /suites/el-jardin /suite-el-jardin/
+Redirect 301 /villas/el-camino.html /villa-el-camino/
+Redirect 301 /villas/el-camino /villa-el-camino/
+Redirect 301 /villas/camelia.html /villa-camelia/
+Redirect 301 /villas/camelia /villa-camelia/
+Redirect 301 /villas/jazmin.html /villa-jazmin/
+Redirect 301 /villas/jazmin /villa-jazmin/
+Redirect 301 /como-llegar/ /el-entorno/#como-llegar
+Redirect gone /excursiones-en-lugo/
+Redirect gone /blog/
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json application/xml image/svg+xml
+</IfModule>
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' https://sibforms.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com; media-src 'self'; frame-src https://maps.google.com https://www.google.com; connect-src 'self' https://sibforms.com https://*.sibforms.com https://chat.lardevies.com; form-action 'self' https://*.sibforms.com https://direct-book.com; upgrade-insecure-requests"
+  Header always set X-Frame-Options "DENY"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-site"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+  <FilesMatch "\.(?:css|js|woff2|avif|webp|png|jpe?g|svg|mp4|webm)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
