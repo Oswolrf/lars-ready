@@ -99,6 +99,15 @@ Comprobar CORS/CSP desde el origen real de IONOS; un test HTTP no prueba el host
 
 ## Controles de la prueba
 
+### Vercel
+
+El `vercel.json` raíz configura `build.env.CHAT_API_URL` con el endpoint público
+de Supabase y permite su origen en las dos cabeceras CSP. El dominio
+`https://lars-ready.vercel.app` también debe figurar en `RAG_ALLOWED_ORIGINS`.
+Tras cambiar estas opciones, realizar un nuevo despliegue; añadir únicamente
+el origen en Supabase no modifica el HTML publicado. Al trasladar al cliente,
+actualizar tanto la URL del build como el origen permitido en CSP.
+
 - 20 solicitudes por identidad de red y ventana de 10 minutos, más los topes
   globales anteriores, persistidos atómicamente en Supabase. Cuentan también los
   saludos. Los topes globales se aplican aunque cambie o se falsifique la IP.
