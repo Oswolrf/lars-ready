@@ -1023,7 +1023,12 @@ function buildAdapters(cssUrl) {
     "X-Permitted-Cross-Domain-Policies: none",
   ];
   writeFile("_headers", `${publicUrl("/assets/*")}\n  Cache-Control: public, max-age=31536000, immutable\n${publicUrl("/*.html")}\n  Cache-Control: public, max-age=0, must-revalidate\n${catchAll}\n${sharedHeaders.map((header) => `  ${header}`).join("\n")}\n`);
-  const apacheRedirects = config.redirects.map((item) => `Redirect ${item.status} ${publicUrl(item.from)} ${publicUrl(item.to)}`).join("\n");
+  // Apache applies DirectoryIndex before evaluating this redirect, so redirecting
+  // /index.html to / creates a loop when / resolves to index.html.
+  const apacheRedirects = config.redirects
+    .filter((item) => item.from !== "/index.html")
+    .map((item) => `Redirect ${item.status} ${publicUrl(item.from)} ${publicUrl(item.to)}`)
+    .join("\n");
   const apacheGone = config.gone.map((route) => `Redirect gone ${publicUrl(route)}`).join("\n");
   writeFile(".htaccess", `Options -Indexes -MultiViews\nDirectoryIndex index.html\nErrorDocument 404 ${publicUrl("/404.html")}\nErrorDocument 410 ${publicUrl("/410.html")}\n${apacheRedirects}\n${apacheGone}\n<IfModule mod_deflate.c>\n  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json application/xml image/svg+xml\n</IfModule>\n<IfModule mod_headers.c>\n  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"\n  Header always set Content-Security-Policy "${contentSecurityPolicy}"\n  Header always set X-Frame-Options "DENY"\n  Header always set X-Content-Type-Options "nosniff"\n  Header always set Referrer-Policy "strict-origin-when-cross-origin"\n  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"\n  Header always set Cross-Origin-Opener-Policy "same-origin"\n  Header always set Cross-Origin-Resource-Policy "same-site"\n  Header always set X-Permitted-Cross-Domain-Policies "none"\n  <FilesMatch "\\.(?:css|js|woff2|avif|webp|png|jpe?g|svg|mp4|webm)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.html$">\n    Header set Cache-Control "public, max-age=0, must-revalidate"\n  </FilesMatch>\n</IfModule>\n`);
   const nginxRedirects = config.redirects.map((item) => `location = ${publicUrl(item.from)} { return ${item.status} ${publicUrl(item.to)}; }`).join("\n");
