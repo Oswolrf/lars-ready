@@ -24,7 +24,7 @@ const args = new Map(process.argv.slice(2).map((argument) => {
 const deployEnv = args.get("env") || process.env.DEPLOY_ENV || "production";
 const siteOrigin = (process.env.SITE_ORIGIN || config.site.defaultOrigin).replace(/\/$/, "");
 const basePath = normalizeBasePath(process.env.BASE_PATH || "/");
-const chat = chatDeployConfig(process.env.CHAT_API_URL, basePath);
+const chat = chatDeployConfig(process.env.CHAT_API_URL || config.site.defaultChatEndpoint, basePath);
 const isPreview = deployEnv !== "production";
 const contentSecurityPolicy = [
   "default-src 'self'",

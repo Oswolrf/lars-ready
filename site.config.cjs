@@ -3,6 +3,10 @@
 const site = {
   name: "Lar de Víes",
   defaultOrigin: "https://lardevies.com",
+  // The static deployment on IONOS has no same-origin /api runtime. Keep the
+  // public Supabase Edge Function as the safe production fallback; CI can
+  // still override it with CHAT_API_URL when another endpoint is required.
+  defaultChatEndpoint: "https://onjwlzvlfuhleqlkscrx.supabase.co/functions/v1/chat",
   locale: "es_ES",
   language: "es-ES",
   bookingFallback: "/reservas/#elegir-alojamiento",
