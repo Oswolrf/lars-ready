@@ -26,8 +26,7 @@ aproximadamente 45 m² distribuidos en una sola planta.
 ## Capacidad y camas
 
 - Villa Jazmín admite un máximo de 4 personas.
-- Admite hasta 2 niños.
-- Cama de 1,80 m (King Size) más sofá cama.
+- Cama doble de 1,50 m + 2 camas supletorias.
 - Juego completo de ropa de cama incluido.
 - Almohadas hipoalergénicas.
 

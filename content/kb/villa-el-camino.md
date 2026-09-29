@@ -28,8 +28,7 @@ disfrutar de la naturaleza con total privacidad.
 
 - Villa El Camino admite un máximo de 5 personas. Es el alojamiento de mayor capacidad de
   Lar de Víes.
-- Admite hasta 3 niños.
-- Cama de 1,80 m (King Size) más sofá cama para dos personas.
+- Cama doble de 1,50 m + 2 camas supletorias + 1 plaza en sofá cama.
 - Juego completo de ropa de cama incluido.
 - Almohadas hipoalergénicas.
 

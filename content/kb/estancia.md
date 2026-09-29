@@ -54,10 +54,10 @@ necesidades del huésped.
 
 ## Configuración de camas
 
-La configuración habitual de las camas principales es una cama de 1,80 m (King Size) o dos
-camas individuales de 90 cm, dependiendo del alojamiento y de la preparación.
+Las camas King Size de las suites pueden configurarse como una cama de 1,80 m o dos camas
+individuales de 90 cm, excepto en Suite Capilla.
 
-La Suite Capilla es la excepción: cama principal de 1,50 m y dos camas individuales de
-90 cm en el altillo.
+La Suite Capilla dispone de una cama doble de 1,50 m y dos camas individuales de 90 cm en
+el altillo.
 
 Ante necesidades específicas de camas hay que consultar con el equipo.

@@ -26,6 +26,11 @@ const siteOrigin = (process.env.SITE_ORIGIN || config.site.defaultOrigin).replac
 const basePath = normalizeBasePath(process.env.BASE_PATH || "/");
 const chat = chatDeployConfig(process.env.CHAT_API_URL || config.site.defaultChatEndpoint, basePath);
 const isPreview = deployEnv !== "production";
+const maintenanceValue = process.env.SITE_MAINTENANCE;
+if (maintenanceValue !== undefined && !["true", "false"].includes(maintenanceValue)) {
+  throw new Error("SITE_MAINTENANCE debe ser true o false");
+}
+const maintenance = maintenanceValue === undefined ? config.site.maintenance === true : maintenanceValue === "true";
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -1104,6 +1109,13 @@ async function main() {
   fs.rmSync(output, { recursive: true, force: true });
   ensureDirectory(output);
   ensureDirectory(cacheRoot);
+  if (maintenance) {
+    buildAdapters("");
+    require("./build_maintenance.cjs").buildMaintenance({ root, output, basePath, deployEnv, siteOrigin });
+    nestBuildForBasePath();
+    console.log("Portada de prelanzamiento preparada. SITE_MAINTENANCE=false genera la web completa.");
+    return;
+  }
   const [cssUrl, jsUrl] = await Promise.all([buildCss(), buildJs()]);
   for (const locale of localeEntries) {
     for (const page of config.pages) await buildPage(localizedPage(page, locale.code), cssUrl, jsUrl);

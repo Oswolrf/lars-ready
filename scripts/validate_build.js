@@ -9,6 +9,11 @@ const i18n = require("../i18n.config.cjs");
 const root = path.resolve(__dirname, "..");
 const output = path.resolve(root, process.argv[2] || "public");
 const expectedEnv = process.argv[3] || "production";
+const maintenanceManifest = path.join(output, "build-manifest.json");
+if (fs.existsSync(maintenanceManifest) && JSON.parse(fs.readFileSync(maintenanceManifest, "utf8")).maintenance) {
+  require("./validate_maintenance.cjs").validateMaintenance(output, expectedEnv);
+  process.exit(0);
+}
 const errors = [];
 const generatedDocuments = new Map();
 const pages = Object.values(i18n.locales).flatMap((locale) => config.pages.map((page) => ({

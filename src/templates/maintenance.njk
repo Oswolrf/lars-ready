@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{ locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#243c32">
+  <title>{{ copy.title }} | Lar de Víes</title>
+  <meta name="description" content="{{ copy.title }}. {{ copy.choose }}: Lar de Víes · Rural Prado.">
+  <link rel="icon" href="{{ base }}favicon.ico">
+  <link rel="stylesheet" href="{{ css }}">
+</head>
+<body>
+  <main>
+    <img class="logo" src="{{ logo }}" alt="Lar de Víes" width="{{ width }}" height="{{ height }}">
+    <h1>{{ copy.title }}</h1>
+    <details{% if booking %} open{% endif %}>
+      <summary>{{ copy.reserve }}</summary>
+      <section aria-label="{{ copy.choose }}">
+        <h2>{{ copy.choose }}</h2>
+        <a href="{{ larUrl }}" rel="external"><span>Lar de Víes<small>{{ copy.lar }}</small></span><span aria-hidden="true">↗</span></a>
+        <a href="{{ pradoUrl }}" rel="external"><span>Rural Prado<small>{{ copy.prado }}</small></span><span aria-hidden="true">↗</span></a>
+      </section>
+    </details>
+  </main>
+</body>
+</html>

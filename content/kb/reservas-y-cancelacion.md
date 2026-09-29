@@ -55,9 +55,8 @@ esa reserva concreta o contactar con el equipo.
 - **Parejas**: Lar de Víes es adecuado para escapadas en pareja. Una suite ofrece una
   experiencia más integrada en La Casona; una villa, mayor independencia y cocina propia.
 - **Familias y grupos**: los alojamientos con mayor capacidad son las villas y la Suite
-  Capilla. Villa El Camino admite hasta 5 personas, y la Suite Capilla, Villa Jazmín, Villa
-  Camelia y las suites Panera, Valle y Jardín admiten hasta 4. La Suite Cabozo admite hasta
-  3 personas.
+  Capilla. Villa El Camino admite hasta 5 personas; la Suite Capilla, Villa Jazmín, Villa
+  Camelia y la Suite Panera, hasta 4; y las suites Valle, Jardín y Cabozo, hasta 3.
 - **Con mascota**: las mascotas se admiten bajo petición previa en todos los alojamientos,
   con posible suplemento.
 - **Con necesidades de accesibilidad**: la Suite Jardín es la unidad con acceso y baño

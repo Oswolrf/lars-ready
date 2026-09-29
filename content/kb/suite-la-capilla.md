@@ -19,15 +19,14 @@ hay una zona abuhardillada con techos acristalados.
 
 ## Capacidad y camas
 
-- La Suite Capilla admite un máximo de 4 personas.
-- Admite hasta 2 niños.
+- La Suite Capilla admite hasta 4 personas (máximo 2 adultos + 2 niños de hasta 17 años).
 - Cama principal de 1,50 m.
 - Dos camas individuales de 90 cm en el altillo.
 - Juego completo de ropa de cama incluido.
 - Almohadas hipoalergénicas.
 
-Es la única suite de Lar de Víes con esta configuración de camas; las demás tienen cama de
-1,80 m (King Size) o dos camas individuales de 90 cm.
+Es la única suite de Lar de Víes con esta configuración de camas. Las camas King Size de las
+demás suites pueden configurarse como una cama de 1,80 m o dos camas individuales de 90 cm.
 
 ## Equipamiento
 

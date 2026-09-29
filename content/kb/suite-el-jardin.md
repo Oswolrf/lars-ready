@@ -4,7 +4,7 @@ titulo: Suite Jardín
 url: /suite-el-jardin/
 entidad: lar-de-vies
 tipo: alojamiento
-capacidad: 4
+capacidad: 3
 actualizado: 2026-08-31
 tags: [suite, planta baja, adaptada, accesible, acceso al jardín, hórreo]
 ---
@@ -32,9 +32,8 @@ el alojamiento se adapta exactamente a las necesidades del huésped.
 
 ## Capacidad y camas
 
-- La Suite Jardín admite un máximo de 4 personas.
-- Admite hasta 1 niño.
-- Cama de 1,80 m (King Size) o dos camas individuales de 90 cm.
+- La Suite Jardín admite hasta 3 personas (máximo 2 adultos + 1 niño).
+- Cama King Size, configurable como una cama de 1,80 m o dos camas individuales de 90 cm.
 - Juego completo de ropa de cama incluido.
 - Almohadas hipoalergénicas.
 

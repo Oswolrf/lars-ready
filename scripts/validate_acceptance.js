@@ -90,6 +90,25 @@ async function validateHttpContract(manifest) {
 async function main() {
   assert.ok(fs.existsSync(manifestPath), `falta ${manifestPath}; ejecuta el build primero`);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  if (manifest.maintenance) {
+    require("./validate_maintenance.cjs").validateMaintenance(output);
+    const server = createStaticServer(output);
+    server.listen(0, "127.0.0.1");
+    await once(server, "listening");
+    try {
+      const origin = `http://127.0.0.1:${server.address().port}`;
+      for (const page of manifest.pages) {
+        const response = await fetch(`${origin}${manifest.basePath}${page.route.slice(1)}`);
+        assert.equal(response.status, 200, page.route);
+        assert.match(await response.text(), /<summary>/);
+      }
+      assert.equal((await fetch(`${origin}${manifest.css}`)).status, 200);
+    } finally {
+      await new Promise((resolve) => server.close(resolve));
+    }
+    console.log("Aceptación de prelanzamiento: páginas y CSS responden por HTTP.");
+    return;
+  }
   validateVideoPolicy();
   await validateHttpContract(manifest);
   console.log("Aceptación estática: política de vídeo, caché immutable y rangos HTTP 206/416 verificados.");

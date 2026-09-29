@@ -1,0 +1,20 @@
+@font-face{font-family:Lora;src:url("./lora.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+*{box-sizing:border-box}
+html{color-scheme:dark;background:#243c32}
+body{margin:0;color:#f5f1e7;font-family:Arial,sans-serif}
+main{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 24px;text-align:center}
+.logo{width:190px;max-width:55vw;height:auto;object-fit:contain;margin-bottom:64px}
+h1{font:400 clamp(32px,5vw,62px)/1.18 Lora,Georgia,serif;letter-spacing:-.035em;margin:0 0 48px;text-wrap:balance}
+details{width:min(100%,420px)}
+summary{display:block;list-style:none;width:max-content;margin:0 auto;padding:18px 42px;border:1px solid #b9bdac;border-radius:2px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+summary::-webkit-details-marker{display:none}
+summary:hover,details[open]>summary{background:#f5f1e7;color:#243c32}
+:focus-visible{outline:3px solid #e6c892;outline-offset:6px}
+section{margin-top:32px;text-align:left}
+h2{font-size:11px;font-weight:400;letter-spacing:.13em;text-transform:uppercase;color:#c7cec6;margin:0 0 12px}
+a{color:inherit;text-decoration:none;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0;border-top:1px solid #66796b;font:400 24px/1.3 Lora,Georgia,serif}
+a:last-child{border-bottom:1px solid #66796b}
+a:hover{color:#e6c892}
+small{display:block;font:400 12px/1.6 Arial,sans-serif;color:#c7cec6;margin-top:7px}
+@media(max-width:480px){main{padding:40px 24px}.logo{width:154px;margin-bottom:48px}h1{max-width:300px;margin-bottom:36px}}
+@media(prefers-reduced-motion:reduce){summary{transition:none}}

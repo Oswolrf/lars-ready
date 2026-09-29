@@ -29,8 +29,7 @@ característicos.
 ## Capacidad y camas
 
 - Villa Camelia admite un máximo de 4 personas.
-- Admite hasta 2 niños.
-- Cama de 1,80 m (King Size) más sofá cama.
+- Cama doble de 1,50 m + 2 camas supletorias.
 - Juego completo de ropa de cama y sábanas incluido.
 - Almohadas hipoalergénicas.
 

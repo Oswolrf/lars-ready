@@ -4,7 +4,7 @@ titulo: Suite Valle
 url: /suite-el-valle/
 entidad: lar-de-vies
 tipo: alojamiento
-capacidad: 4
+capacidad: 3
 actualizado: 2026-08-31
 tags: [suite, planta baja, sala independiente, ducha amplia, vestidor]
 ---
@@ -17,9 +17,8 @@ combinación de madera, luz natural y materiales originales crea una atmósfera 
 
 ## Capacidad y camas
 
-- La Suite Valle admite un máximo de 4 personas.
-- Admite hasta 1 niño.
-- Cama de 1,80 m (King Size) o dos camas individuales de 90 cm.
+- La Suite Valle admite hasta 3 personas (máximo 2 adultos + 1 niño).
+- Cama King Size, configurable como una cama de 1,80 m o dos camas individuales de 90 cm.
 - Juego completo de ropa de cama incluido.
 - Almohadas hipoalergénicas.
 

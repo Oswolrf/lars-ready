@@ -16,12 +16,13 @@ equipada**.
 
 ## Las tres villas
 
-- **Villa El Camino**: aproximadamente 60 m², distribuida en dos plantas. Capacidad máxima
-  conocida de 5 personas. Es la única villa con chimenea.
-- **Villa Jazmín**: aproximadamente 45 m², en una sola planta. Capacidad máxima conocida de
-  4 personas.
-- **Villa Camelia**: aproximadamente 45 m², en una sola planta. Capacidad máxima conocida
-  de 4 personas.
+- **Villa El Camino**: aproximadamente 60 m², distribuida en dos plantas. Hasta 5 personas,
+  con cama doble de 1,50 m, 2 camas supletorias y 1 plaza en sofá cama. Es la única villa
+  con chimenea.
+- **Villa Jazmín**: aproximadamente 45 m², en una sola planta. Hasta 4 personas, con cama
+  doble de 1,50 m y 2 camas supletorias.
+- **Villa Camelia**: aproximadamente 45 m², en una sola planta. Hasta 4 personas, con cama
+  doble de 1,50 m y 2 camas supletorias.
 
 ## Qué comparten las tres villas
 

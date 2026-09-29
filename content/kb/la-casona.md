@@ -27,11 +27,10 @@ independencia debe alojarse en una de las tres villas (El Camino, Jazmín o Came
 
 ## Configuración de camas
 
-La configuración habitual de las camas principales en Lar de Víes es una cama de 1,80 m
-(King Size) o dos camas individuales de 90 cm, dependiendo del alojamiento y de la
-preparación.
+Las camas King Size de las suites pueden configurarse como una cama de 1,80 m o dos camas
+individuales de 90 cm, excepto en Suite Capilla.
 
-La Suite Capilla tiene una configuración diferente: cama principal de 1,50 m y dos camas
+La Suite Capilla tiene una configuración diferente: cama doble de 1,50 m y dos camas
 individuales de 90 cm en el altillo.
 
 Ante necesidades específicas de camas hay que consultarlo con el equipo antes de la
