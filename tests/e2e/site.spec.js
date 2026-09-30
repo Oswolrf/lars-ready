@@ -196,3 +196,30 @@ test("redirecciones y retiradas usan estados correctos", async ({ request }) => 
   expect((await request.get("/excursiones-en-lugo/", { maxRedirects: 0 })).status()).toBe(410);
   expect((await request.get("/blog/", { maxRedirects: 0 })).status()).toBe(410);
 });
+
+test("el menú móvil cubre la portada y aísla el contenido de fondo", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+
+  const navigation = page.locator("[data-mobile-navigation]");
+  const summary = navigation.locator(":scope > summary");
+  const panel = page.locator("[data-mobile-navigation-panel]");
+  await summary.click();
+
+  await expect(navigation).toHaveAttribute("open", "");
+  await expect(panel).toBeVisible();
+  await expect(panel).toHaveCSS("background-color", "rgb(19, 22, 20)");
+  await expect(page.locator("main")).toHaveCSS("visibility", "hidden");
+  await expect(page.locator("footer")).toHaveCSS("visibility", "hidden");
+  expect(await page.locator("main").evaluate((element) => element.inert)).toBe(true);
+  expect(await page.locator("footer").evaluate((element) => element.inert)).toBe(true);
+
+  await page.keyboard.press("Tab");
+  expect(await page.evaluate(() => Boolean(document.activeElement?.closest("[data-mobile-navigation-panel]")))).toBe(true);
+
+  await page.keyboard.press("Escape");
+  await expect(navigation).not.toHaveAttribute("open", "");
+  await expect(page.locator("main")).toHaveCSS("visibility", "visible");
+  expect(await page.locator("main").evaluate((element) => element.inert)).toBe(false);
+  await expect(summary).toBeFocused();
+});
