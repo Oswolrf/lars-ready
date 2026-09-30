@@ -36,7 +36,7 @@ jobs:
         env:
           CHAT_API_URL: https://onjwlzvlfuhleqlkscrx.supabase.co/functions/v1/chat
           CI: true
-          SITE_MAINTENANCE: true
+          SITE_MAINTENANCE: false
           SITE_ORIGIN: https://lardevies.com
           SITE_URL: ${{ inputs.site-url }}
         run: |
