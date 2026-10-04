@@ -17,6 +17,7 @@ for (const locale of ['', 'en', 'de']) {
       assert.equal(footer.find('.footer-newsletter').length, 1);
       assert.equal(footer.find('.footer-main > section, .footer-main > nav').length, 4);
       assert.equal(footer.find('.footer-explore a').length, 5);
+      assert.equal(footer.find(`.footer-explore a[href="${prefix}/zonas-comunes/"]`).length, 0);
       assert.equal(footer.find('.footer-resources a').length, 2);
       assert.equal(footer.find('.footer-explore a[href="' + prefix + '/"]').length, 0);
       assert.equal(footer.find('.footer-brand .footer-socials a').length, 3);

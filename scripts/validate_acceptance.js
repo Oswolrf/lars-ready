@@ -37,7 +37,8 @@ function validateVideoPolicy() {
 }
 
 async function validateHttpContract(manifest) {
-  const server = createStaticServer(output);
+  // Validate the complete site after the scheduled server gate has opened.
+  const server = createStaticServer(output, manifest.launch?.scheduled ? { now: () => manifest.launch.timestamp + 1000 } : {});
   server.listen(0, "127.0.0.1");
   await once(server, "listening");
   const { port } = server.address();

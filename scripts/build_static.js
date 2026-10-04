@@ -7,9 +7,12 @@ const cheerio = require("cheerio");
 const esbuild = require("esbuild");
 const nunjucks = require("nunjucks");
 const sharp = require("sharp");
+const ruralGalleries = require("../js/rural-gallery-data.cjs");
 const config = require("../site.config.cjs");
 const i18n = require("../i18n.config.cjs");
 const { chatDeployConfig } = require("./chat_deploy_config.cjs");
+const { resolveLaunchConfig } = require("./launch_config.cjs");
+const { apacheLaunchRules, apacheLaunchHeaders, buildScheduledLaunch } = require("./build_launch.cjs");
 
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, "public");
@@ -31,6 +34,8 @@ if (maintenanceValue !== undefined && !["true", "false"].includes(maintenanceVal
   throw new Error("SITE_MAINTENANCE debe ser true o false");
 }
 const maintenance = maintenanceValue === undefined ? config.site.maintenance === true : maintenanceValue === "true";
+const launch = resolveLaunchConfig({ site: config.site, maintenance });
+const scheduledLaunch = launch?.scheduled === true;
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -219,7 +224,7 @@ function translateDocument($, localeCode) {
   $("body *").contents().each((_, node) => {
     if (node.type !== "text") return;
     const parent = $(node).parent();
-    if (parent.closest("style, script, noscript, svg, .material-symbols-outlined, .material-icon").length) return;
+    if (parent.closest('style, script, noscript, svg, .material-symbols-outlined, .material-icon, [translate="no"]').length) return;
     const original = $(node).text();
     const trimmed = original.replace(/\s+/g, " ").trim();
     const translated = translate(trimmed);
@@ -230,6 +235,7 @@ function translateDocument($, localeCode) {
   });
   $(translatableAttributes.map((attribute) => `[${attribute}]`).join(",")).each((_, node) => {
     const element = $(node);
+    if (element.closest('[translate="no"]').length) return;
     for (const attribute of translatableAttributes) {
       const original = element.attr(attribute);
       if (!original) continue;
@@ -338,6 +344,12 @@ function applyMetadata($, page) {
 }
 
 function applyStructuredData($, page) {
+  const sourceNodes = $('script[type="application/ld+json"]').toArray().flatMap((element) => {
+    const schema = JSON.parse($(element).text());
+    return schema["@graph"] || [schema];
+  });
+  const sourceLodging = sourceNodes.find((node) => node["@type"] === "LodgingBusiness" && node.geo);
+  const sourceAccommodation = sourceNodes.find((node) => node["@id"]?.endsWith("#accommodation"));
   const localizedHome = i18n.localeRoute("/", page.locale);
   const localizedRural = i18n.localeRoute("/rural-prado/", page.locale);
   const websiteId = `${siteOrigin}${publicUrl(`${localizedHome}#website`)}`;
@@ -363,6 +375,7 @@ function applyStructuredData($, page) {
       image: `${siteOrigin}${publicUrl(page.image)}`,
       telephone: "+34678655303",
       email: "reservas@lardevies.com",
+      ...(sourceLodging?.geo ? { geo: sourceLodging.geo } : {}),
       address: {
         "@type": "PostalAddress",
         streetAddress: "Neipín, 4",
@@ -422,13 +435,15 @@ function applyStructuredData($, page) {
 
   if (/^(?:suites|villas)\//.test(page.source)) {
     graph.push({
-      "@type": "Accommodation",
+      "@type": sourceAccommodation?.["@type"] || "Accommodation",
       "@id": `${pageUrl}#accommodation`,
       name: (page.ogTitle || page.title).split("|")[0].trim(),
       url: pageUrl,
       image: `${siteOrigin}${publicUrl(page.image)}`,
       containedInPlace: { "@id": larId },
       mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
+      description: page.description,
+      ...Object.fromEntries(["occupancy", "bed", "amenityFeature"].filter((key) => sourceAccommodation?.[key]).map((key) => [key, sourceAccommodation[key]])),
     });
   }
 
@@ -518,6 +533,8 @@ async function applyHero($, page) {
     : fallback;
   const mobileWebp = variantSet(mobileResponsive, "webp", posterMobile);
   const desktopWebp = variantSet(desktopResponsive, "webp", posterDesktop);
+  const mobileAvif = variantSet(mobileResponsive, "avif", "");
+  const desktopAvif = variantSet(desktopResponsive, "avif", "");
   video.attr({
     preload: "none",
     "data-hero-video": "",
@@ -532,9 +549,9 @@ async function applyHero($, page) {
   video.find("source").remove();
   video.append(`<source data-src="${publicUrl(selected.webm)}" type="video/webm">`);
   video.append(`<source data-src="${publicUrl(selected.mp4)}" type="video/mp4">`);
-  video.before(`<picture class="hero-poster" aria-hidden="true"><source type="image/webp" media="(max-width: 767px)" srcset="${mobileWebp}" sizes="100vw"><source type="image/webp" media="(min-width: 768px)" srcset="${desktopWebp}" sizes="100vw"><img src="${posterDesktop}" alt="" fetchpriority="high" decoding="async"></picture>`);
-  $("head").append(`<link rel="preload" as="image" type="image/webp" imagesrcset="${mobileWebp}" imagesizes="100vw" media="(max-width: 767px)" fetchpriority="high">`);
-  $("head").append(`<link rel="preload" as="image" type="image/webp" imagesrcset="${desktopWebp}" imagesizes="100vw" media="(min-width: 768px)" fetchpriority="high">`);
+  video.before(`<picture class="hero-poster" aria-hidden="true">${mobileAvif ? `<source type="image/avif" media="(max-width: 767px)" srcset="${mobileAvif}" sizes="100vw">` : ""}<source type="image/webp" media="(max-width: 767px)" srcset="${mobileWebp}" sizes="100vw">${desktopAvif ? `<source type="image/avif" media="(min-width: 768px)" srcset="${desktopAvif}" sizes="100vw">` : ""}<source type="image/webp" media="(min-width: 768px)" srcset="${desktopWebp}" sizes="100vw"><img src="${posterDesktop}" alt="" fetchpriority="high" decoding="async"></picture>`);
+  $("head").append(`<link rel="preload" as="image" type="image/${mobileAvif ? "avif" : "webp"}" imagesrcset="${mobileAvif || mobileWebp}" imagesizes="100vw" media="(max-width: 767px)" fetchpriority="high">`);
+  $("head").append(`<link rel="preload" as="image" type="image/${desktopAvif ? "avif" : "webp"}" imagesrcset="${desktopAvif || desktopWebp}" imagesizes="100vw" media="(min-width: 768px)" fetchpriority="high">`);
   for (const asset of [videoConfig.poster.mobile, videoConfig.poster.desktop, selected.webm, selected.mp4]) {
     referencedFiles.add(decodeURIComponent(asset.replace(/^\//, "")));
   }
@@ -591,10 +608,11 @@ async function createResponsiveVariants(sourceRelative, profile = "content") {
       ...(metadata.width < maximum ? [metadata.width] : []),
     ].filter((width) => width <= metadata.width))].sort((a, b) => a - b);
     const stem = path.basename(normalized, path.extname(normalized)).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
-    const variants = { webp: [] };
+    const formats = profile === "hero" && !isBrandAsset ? ["avif", "webp"] : ["webp"];
+    const variants = Object.fromEntries(formats.map((format) => [format, []]));
     for (const width of widths) {
-      for (const format of ["webp"]) {
-        const encoderProfile = profile === "hero" ? "-hero-v2" : "";
+      for (const format of formats) {
+        const encoderProfile = profile === "hero" ? "-hero-v4" : "";
         const filename = `${stem}-${sourceHash}${encoderProfile}-${width}.${format}`;
         const cacheFile = path.join(cacheRoot, filename);
         const outputFile = path.join(output, "assets", "images", filename);
@@ -602,7 +620,7 @@ async function createResponsiveVariants(sourceRelative, profile = "content") {
         ensureDirectory(path.dirname(outputFile));
         if (!fs.existsSync(cacheFile)) {
           const pipeline = sharp(source, { failOn: "none" }).resize({ width, withoutEnlargement: true });
-          const buffer = await pipeline.webp({ quality: profile === "hero" ? 72 : 78, effort: 4 }).toBuffer();
+          const buffer = await (format === "avif" ? pipeline.avif({ quality: 40, effort: 4 }) : pipeline.webp({ quality: profile === "hero" ? 72 : 78, effort: 4 })).toBuffer();
           fs.writeFileSync(cacheFile, buffer);
         }
         fs.copyFileSync(cacheFile, outputFile);
@@ -629,6 +647,7 @@ async function enhanceImages($, page) {
     if (!responsive) continue;
     image.attr({ width: String(responsive.width), height: String(responsive.height), decoding: image.attr("decoding") || "async" });
     const inCriticalChrome = image.closest("nav#main-nav").length > 0;
+    if (inHero && (image.hasClass("hero-logo") || image.attr("fetchpriority") === "high")) image.attr("fetchpriority", "high");
     if (!inHero && !inCriticalChrome && !image.attr("loading")) image.attr("loading", "lazy");
     if (inCriticalChrome && !image.attr("loading")) image.attr("loading", "eager");
     if (!responsive.variants || image.parent().is("picture")) continue;
@@ -645,17 +664,45 @@ async function enhanceImages($, page) {
             ? "100vw"
       : "(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw");
     const webp = responsive.variants.webp.map((variant) => `${variant.url} ${variant.width}w`).join(", ");
+    const avif = responsive.variants.avif?.map((variant) => `${variant.url} ${variant.width}w`).join(", ");
     if (inHero && !$('link[rel="preload"][as="image"]').length) {
       const fallback = responsive.variants.webp.at(-1)?.url;
       if (fallback) {
-        $("head").append(`<link rel="preload" as="image" type="image/webp" href="${fallback}" imagesrcset="${webp}" imagesizes="${sizes}" fetchpriority="high">`);
+        $("head").append(`<link rel="preload" as="image" type="image/${avif ? "avif" : "webp"}" imagesrcset="${avif || webp}" imagesizes="${sizes}" fetchpriority="high">`);
       }
     }
     image.attr({ srcset: webp, sizes });
     image.wrap("<picture></picture>");
     image.before(`<source type="image/webp" srcset="${webp}" sizes="${sizes}">`);
+    if (avif) image.prev('source').before(`<source type="image/avif" srcset="${avif}" sizes="${sizes}">`);
     if (inCriticalChrome) image.attr("fetchpriority", "high");
   }
+}
+
+// Publish gallery content in the initial HTML so images can be sized and deferred.
+function renderRuralGalleries($, page) {
+  const format = (pattern, values) => Object.entries(values).reduce((text, [key, value]) => text.replaceAll(`{${key}}`, String(value)), i18n.translate(page.locale, pattern));
+  $('[data-rural-gallery]').each((_, element) => {
+    const root = $(element);
+    const gallery = ruralGalleries[root.attr('data-rural-gallery')];
+    if (!gallery) return;
+    const carousel = $('<div>').addClass('rural-gallery__carousel').attr({ 'data-carousel': '', 'data-carousel-preload': 'visible', role: 'region', 'aria-label': format('Galería de {title}', {title:gallery.title}) });
+    const track = $('<div>').addClass('rural-gallery__track').attr({ 'data-carousel-track': '', 'aria-live': 'polite' });
+    const sizes = '(max-width: 767px) calc(100vw - 48px), (max-width: 1279px) calc((100vw - 128px) / 2), 560px';
+    for (const item of gallery.images) {
+      const image = $('<img>').addClass('stay-image').attr({ src: `/${item.src}`, alt: item.alt, loading: 'lazy', sizes });
+      track.append($('<div>').addClass('rural-gallery__slide').append(image));
+    }
+    carousel.append(track);
+    for (const [direction, label, symbol] of [['prev', 'Imagen anterior', '‹'], ['next', 'Imagen siguiente', '›']]) {
+      carousel.append($('<button>').addClass(`rural-gallery__control rural-gallery__control--${direction}`).attr({ type: 'button', [`data-carousel-${direction}`]: '', 'aria-label': label }).text(symbol));
+    }
+    const footer = $('<div>').addClass('rural-gallery__footer');
+    const dots = $('<div>').addClass('rural-gallery__dots').attr({ role: 'group', 'aria-label': 'Seleccionar imagen' });
+    gallery.images.forEach((_, index) => dots.append($('<button>').addClass('rural-gallery__dot').attr({ type: 'button', 'data-carousel-slide': String(index), 'aria-label': format('Ver imagen {number} de {title}', {number:index+1,title:gallery.title}), 'aria-current': String(index === 0) })));
+    footer.append(dots, $('<span>').addClass('rural-gallery__count').attr('data-carousel-count', '').text(`1 / ${gallery.images.length}`));
+    root.empty().append(carousel.append(footer));
+  });
 }
 
 function deferCarouselImages($) {
@@ -699,7 +746,7 @@ function deferCarouselImages($) {
     const controls = carousel.find("[data-carousel-slide]").toArray();
     const selected = controls.findIndex((control) => $(control).attr("aria-current") === "true");
     const currentIndex = selected >= 0 ? selected : 0;
-    carousel.attr("data-carousel-preload", "adjacent");
+    if (!carousel.attr("data-carousel-preload")) carousel.attr("data-carousel-preload", "adjacent");
 
     const fallbackPicture = $(slides[currentIndex]).find("picture").first().clone();
     fallbackPicture.find("source[srcset]").each((__, sourceElement) => {
@@ -945,6 +992,7 @@ async function buildPage(page, cssUrl, jsUrl) {
   const $ = cheerio.load(sourceHtml, { decodeEntities: false });
   $("base").remove();
   replaceSharedComponents($, page);
+  if (page.source === "OtrosAlojamientos.html") renderRuralGalleries($, page);
   translateDocument($, page.locale);
   applyMetadata($, page);
   normalizeUrlAttributes($, page);
@@ -1028,14 +1076,19 @@ function buildAdapters(cssUrl) {
     "X-Permitted-Cross-Domain-Policies: none",
   ];
   writeFile("_headers", `${publicUrl("/assets/*")}\n  Cache-Control: public, max-age=31536000, immutable\n${publicUrl("/*.html")}\n  Cache-Control: public, max-age=0, must-revalidate\n${catchAll}\n${sharedHeaders.map((header) => `  ${header}`).join("\n")}\n`);
-  // Apache applies DirectoryIndex before evaluating this redirect, so redirecting
-  // /index.html to / creates a loop when / resolves to index.html.
+  // THE_REQUEST only matches an explicit browser request, never DirectoryIndex.
+  const indexPrefix = basePath === "/" ? "" : `(?:${basePath.slice(1)})?`;
+  const indexRedirect = `<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteCond %{THE_REQUEST} \\s${basePath}index\\.html(?:[?\\s]) [NC]\nRewriteRule ^${indexPrefix}index\\.html$ ${basePath} [R=301,L,NE]\n</IfModule>`;
   const apacheRedirects = config.redirects
     .filter((item) => item.from !== "/index.html")
     .map((item) => `Redirect ${item.status} ${publicUrl(item.from)} ${publicUrl(item.to)}`)
     .join("\n");
   const apacheGone = config.gone.map((route) => `Redirect gone ${publicUrl(route)}`).join("\n");
-  writeFile(".htaccess", `Options -Indexes -MultiViews\nDirectoryIndex index.html\nErrorDocument 404 ${publicUrl("/404.html")}\nErrorDocument 410 ${publicUrl("/410.html")}\n${apacheRedirects}\n${apacheGone}\n<IfModule mod_deflate.c>\n  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json application/xml image/svg+xml\n</IfModule>\n<IfModule mod_headers.c>\n  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"\n  Header always set Content-Security-Policy "${contentSecurityPolicy}"\n  Header always set X-Frame-Options "DENY"\n  Header always set X-Content-Type-Options "nosniff"\n  Header always set Referrer-Policy "strict-origin-when-cross-origin"\n  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"\n  Header always set Cross-Origin-Opener-Policy "same-origin"\n  Header always set Cross-Origin-Resource-Policy "same-site"\n  Header always set X-Permitted-Cross-Domain-Policies "none"\n  <FilesMatch "\\.(?:css|js|woff2|avif|webp|png|jpe?g|svg|mp4|webm)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.html$">\n    Header set Cache-Control "public, max-age=0, must-revalidate"\n  </FilesMatch>\n</IfModule>\n`);
+  const apacheRouting = scheduledLaunch
+    ? `${apacheLaunchRules({ launch, basePath })}<If "%{TIME} >= '${launch.apacheTime}'">\n${indexRedirect}\n${apacheRedirects}\n${apacheGone}\n</If>`
+    : `${indexRedirect}\n${apacheRedirects}\n${apacheGone}`;
+  writeFile(".htaccess", `Options -Indexes -MultiViews\nDirectoryIndex index.html\nErrorDocument 404 ${publicUrl("/404.html")}\nErrorDocument 410 ${publicUrl("/410.html")}\n${apacheRouting}\n<IfModule mod_deflate.c>\n  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json application/xml image/svg+xml\n</IfModule>\n<IfModule mod_headers.c>\n  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"\n  Header always set Content-Security-Policy "${contentSecurityPolicy}"\n  Header always set X-Frame-Options "DENY"\n  Header always set X-Content-Type-Options "nosniff"\n  Header always set Referrer-Policy "strict-origin-when-cross-origin"\n  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"\n  Header always set Cross-Origin-Opener-Policy "same-origin"\n  Header always set Cross-Origin-Resource-Policy "same-site"\n  Header always set X-Permitted-Cross-Domain-Policies "none"\n  <FilesMatch "\\.(?:css|js|woff2|avif|webp|png|jpe?g|svg|mp4|webm)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n  <FilesMatch "\\.html$">\n    Header set Cache-Control "public, max-age=0, must-revalidate"\n  </FilesMatch>\n</IfModule>\n`);
+  if (scheduledLaunch) fs.appendFileSync(path.join(output, ".htaccess"), apacheLaunchHeaders({ launch, basePath }));
   const nginxRedirects = config.redirects.map((item) => `location = ${publicUrl(item.from)} { return ${item.status} ${publicUrl(item.to)}; }`).join("\n");
   const nginxGone = config.gone.map((route) => `location = ${publicUrl(route)} { return 410; }`).join("\n");
   writeFile("deploy/nginx.conf.example", `# Si BASE_PATH no es '/', monte este directorio public en ${basePath}\ngzip on;\ngzip_vary on;\ngzip_types text/plain text/css application/javascript application/json application/xml image/svg+xml;\nadd_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;\nadd_header Content-Security-Policy "${contentSecurityPolicy}" always;\nadd_header X-Frame-Options "DENY" always;\nadd_header X-Content-Type-Options "nosniff" always;\nadd_header Referrer-Policy "strict-origin-when-cross-origin" always;\nadd_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()" always;\nadd_header Cross-Origin-Opener-Policy "same-origin" always;\nadd_header Cross-Origin-Resource-Policy "same-site" always;\nadd_header X-Permitted-Cross-Domain-Policies "none" always;\nerror_page 410 ${publicUrl("/410.html")};\nlocation ${basePath} { try_files $uri $uri/ $uri/index.html =404; }\n${nginxRedirects}\n${nginxGone}\nlocation ~* \\.(?:css|js|woff2|avif|webp|png|jpe?g|svg|mp4|webm)$ { expires 1y; add_header Cache-Control "public, max-age=31536000, immutable"; }\n`);
@@ -1109,7 +1162,7 @@ async function main() {
   fs.rmSync(output, { recursive: true, force: true });
   ensureDirectory(output);
   ensureDirectory(cacheRoot);
-  if (maintenance) {
+  if (maintenance && !launch) {
     buildAdapters("");
     require("./build_maintenance.cjs").buildMaintenance({ root, output, basePath, deployEnv, siteOrigin });
     nestBuildForBasePath();
@@ -1133,6 +1186,10 @@ async function main() {
   rewritePublishedAssetUrls(assetMap, thumbnailMap);
   writeBuildManifest(cssUrl, jsUrl, iconUrl, assetMap);
   removeUnusedImageVariants();
+  if (scheduledLaunch) {
+    buildScheduledLaunch({ root, output, basePath, deployEnv, siteOrigin, launch });
+    console.log(`Lanzamiento preparado para ${launch.at}; apertura automática mediante Apache.`);
+  }
   nestBuildForBasePath();
   console.log(`Paquete estático ${deployEnv} preparado en ${output}`);
   console.log(`Rutas: ${config.pages.length * localeEntries.length}; iconos: ${usedIcons.size}; activos fuente: ${referencedFiles.size}`);
