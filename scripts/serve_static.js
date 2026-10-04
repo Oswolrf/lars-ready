@@ -61,24 +61,53 @@ function safeFile(pathname, documentRoot = root) {
   return null;
 }
 
-function createStaticServer(documentRoot = root) {
+function createStaticServer(documentRoot = root, { now = Date.now } = {}) {
+  const manifestPath = path.join(documentRoot, "build-manifest.json");
+  const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, "utf8")) : {};
+  const launch = manifest.launch?.scheduled ? manifest.launch : null;
+  const basePath = manifest.basePath || "/";
+  const contentRoot = path.join(documentRoot, basePath.slice(1));
   return http.createServer((request, response) => {
   const url = new URL(request.url, `http://${request.headers.host || "localhost"}`);
-  const redirect = config.redirects.find((item) => item.from === url.pathname);
-  if (redirect) {
-    response.writeHead(redirect.status, { Location: redirect.to });
-    response.end();
-    return;
+  let coverFile = null;
+  if (launch && url.pathname.startsWith(basePath)) {
+    const relative = url.pathname.slice(basePath.length);
+    const beforeLaunch = now() < launch.timestamp;
+    if (relative === "__launch/status.json") {
+      const body = JSON.stringify({ launched: !beforeLaunch });
+      response.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store", Date: new Date(now()).toUTCString() });
+      response.end(request.method === "HEAD" ? undefined : body);
+      return;
+    }
+    if (beforeLaunch && !/^(?:assets\/maintenance\/|__prelaunch\/|__launch\/|favicon\.ico$|apple-touch-icon\.png$)/.test(relative)) {
+      const locale = /^(en|de)(?:\/|$)/.exec(relative)?.[1];
+      coverFile = safeFile(`${basePath}__prelaunch/${relative}`, documentRoot)
+        || safeFile(`${basePath}__prelaunch/${locale ? `${locale}/` : ""}`, documentRoot);
+    }
   }
-  if (config.gone.includes(url.pathname)) {
-    const body = fs.readFileSync(path.join(documentRoot, "410.html"));
-    response.writeHead(410, { "Content-Type": "text/html; charset=utf-8", "Content-Length": body.length });
-    response.end(request.method === "HEAD" ? undefined : body);
-    return;
+  if (!coverFile) {
+    const route = url.pathname.startsWith(basePath) ? `/${url.pathname.slice(basePath.length)}` : null;
+    const redirect = config.redirects.find((item) => item.from === route);
+    if (redirect) {
+      response.writeHead(redirect.status, { Location: `${basePath}${redirect.to.slice(1)}` });
+      response.end();
+      return;
+    }
+    if (config.gone.includes(route)) {
+      const body = fs.readFileSync(path.join(contentRoot, "410.html"));
+      response.writeHead(410, { "Content-Type": "text/html; charset=utf-8", "Content-Length": body.length });
+      response.end(request.method === "HEAD" ? undefined : body);
+      return;
+    }
   }
 
-  const resolvedFile = safeFile(url.pathname, documentRoot);
-  const file = resolvedFile || path.join(documentRoot, "404.html");
+  const resolvedFile = coverFile || safeFile(url.pathname, documentRoot);
+  const file = resolvedFile || path.join(contentRoot, "404.html");
+  if (!fs.existsSync(file)) {
+    response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" });
+    response.end(request.method === "HEAD" ? undefined : "Not found");
+    return;
+  }
   const status = fs.existsSync(file) && file.endsWith("404.html") && !resolvedFile ? 404 : 200;
   const stat = fs.statSync(file);
   const extension = path.extname(file).toLowerCase();
@@ -87,7 +116,8 @@ function createStaticServer(documentRoot = root) {
     "Accept-Ranges": "bytes",
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "strict-origin-when-cross-origin",
-    "Cache-Control": file.includes(`${path.sep}assets${path.sep}`) ? "public, max-age=31536000, immutable" : "no-cache",
+    "Cache-Control": coverFile ? "no-store" : file.includes(`${path.sep}assets${path.sep}`) ? "public, max-age=31536000, immutable" : "no-cache",
+    Date: new Date(now()).toUTCString(),
   };
 
   const range = request.headers.range;

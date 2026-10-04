@@ -402,23 +402,21 @@ if (vercelConfig) {
   if ((vercelConfig.rewrites || []).length) errors.push("vercel.json: no debe reescribir URLs limpias a HTML legacy");
 }
 
-const htaccessPath = path.join(root, ".htaccess");
-if (!fs.existsSync(htaccessPath)) {
-  errors.push("Falta .htaccess para IONOS");
+// Hosting rules belong to the generated static package, not the legacy sources.
+const output = path.resolve(root, process.argv[2] || "public");
+const expectedEnv = process.argv[3] || "production";
+const manifestPath = path.join(output, "build-manifest.json");
+if (!fs.existsSync(manifestPath)) {
+  errors.push("Falta el build publicado; ejecuta npm run build antes de validar SEO");
 } else {
-  const htaccess = fs.readFileSync(htaccessPath, "utf8");
-  if (!/RewriteRule \^otros-alojamientos\/\?\$ \/rural-prado\/ \[R=301,L,NE\]/.test(htaccess)) {
-    errors.push(".htaccess: falta el 301 de /otros-alojamientos/ a /rural-prado/");
-  }
-  if (!/RewriteRule \^rural-prado\/\?\$ OtrosAlojamientos\.html \[L\]/.test(htaccess)) {
-    errors.push(".htaccess: falta la ruta canónica /rural-prado/");
-  }
-  if (!/RewriteRule \^zonas-comunes\/\?\$ zonas-comunes\.html \[L\]/.test(htaccess)) {
-    errors.push(".htaccess: falta la ruta migrada /zonas-comunes/");
-  }
-  if (!/RewriteRule \^\(\?:excursiones-en-lugo\|blog\)\/\?\$ - \[G,L\]/.test(htaccess)) {
-    errors.push(".htaccess: excursiones y blog deben responder 410");
-  }
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  const requestedMaintenance = process.env.SITE_MAINTENANCE === undefined
+    ? siteConfig.site.maintenance === true
+    : process.env.SITE_MAINTENANCE === "true";
+  if (!requestedMaintenance && (manifest.maintenance || manifest.launch)) errors.push("El build sigue en prelanzamiento; recompila la web completa para abrirla");
+  const result = require("node:child_process").spawnSync(process.execPath, [path.join(root, "scripts/validate_build.js"), output, expectedEnv], { encoding: "utf8" });
+  if (result.stdout) console.log(result.stdout.trim());
+  if (result.error || result.status !== 0) errors.push(`Build SEO inválido: ${result.error?.message || result.stderr || result.stdout}`);
 }
 
 const buildStaticPath = path.join(root, "scripts", "build_static.js");

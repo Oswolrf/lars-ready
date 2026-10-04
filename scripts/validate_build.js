@@ -55,6 +55,7 @@ if (!fs.existsSync(manifestPath)) {
 }
 
 const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, "utf8")) : { basePath: "/", siteOrigin: "https://lardevies.com" };
+require("./validate_launch.cjs").validateLaunch(output, manifest);
 const contentRoot = manifest.basePath === "/"
   ? output
   : path.join(output, ...manifest.basePath.replace(/^\/+|\/+$/g, "").split("/"));

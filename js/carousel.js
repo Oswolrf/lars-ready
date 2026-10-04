@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
             touchStartY = undefined;
         }, { passive: true });
 
-        if (root.dataset.carouselPreload === 'adjacent' && slides.length > 1) {
+        if (['adjacent', 'visible'].includes(root.dataset.carouselPreload) && slides.length > 1) {
             const hydrateAdjacent = () => {
                 hydrateForIndex(currentIndex, true);
                 selectors.forEach((_, index) => hydrateThumbnail(index));

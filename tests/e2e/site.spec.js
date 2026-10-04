@@ -52,7 +52,10 @@ for (const locale of ["en", "de"]) {
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveCount(1);
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(1);
     await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveCount(1);
-    await expect(page.locator("nav#main-nav a").filter({ hasText: locale === "en" ? "Home" : "Startseite" })).toHaveCount(2);
+    const homeLabel = locale === "en" ? "Home" : "Startseite";
+    for (const selector of ['nav#main-nav', '[data-mobile-navigation-panel]']) {
+      await expect(page.locator(`${selector} a[href="/${locale}/"]`).filter({hasText:homeLabel})).toHaveCount(1);
+    }
   });
 }
 

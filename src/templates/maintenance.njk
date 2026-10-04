@@ -9,19 +9,42 @@
   <meta name="description" content="{{ copy.title }}. {{ copy.choose }}: Lar de Víes · Rural Prado.">
   <link rel="icon" href="{{ base }}favicon.ico">
   <link rel="stylesheet" href="{{ css }}">
+  {% if js %}<script src="{{ js }}" defer></script>{% endif %}
 </head>
 <body>
-  <main>
+  <main class="maintenance">
+    <div class="content">
+    <div class="brand">
     <img class="logo" src="{{ logo }}" alt="Lar de Víes" width="{{ width }}" height="{{ height }}">
+    </div>
+    <div class="message">
     <h1>{{ copy.title }}</h1>
+    {% if launch %}
+    <div class="countdown" data-countdown data-launch-at="{{ launch.at }}" data-launch-status="{{ base }}__launch/status.json" data-launch-target="{{ launchTarget }}" data-opening-message="{{ copy.opening }}">
+      <p class="countdown-label">{{ copy.countdown }}</p>
+      <dl class="countdown-units" hidden>
+        <div><dt>{{ copy.days }}</dt><dd data-countdown-days>00</dd></div>
+        <div><dt>{{ copy.hours }}</dt><dd data-countdown-hours>00</dd></div>
+        <div><dt>{{ copy.minutes }}</dt><dd data-countdown-minutes>00</dd></div>
+        <div><dt>{{ copy.seconds }}</dt><dd data-countdown-seconds>00</dd></div>
+      </dl>
+      <p class="launch-date">{{ copy.launch }} <time datetime="{{ launch.at }}">{{ launchDate }} (Madrid)</time></p>
+      <p class="launch-status" role="status" aria-live="polite"></p>
+    </div>
+    {% endif %}
     <details{% if booking %} open{% endif %}>
-      <summary>{{ copy.reserve }}</summary>
+      <summary><span>{{ copy.reserve }}</span><svg class="reserve-arrow" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
       <section aria-label="{{ copy.choose }}">
         <h2>{{ copy.choose }}</h2>
         <a href="{{ larUrl }}" rel="external"><span>Lar de Víes<small>{{ copy.lar }}</small></span><span aria-hidden="true">↗</span></a>
         <a href="{{ pradoUrl }}" rel="external"><span>Rural Prado<small>{{ copy.prado }}</small></span><span aria-hidden="true">↗</span></a>
       </section>
     </details>
+    </div>
+    </div>
+    <div class="landscape" aria-hidden="true">
+      <img src="{{ landscape }}" alt="" width="2560" height="1917" fetchpriority="high">
+    </div>
   </main>
 </body>
 </html>

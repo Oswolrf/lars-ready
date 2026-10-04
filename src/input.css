@@ -19,6 +19,11 @@
   object-fit: cover;
 }
 
+.rural-gallery .carousel-no-js {
+  height: 100%;
+  border-radius: 0;
+}
+
 .font-hero {
   font-family: "Lora Hero", "Lora", Georgia, serif;
 }
