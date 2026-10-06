@@ -21,7 +21,8 @@ for (const locale of ['', 'en', 'de']) {
       assert.equal(footer.find('.footer-resources a').length, 2);
       assert.equal(footer.find('.footer-explore a[href="' + prefix + '/"]').length, 0);
       assert.equal(footer.find('.footer-brand .footer-socials a').length, 3);
-      assert.equal(footer.find('.footer-legal a').length, 3);
+      assert.equal(footer.find('.footer-legal a').length, 4);
+      assert.equal(footer.find(`.footer-legal a[data-cookie-preferences][href="${prefix}/politica-cookies/#gestion-consentimiento"]`).length, 1);
       assert.equal(footer.find('.footer-booking').attr('href'), `${prefix}/reservas/#elegir-alojamiento`);
       assert.ok(footer.find('.footer-booking').is('[data-booking-trigger]'));
       assert.equal(footer.find('a[href^="tel:"]').length, route ? 0 : 1);

@@ -35,20 +35,30 @@ if (maintenanceValue !== undefined && !["true", "false"].includes(maintenanceVal
 }
 const maintenance = maintenanceValue === undefined ? config.site.maintenance === true : maintenanceValue === "true";
 const launch = resolveLaunchConfig({ site: config.site, maintenance });
+const analyticsMeasurementId = String(process.env.GA_MEASUREMENT_ID ?? config.site.analyticsMeasurementId ?? "").trim();
+if (analyticsMeasurementId && !/^G-[A-Z0-9]{6,14}$/.test(analyticsMeasurementId)) {
+  throw new Error("GA_MEASUREMENT_ID debe tener el formato G-XXXXXXXXXX");
+}
+// Previews never ship Analytics, so staging visits cannot pollute production data.
+const analyticsId = deployEnv === "production" ? analyticsMeasurementId : "";
+const googleSiteVerification = String(process.env.GOOGLE_SITE_VERIFICATION ?? config.site.googleSiteVerification ?? "").trim();
+if (googleSiteVerification && !/^[A-Za-z0-9_-]{20,100}$/.test(googleSiteVerification)) {
+  throw new Error("GOOGLE_SITE_VERIFICATION no tiene un formato válido");
+}
 const scheduledLaunch = launch?.scheduled === true;
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
-  "script-src 'self' https://sibforms.com",
+  `script-src 'self' https://sibforms.com${analyticsId ? " https://*.googletagmanager.com" : ""}`,
   "script-src-attr 'none'",
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
-  "img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com",
+  `img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com${analyticsId ? " https://*.google-analytics.com https://*.googletagmanager.com" : ""}`,
   "media-src 'self'",
   "frame-src https://maps.google.com https://www.google.com",
-  `connect-src 'self' https://sibforms.com https://*.sibforms.com${chat.origin ? ` ${chat.origin}` : ""}`,
+  `connect-src 'self' https://sibforms.com https://*.sibforms.com${chat.origin ? ` ${chat.origin}` : ""}${analyticsId ? " https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com" : ""}`,
   "form-action 'self' https://*.sibforms.com https://direct-book.com",
   "upgrade-insecure-requests",
 ].join("; ");
@@ -315,6 +325,9 @@ function applyMetadata($, page) {
   $("title").first().text(page.title);
   upsertMeta($, 'meta[name="description"]', { name: "description", content: page.description });
   upsertMeta($, 'meta[name="robots"]', { name: "robots", content: robots });
+  if (googleSiteVerification && page.baseRoute === "/") {
+    upsertMeta($, 'meta[name="google-site-verification"]', { name: "google-site-verification", content: googleSiteVerification });
+  }
   upsertLink($, 'link[rel="canonical"]', { rel: "canonical", href: canonicalUrl(page.route) });
   $('link[rel="alternate"][hreflang]').remove();
   for (const locale of localeEntries) {
@@ -841,6 +854,7 @@ async function buildJs() {
     define: {
       __LAR_BASE_PATH__: JSON.stringify(basePath),
       __LAR_BOOKING_FALLBACK__: JSON.stringify(publicUrl(config.site.bookingFallback)),
+      __LAR_GA_ID__: JSON.stringify(analyticsId),
     },
   });
   const javascript = result.outputFiles.find((file) => file.path.endsWith(".js")) || result.outputFiles[0];

@@ -11,6 +11,13 @@ const site = {
   // public Supabase Edge Function as the safe production fallback; CI can
   // still override it with CHAT_API_URL when another endpoint is required.
   defaultChatEndpoint: "https://onjwlzvlfuhleqlkscrx.supabase.co/functions/v1/chat",
+  // GA4 measurement ID (G-XXXXXXXXXX). Empty = no Analytics code and no Google
+  // origins in the CSP. The tag only loads after the visitor accepts analytics.
+  // GA_MEASUREMENT_ID in the environment takes precedence.
+  analyticsMeasurementId: "G-X1VP3TVPPJ",
+  // Optional Search Console token for HTML-tag verification (content of the
+  // google-site-verification meta). Not needed for DNS verification.
+  googleSiteVerification: "",
   locale: "es_ES",
   language: "es-ES",
   bookingFallback: "/reservas/#elegir-alojamiento",

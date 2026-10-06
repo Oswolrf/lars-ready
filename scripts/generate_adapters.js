@@ -52,7 +52,9 @@ for (const { from, to, status } of config.redirects) {
   const generatedFrom = publicUrl(from);
   const generatedTo = publicUrl(to);
   if (!netlify.includes(`${generatedFrom} ${generatedTo} ${status}`)) errors.push(`_redirects no contiene ${generatedFrom} -> ${generatedTo}`);
-  if (!apache.includes(generatedFrom) || !apache.includes(generatedTo)) errors.push(`.htaccess no contiene ${generatedFrom} -> ${generatedTo}`);
+  // /index.html se redirige con una regla RewriteRule condicionada a THE_REQUEST, no con Redirect.
+  const apacheIndexRule = from === "/index.html" && /RewriteRule \^[^\n]*index\\\.html\$ [^\n]*R=301/.test(apache);
+  if (!apacheIndexRule && (!apache.includes(generatedFrom) || !apache.includes(generatedTo))) errors.push(`.htaccess no contiene ${generatedFrom} -> ${generatedTo}`);
   if (!nginx.includes(generatedFrom) || !nginx.includes(generatedTo)) errors.push(`nginx no contiene ${generatedFrom} -> ${generatedTo}`);
   if (!vercelConfig.redirects.some((entry) => entry.source === generatedFrom && entry.destination === generatedTo && entry.statusCode === status)) errors.push(`Vercel no contiene ${generatedFrom} -> ${generatedTo}`);
   if (rootVercel && !rootVercel.redirects?.some((entry) => entry.source === from && entry.destination === to && entry.statusCode === status)) errors.push(`vercel.json raíz no contiene ${from} -> ${to}`);

@@ -1,40 +1,19 @@
 import { localePath, t } from './i18n.js';
+import { readConsent, saveConsent } from './cookie-storage.js';
 
 (() => {
     'use strict';
 
-    const STORAGE_KEY = 'lar-de-vies-cookie-consent-v1';
     const BASE_PATH = typeof __LAR_BASE_PATH__ !== 'undefined' ? __LAR_BASE_PATH__ : '/';
-    const privacyUrl = `${BASE_PATH === '/' ? '' : BASE_PATH.replace(/\/$/, '')}${localePath('/politica-privacidad/')}`;
+    const cookiesUrl = `${BASE_PATH === '/' ? '' : BASE_PATH.replace(/\/$/, '')}${localePath('/politica-cookies/')}`;
+    let active = null;
 
-    const readConsent = () => {
-        try {
-            const value = window.localStorage.getItem(STORAGE_KEY);
-            return value ? JSON.parse(value) : null;
-        } catch {
-            return null;
+    const mount = ({ settingsOnly = false } = {}) => {
+        if (active) {
+            active.openSettings();
+            return;
         }
-    };
-
-    const saveConsent = (analytics) => {
-        const consent = {
-            necessary: true,
-            analytics: Boolean(analytics),
-            updatedAt: new Date().toISOString(),
-        };
-        try {
-            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
-        } catch {
-            // El aviso sigue funcionando aunque el navegador bloquee el almacenamiento.
-        }
-        window.dispatchEvent(new CustomEvent('lar-de-vies:cookie-consent', { detail: consent }));
-        return consent;
-    };
-
-    const init = () => {
-        if (document.querySelector('[data-cookie-consent]')) return;
-        if (readConsent()) return;
-
+        const previousFocus = document.activeElement;
         const root = document.createElement('aside');
         root.className = 'cookie-consent';
         root.dataset.cookieConsent = '';
@@ -44,7 +23,7 @@ import { localePath, t } from './i18n.js';
                 <div class="cookie-consent__copy">
                     <p id="cookie-consent-title" class="cookie-consent__title">${t('Tu privacidad importa')}</p>
                     <p id="cookie-consent-description" class="cookie-consent__text">${t('Usamos cookies técnicas necesarias para que la web funcione y recordar tus preferencias. Las cookies de análisis son opcionales y no se activan sin tu permiso.')}</p>
-                    <a class="cookie-consent__link" href="${privacyUrl}">${t('Más información en la política de privacidad')}</a>
+                    <a class="cookie-consent__link" href="${cookiesUrl}">${t('Más información en la política de cookies')}</a>
                 </div>
                 <div class="cookie-consent__actions">
                     <button type="button" class="cookie-consent__button cookie-consent__button--secondary" data-cookie-reject>${t('Rechazar opcionales')}</button>
@@ -86,13 +65,22 @@ import { localePath, t } from './i18n.js';
         const banner = root.querySelector('.cookie-consent__banner');
         const panel = root.querySelector('[data-cookie-panel]');
         const analytics = root.querySelector('[data-cookie-analytics]');
+        const dismiss = () => {
+            root.remove();
+            active = null;
+            if (settingsOnly && previousFocus instanceof HTMLElement && previousFocus.isConnected) previousFocus.focus();
+        };
         const closePanel = () => {
+            if (settingsOnly) {
+                dismiss();
+                return;
+            }
             panel.hidden = true;
             banner.hidden = false;
         };
         const finish = (analyticsEnabled) => {
             saveConsent(analyticsEnabled);
-            root.remove();
+            dismiss();
         };
         const openSettings = () => {
             const consent = readConsent();
@@ -108,8 +96,25 @@ import { localePath, t } from './i18n.js';
         root.querySelector('[data-cookie-settings]')?.addEventListener('click', openSettings);
         root.querySelector('[data-cookie-save]')?.addEventListener('click', () => finish(analytics.checked));
         root.querySelector('[data-cookie-close]')?.addEventListener('click', closePanel);
+        root.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !panel.hidden) closePanel();
+        });
 
+        active = { openSettings };
+        if (settingsOnly) openSettings();
     };
+
+    const init = () => {
+        if (!readConsent()) mount();
+    };
+
+    // Acceso permanente: cualquier enlace con data-cookie-preferences reabre el panel.
+    document.addEventListener('click', (event) => {
+        const trigger = event.target instanceof Element ? event.target.closest('[data-cookie-preferences]') : null;
+        if (!trigger) return;
+        event.preventDefault();
+        mount({ settingsOnly: Boolean(readConsent()) });
+    });
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
     else init();

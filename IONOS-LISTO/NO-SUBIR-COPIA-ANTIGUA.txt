@@ -1,0 +1,7 @@
+NO SUBAS ESTA CARPETA PARA EL LANZAMIENTO.
+
+WEB-PARA-SUBIR es una copia de pruebas del 7 de septiembre de 2026: lleva noindex,
+bloquea el rastreo y usa un chat antiguo. Si se sube a lardevies.com, Google no indexará la web.
+
+La web definitiva se genera con `npm run build` en la carpeta public/ de la raíz del proyecto.
+Procedimiento de lanzamiento: docs/lanzamiento.md

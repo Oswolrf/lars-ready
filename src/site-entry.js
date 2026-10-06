@@ -16,3 +16,4 @@ import "../js/sticky-cta.js";
 import "../js/chat-widget.js";
 import "../js/newsletter.js";
 import "../js/cookie-consent.js";
+import "../js/analytics.js";
