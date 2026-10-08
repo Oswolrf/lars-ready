@@ -17,3 +17,4 @@ import "../js/chat-widget.js";
 import "../js/newsletter.js";
 import "../js/cookie-consent.js";
 import "../js/analytics.js";
+import "../js/map-embed.js";

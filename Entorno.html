@@ -903,9 +903,15 @@
                 </div>
             </div>
             <div id="como-llegar"
-                class="location-map relative w-full aspect-[16/9] md:aspect-[21/9] bg-[#e8e6e1] dark:bg-[#2a2f2b] rounded-2xl overflow-hidden border border-stone-200 dark:border-white/5 shadow-inner">
+                data-map-embed class="location-map relative w-full aspect-[16/9] md:aspect-[21/9] bg-[#e8e6e1] dark:bg-[#2a2f2b] rounded-2xl overflow-hidden border border-stone-200 dark:border-white/5 shadow-inner">
+                <div class="location-map__consent" data-map-consent>
+                    <p class="location-map__consent-title">Mapa de Google Maps</p>
+                    <p class="location-map__consent-text">Al cargar el mapa, tu navegador se conecta con Google, que puede instalar cookies propias. Solo lo cargamos si lo pides.</p>
+                    <button type="button" class="location-map__load" data-map-load>Cargar mapa</button>
+                    <a class="location-map__more" href="/politica-cookies/#servicios-externos">Más información en la política de cookies</a>
+                </div>
                 <iframe title="Mapa de Lar de Víes y el Valle del Eo"
-                    src="https://maps.google.com/maps?q=Lar%20de%20V%C3%ADes%2C%20Neip%C3%ADn%2C%20A%20Pontenova%2C%20Lugo%2C%20Espa%C3%B1a&amp;ll=43.3255%2C-7.1626&amp;hl=es&amp;z=14&amp;output=embed"
+                    hidden data-map-src="https://maps.google.com/maps?q=Lar%20de%20V%C3%ADes%2C%20Neip%C3%ADn%2C%20A%20Pontenova%2C%20Lugo%2C%20Espa%C3%B1a&amp;ll=43.3255%2C-7.1626&amp;hl=es&amp;z=14&amp;output=embed"
                     class="location-map__frame w-full h-full min-h-[500px] z-10"
                     style="border:0;" allowfullscreen="" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
