@@ -75,6 +75,17 @@
         max-width: calc(100% - 1.5rem);
         font-size: 0.62rem;
     }
+
+    /* El aviso de consentimiento necesita más alto que el 16/9 y debe dejar
+       libre la franja inferior donde se superpone el enlace a Google Maps. */
+    .location-map[data-map-embed] {
+        aspect-ratio: auto;
+        min-height: 27rem;
+    }
+
+    .location-map__consent {
+        padding-bottom: 5rem;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

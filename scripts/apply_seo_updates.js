@@ -18,7 +18,7 @@ const schemaOverlayDefaults = {
     route: "/",
     title: "Casa rural de lujo en A Pontenova, Lugo | Lar de Víes",
     description:
-      "Suites y villas privadas en el Valle del Eo, entre Galicia y Asturias. Naturaleza, diseño y descanso en Lar de Víes. Reserva tu estancia.",
+      "Tu refugio natural en pleno valle del Eo.",
     ogTitle: "Lar de Víes | Casa rural de lujo en el Valle del Eo",
     image: "/images/home-hero-updated-desktop-2560.webp",
     imageAlt: "Lar de Víes y el paisaje del Valle del Eo",
