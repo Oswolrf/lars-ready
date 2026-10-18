@@ -1,0 +1,29 @@
+# Supabase Free pausa el proyecto tras 7 días sin actividad.
+# Cada 3 días se envía un saludo al chatbot: pasa por el contador de la base
+# de datos y se responde sin llamar a OpenAI, así que no consume cuota.
+# Si falla, el workflow queda en rojo y GitHub avisa por correo.
+
+name: "Supabase keep-alive"
+
+on:
+  schedule:
+    - cron: "17 6 */3 * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping-chat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Saludo al chatbot
+        run: |
+          status=$(curl -sS -o response.json -w "%{http_code}" --retry 3 --retry-delay 20 \
+            -X POST https://onjwlzvlfuhleqlkscrx.supabase.co/functions/v1/chat \
+            -H "Origin: https://lardevies.com" \
+            -H "Content-Type: application/json" \
+            --data '{"message":"hola"}')
+          echo "HTTP $status"
+          head -c 300 response.json; echo
+          test "$status" = "200"
