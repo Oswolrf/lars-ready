@@ -4,10 +4,9 @@ const siteConfig = require("../site.config.cjs");
 
 const root = path.resolve(__dirname, "..");
 const siteUrl = siteConfig.site.defaultOrigin.replace(/\/$/, "");
-const bookingUrl = `${siteUrl}${siteConfig.site.bookingFallback}`;
+const bookingUrl = siteConfig.properties.larDeVies.bookingUrl;
 const businessId = `${siteUrl}${siteConfig.properties.larDeVies.entityId}`;
 const websiteId = `${siteUrl}/#website`;
-const ruralPradoId = `${siteUrl}${siteConfig.properties.ruralPrado.entityId}`;
 const biosphereUrl = "https://www.miteco.gob.es/es/parques-nacionales-oapn/reservas-biosfera-mab/programa-mab-espana/nuestras-reservas-de-la-biosfera/rioeooscosterrasburon.html";
 
 // Metadatos públicos (ruta, title, description, imagen y lastModified) proceden
@@ -51,20 +50,6 @@ const schemaOverlayDefaults = {
     type: "collection",
     collection: "villas",
     lastModified: "2026-07-23",
-  },
-  "OtrosAlojamientos.html": {
-    route: "/rural-prado/",
-    title: "Rural Prado | Alojamientos rurales en Asturias",
-    description:
-      "Rural Prado es un complejo de alojamientos rurales restaurado en piedra y pizarra a orillas del río Eo, en San Tirso de Abres, Asturias.",
-    ogTitle: "Rural Prado | Apartamentos rurales en Asturias",
-    image: "/images/AMEIRO/AMEIRO1.jpeg",
-    imageAlt: "Interior del apartamento Ameiro en Rural Prado",
-    name: "Rural Prado",
-    type: "ruralProperty",
-    aboutId: ruralPradoId,
-    socialSiteName: "Rural Prado",
-    lastModified: "2026-08-11",
   },
   "zonas-comunes.html": {
     route: "/zonas-comunes/",
@@ -299,9 +284,7 @@ const routeLinks = [
   [/(?:\.\.\/)?(?:villas\/)?jazmin\.html/g, "/villa-jazmin/"],
   [/(?:\.\.\/)?LaCasona\.html/g, "/la-casona/"],
   [/(?:\.\.\/)?Lasvillas\.html/g, "/las-villas-casitas-independientes/"],
-  [/(?:\.\.\/)?OtrosAlojamientos\.html/g, "/rural-prado/"],
   [/(?:\.\.\/)?zonas-comunes\.html/g, "/zonas-comunes/"],
-  [/\/otros-alojamientos\//g, "/rural-prado/"],
   [/(?:\.\.\/)?Entorno\.html/g, "/el-entorno/"],
   [/(?:\.\.\/)?Reserva\.html/g, "/reservas/"],
   [/(?:\.\.\/)?sobre-nosotros\.html/g, "/sobre-nosotros/"],
@@ -440,40 +423,6 @@ function structuredData(page) {
   crumbs.push({ name: page.name, route: page.route });
 
   const graph = [commonWebPage(page, page.type === "about" ? "AboutPage" : "WebPage"), breadcrumb(crumbs)];
-
-  if (page.type === "ruralProperty") {
-    const apartmentsId = `${absolute(page.route)}#apartments`;
-    graph[0].mainEntity = { "@id": ruralPradoId };
-    graph.push(
-      {
-        "@type": "LodgingBusiness",
-        "@id": ruralPradoId,
-        name: "Rural Prado",
-        url: absolute(page.route),
-        description:
-          "Alojamientos rurales restaurados en piedra y pizarra a orillas del río Eo, en San Tirso de Abres, Asturias.",
-        image: absolute(page.image),
-        potentialAction: {
-          "@type": "ReserveAction",
-          target: bookingUrl,
-        },
-      },
-      {
-        "@type": "ItemList",
-        "@id": apartmentsId,
-        name: "Apartamentos de Rural Prado",
-        about: { "@id": ruralPradoId },
-        numberOfItems: 5,
-        itemListElement: ["Ameiro", "Salgueiro", "Castañeiro", "Bidueira", "Carballo"].map(
-          (name, index) => ({
-            "@type": "ListItem",
-            position: index + 1,
-            name,
-          }),
-        ),
-      },
-    );
-  }
 
   if (page.type === "facilities") {
     const facilitiesId = `${absolute(page.route)}#facilities`;

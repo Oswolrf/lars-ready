@@ -122,7 +122,7 @@ test("responde a un saludo sin consultar el flujo RAG", async () => {
 
   assert.equal(response.statusCode, 200);
   const payload = JSON.parse(response.body);
-  assert.equal(payload.answer, "¡Hola! ¿En qué puedo ayudarte? Puedes preguntarme por Lar de Víes, Rural Prado, sus alojamientos o el entorno.");
+  assert.equal(payload.answer, "¡Hola! ¿En qué puedo ayudarte? Puedes preguntarme por Lar de Víes, sus alojamientos o el entorno.");
   assert.deepEqual(payload.sources, []);
   assert.equal(payload.abstained, false);
   assert.equal(handler._internals.verifyHistoryToken([
@@ -183,16 +183,14 @@ test("responde si el desayuno se paga aparte sin depender del índice RAG", asyn
 });
 
 test("mantiene las preguntas sobre el horario del desayuno en el flujo RAG", () => {
-  assert.equal(handler._internals.knownFactReply("¿A qué hora se sirve el desayuno?", "Lar de Víes"), null);
-  assert.match(handler._internals.knownFactReply("Is breakfast included?", "Lar de Víes").answer, /room-only rates/);
-  assert.match(handler._internals.knownFactReply("Ist das Frühstück inklusive?", "Lar de Víes").answer, /Buchungssystem/);
+  assert.equal(handler._internals.knownFactReply("¿A qué hora se sirve el desayuno?"), null);
+  assert.match(handler._internals.knownFactReply("Is breakfast included?").answer, /room-only rates/);
+  assert.match(handler._internals.knownFactReply("Ist das Frühstück inklusive?").answer, /Buchungssystem/);
 });
 
-test("no atribuye a Rural Prado el desayuno de Lar de Víes", () => {
-  assert.equal(handler._internals.knownFactReply("¿El desayuno está incluido?", "Rural Prado"), null);
-  assert.equal(handler._internals.conversationProperty("¿El desayuno está incluido?", [], "/rural-prado/"), "Rural Prado");
-  assert.equal(handler._internals.conversationProperty("Ist Frühstück verfügbar?", [], "/de/rural-prado/"), "Rural Prado");
-  assert.equal(handler._internals.conversationProperty("¿Y Rural Prado ofrece desayuno?", [], "/"), "Rural Prado");
-  assert.equal(handler._internals.conversationProperty("Háblame de Rural el Prado", [], "/"), "Rural Prado");
-  assert.match(handler._internals.retrievalQuery("¿Hay wifi?", [], "Rural Prado"), /^Establecimiento: Rural Prado/);
+test("no recupera documentos retirados de la base de conocimiento", () => {
+  assert.equal(handler._internals.isRetiredDocument({ doc_id: "rural-prado" }), true);
+  assert.equal(handler._internals.isRetiredDocument({ doc_id: "rural-prado-ameiro" }), true);
+  assert.equal(handler._internals.isRetiredDocument({ doc_id: "reservas-y-cancelacion" }), false);
+  assert.equal(handler._internals.retrievalQuery("¿Hay wifi?", []), "¿Hay wifi?");
 });

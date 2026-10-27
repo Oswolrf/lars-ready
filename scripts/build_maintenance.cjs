@@ -7,9 +7,9 @@ const config = require("../site.config.cjs");
 const i18n = require("../i18n.config.cjs");
 
 const copy = {
-  es: { title: "El comienzo de algo nuevo", reserve: "Reservar", choose: "Elige tu alojamiento", lar: "Suites y villas en A Pontenova", prado: "Alojamientos en San Tirso de Abres", countdown: "Nos vemos en", days: "Días", hours: "Horas", minutes: "Minutos", seconds: "Segundos", opening: "Abriendo nuestra web…", launch: "Estrenamos nuestra web el" },
-  en: { title: "The beginning of something new", reserve: "Book your stay", choose: "Choose your accommodation", lar: "Suites and villas in A Pontenova", prado: "Accommodation in San Tirso de Abres", countdown: "See you in", days: "Days", hours: "Hours", minutes: "Minutes", seconds: "Seconds", opening: "Opening our website…", launch: "Our website launches on" },
-  de: { title: "Der Anfang von etwas Neuem", reserve: "Jetzt buchen", choose: "Wählen Sie Ihre Unterkunft", lar: "Suiten und Villen in A Pontenova", prado: "Unterkünfte in San Tirso de Abres", countdown: "Wir sehen uns in", days: "Tage", hours: "Stunden", minutes: "Minuten", seconds: "Sekunden", opening: "Unsere Website wird geöffnet…", launch: "Unsere Website startet am" },
+  es: { title: "El comienzo de algo nuevo", reserve: "Reservar", choose: "Elige tu alojamiento", lar: "Suites y villas en A Pontenova", countdown: "Nos vemos en", days: "Días", hours: "Horas", minutes: "Minutos", seconds: "Segundos", opening: "Abriendo nuestra web…", launch: "Estrenamos nuestra web el" },
+  en: { title: "The beginning of something new", reserve: "Book your stay", choose: "Choose your accommodation", lar: "Suites and villas in A Pontenova", countdown: "See you in", days: "Days", hours: "Hours", minutes: "Minutes", seconds: "Seconds", opening: "Opening our website…", launch: "Our website launches on" },
+  de: { title: "Der Anfang von etwas Neuem", reserve: "Jetzt buchen", choose: "Wählen Sie Ihre Unterkunft", lar: "Suiten und Villen in A Pontenova", countdown: "Wir sehen uns in", days: "Tage", hours: "Stunden", minutes: "Minuten", seconds: "Sekunden", opening: "Unsere Website wird geöffnet…", launch: "Unsere Website startet am" },
 };
 
 function buildMaintenance({ root, output, basePath, deployEnv, siteOrigin, launch = null, pagePrefix = "", writeControls = true }) {
@@ -42,7 +42,7 @@ function buildMaintenance({ root, output, basePath, deployEnv, siteOrigin, launc
         launchTarget: `${basePath}${route.slice(1)}`,
         launchDate: launch ? new Intl.DateTimeFormat(locale, { timeZone: "Europe/Madrid", dateStyle: "long", timeStyle: "short" }).format(launch.timestamp) : "",
         width: logoData.readUInt32BE(16), height: logoData.readUInt32BE(20),
-        booking: page.route === "/reservas/", larUrl: bookingUrl(config.properties.larDeVies.bookingUrl), pradoUrl: bookingUrl(config.properties.ruralPrado.bookingUrl),
+        booking: page.route === "/reservas/", larUrl: bookingUrl(config.properties.larDeVies.bookingUrl),
       });
       write(`${pagePrefix}${route.replace(/^\//, "")}index.html`, html);
       pages.push({ route, locale });

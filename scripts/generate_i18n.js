@@ -64,9 +64,8 @@ function collectStrings() {
 }
 
 const protectedNames = [
-  "Lar de Víes", "Lar de Vies", "La Casona", "Las Villas", "Rural Prado", "A Pontenova", "Neipín",
-  "San Tirso de Abres", "OpenAI", "Supabase", "Ameiro", "Bidueira", "Carballo",
-  "Castañeiro", "Salgueiro", "El Cabozo", "El Jardín", "El Valle", "La Capilla",
+  "Lar de Víes", "Lar de Vies", "La Casona", "Las Villas", "A Pontenova", "Neipín",
+  "OpenAI", "Supabase", "El Cabozo", "El Jardín", "El Valle", "La Capilla",
   "La Panera", "Villa Camelia", "Villa El Camino", "Villa Jazmín",
 ];
 

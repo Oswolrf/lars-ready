@@ -63,15 +63,13 @@
     </nav>
 
     <section aria-labelledby="footer-contact-title" class="footer-contact">
-      <p id="footer-contact-title" class="footer-heading">{% if page.entity === 'ruralPrado' %}Reservas{% else %}Contacto y reservas{% endif %}</p>
-      {% if page.entity !== 'ruralPrado' %}
+      <p id="footer-contact-title" class="footer-heading">Contacto y reservas</p>
       <address class="footer-address">
         <a href="tel:+34678655303">+34 678 655 303</a>
         <a href="mailto:reservas@lardevies.com">reservas@lardevies.com</a>
         <span>Neipín, A Pontenova<br>Galicia, 27721 España</span>
       </address>
-      {% endif %}
-      <a href="{{ url(site.bookingFallback) }}" data-booking-trigger class="footer-booking"><span>{% if page.entity === 'ruralPrado' %}Elegir alojamiento{% else %}Reservar{% endif %}</span><span class="material-symbols-outlined footer-arrow" aria-hidden="true">arrow_forward</span></a>
+      <a href="{{ bookingUrl }}" target="_blank" rel="noopener noreferrer" data-booking-link class="footer-booking"><span>Reservar</span><span class="material-symbols-outlined footer-arrow" aria-hidden="true">arrow_forward</span></a>
     </section>
     </div>
   <div class="footer-bottom">

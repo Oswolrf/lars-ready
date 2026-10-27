@@ -4,9 +4,9 @@
 
 Por indicación del propietario, `site.maintenance` está ahora en `false` y `launchAt` sigue en `null`. El próximo despliegue de `public/` publicará la web completa: 54 páginas y un sitemap con 45 URLs indexables. Zonas comunes se ha retirado de la web final y sus antiguas URLs redirigen a La Casona. No hay una fecha programada. La explicación siguiente describe cómo volver a generar la portada si fuera necesario.
 
-La configuración `site.maintenance: true` y `site.launchAt: null` en `site.config.cjs` publica únicamente el logo, el mensaje «El comienzo de algo nuevo» y el selector de reservas de Lar de Víes y Rural Prado. Los enlaces salen a los motores de reserva definidos en `properties` en ese mismo archivo. Sin una fecha acordada no aparece un contador provisional ni se abre automáticamente la web.
+La configuración `site.maintenance: true` y `site.launchAt: null` en `site.config.cjs` publica únicamente el logo, el mensaje «El comienzo de algo nuevo» y el enlace de reserva de Lar de Víes. El enlace sale al motor de reservas definido en `properties` en ese mismo archivo. Sin una fecha acordada no aparece un contador provisional ni se abre automáticamente la web.
 
-El selector funciona con ratón, teclado y JavaScript desactivado. Las páginas en español, inglés y alemán y las rutas antiguas muestran la portada temporal; `/reservas/` abre directamente las dos opciones. No se carga el chat, analítica, vídeos ni navegación de la web completa. Las páginas temporales llevan `noindex` y un sitemap vacío.
+El enlace funciona con ratón, teclado y JavaScript desactivado. Las páginas en español, inglés y alemán y las rutas antiguas muestran la portada temporal; `/reservas/` muestra directamente la reserva de Lar de Víes. No se carga el chat, analítica, vídeos ni navegación de la web completa. Las páginas temporales llevan `noindex` y un sitemap vacío.
 
 ## Publicar la portada
 

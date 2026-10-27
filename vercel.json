@@ -12,15 +12,11 @@
   "cleanUrls": false,
   "trailingSlash": true,
   "redirects": [
-    { "source": "/otros-alojamientos/", "destination": "/rural-prado/", "statusCode": 301 },
-    { "source": "/otros-alojamientos", "destination": "/rural-prado/", "statusCode": 301 },
-    { "source": "/OtrosAlojamientos.html", "destination": "/rural-prado/", "statusCode": 301 },
     { "source": "/index.html", "destination": "/", "statusCode": 301 },
     { "source": "/LaCasona.html", "destination": "/la-casona/", "statusCode": 301 },
     { "source": "/LaCasona", "destination": "/la-casona/", "statusCode": 301 },
     { "source": "/Lasvillas.html", "destination": "/las-villas-casitas-independientes/", "statusCode": 301 },
     { "source": "/Lasvillas", "destination": "/las-villas-casitas-independientes/", "statusCode": 301 },
-    { "source": "/OtrosAlojamientos", "destination": "/rural-prado/", "statusCode": 301 },
     { "source": "/Entorno.html", "destination": "/el-entorno/", "statusCode": 301 },
     { "source": "/Entorno", "destination": "/el-entorno/", "statusCode": 301 },
     { "source": "/Reserva.html", "destination": "/reservas/", "statusCode": 301 },
@@ -56,7 +52,10 @@
   ],
   "routes": [
     { "src": "^/excursiones-en-lugo/?$", "dest": "/410.html", "status": 410 },
-    { "src": "^/blog/?$", "dest": "/410.html", "status": 410 }
+    { "src": "^/blog/?$", "dest": "/410.html", "status": 410 },
+    { "src": "^/(?:(?:en|de)/)?rural-prado/?$", "dest": "/410.html", "status": 410 },
+    { "src": "^/otros-alojamientos/?$", "dest": "/410.html", "status": 410 },
+    { "src": "^/OtrosAlojamientos\\.html$", "dest": "/410.html", "status": 410 }
   ],
   "headers": [
     {

@@ -20,7 +20,6 @@ const site = {
   googleSiteVerification: "",
   locale: "es_ES",
   language: "es-ES",
-  bookingFallback: "/reservas/#elegir-alojamiento",
 };
 
 const properties = {
@@ -29,12 +28,6 @@ const properties = {
     name: "Lar de Víes",
     entityId: "/#lar-de-vies",
     bookingUrl: "https://direct-book.com/properties/complejorurallardevies",
-  },
-  ruralPrado: {
-    id: "rural-prado",
-    name: "Rural Prado",
-    entityId: "/rural-prado/#rural-prado",
-    bookingUrl: "https://direct-book.com/properties/casaruralelprado?locale=es",
   },
 };
 
@@ -79,18 +72,6 @@ const pages = [
     hero: "villas",
   },
   {
-    source: "OtrosAlojamientos.html",
-    route: "/rural-prado/",
-    active: "rural",
-    lastModified: "2026-10-04",
-    title: "Rural Prado | Apartamentos rurales en San Tirso de Abres",
-    description: "Conoce los alojamientos de Rural Prado en San Tirso de Abres y consulta su disponibilidad.",
-    ogTitle: "Rural Prado | Alojamientos rurales en Asturias",
-    image: "/images/AMEIRO/AMEIRO1.jpeg",
-    imageAlt: "Alojamiento Rural Prado en San Tirso de Abres",
-    entity: "ruralPrado",
-  },
-  {
     source: "Entorno.html",
     route: "/el-entorno/",
     active: "entorno",
@@ -108,9 +89,9 @@ const pages = [
     route: "/reservas/",
     active: "reservas",
     lastModified: "2026-09-04",
-    title: "Reservar alojamiento rural | Lar de Víes y Rural Prado",
-    description: "Elige entre Lar de Víes y Rural Prado y consulta la disponibilidad del alojamiento que prefieras.",
-    ogTitle: "Reservas | Lar de Víes y Rural Prado",
+    title: "Reservar alojamiento rural | Lar de Víes",
+    description: "Consulta disponibilidad y precios en tiempo real y reserva directamente tu estancia en Lar de Víes, en el Valle del Eo.",
+    ogTitle: "Reservas | Lar de Víes",
     image: "/images/reserva-hero-v2.webp",
     imageAlt: "Paisaje verde del Valle del Eo",
     entity: "larDeVies",
@@ -182,15 +163,11 @@ const specialPages = [
 ];
 
 const redirects = [
-  { from: "/otros-alojamientos/", to: "/rural-prado/", status: 301 },
-  { from: "/otros-alojamientos", to: "/rural-prado/", status: 301 },
-  { from: "/OtrosAlojamientos.html", to: "/rural-prado/", status: 301 },
   { from: "/index.html", to: "/", status: 301 },
   { from: "/LaCasona.html", to: "/la-casona/", status: 301 },
   { from: "/LaCasona", to: "/la-casona/", status: 301 },
   { from: "/Lasvillas.html", to: "/las-villas-casitas-independientes/", status: 301 },
   { from: "/Lasvillas", to: "/las-villas-casitas-independientes/", status: 301 },
-  { from: "/OtrosAlojamientos", to: "/rural-prado/", status: 301 },
   { from: "/Entorno.html", to: "/el-entorno/", status: 301 },
   { from: "/Entorno", to: "/el-entorno/", status: 301 },
   { from: "/Reserva.html", to: "/reservas/", status: 301 },
@@ -223,7 +200,14 @@ const redirects = [
   { from: "/como-llegar/", to: "/el-entorno/#como-llegar", status: 301 },
 ];
 
-const gone = ["/excursiones-en-lugo/", "/blog/"];
+// Rural Prado se retiró de la web: sus URLs (y las antiguas de "otros alojamientos") responden 410.
+const gone = [
+  "/excursiones-en-lugo/",
+  "/blog/",
+  ...["", "/en", "/de"].map((prefix) => `${prefix}/rural-prado/`),
+  "/otros-alojamientos/",
+  "/OtrosAlojamientos.html",
+];
 
 const heroVideos = {
   home: {

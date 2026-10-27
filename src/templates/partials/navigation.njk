@@ -14,7 +14,7 @@
     </div>
     {% set languageVariant = 'desktop' %}
     {% include "partials/language-selector.njk" %}
-    <a href="{{ url(site.bookingFallback) }}" data-booking-trigger
+    <a href="{{ bookingUrl }}" target="_blank" rel="noopener noreferrer" data-booking-link
       class="rounded-full bg-primary px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
       Reservar
     </a>
@@ -55,7 +55,7 @@
   <div class="h-px w-full bg-white/10"></div>
   {% set languageVariant = 'mobile' %}
   {% include "partials/language-selector.njk" %}
-  <a href="{{ url(site.bookingFallback) }}" data-booking-trigger
+  <a href="{{ bookingUrl }}" target="_blank" rel="noopener noreferrer" data-booking-link
     class="rounded-full bg-primary px-6 py-4 text-center text-sm font-bold uppercase tracking-widest text-white shadow-lg hover:bg-primary-dark">
     Reservar ahora
   </a>

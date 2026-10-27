@@ -10,8 +10,6 @@ import "../js/sticky-nav.js";
 import "../js/scroll-experience.js";
 import "../js/cloud-divider.js";
 import "../js/carousel.js";
-import "../js/otros-alojamientos-gallery.js";
-import "../js/booking-modal.js";
 import "../js/sticky-cta.js";
 import "../js/chat-widget.js";
 import "../js/newsletter.js";

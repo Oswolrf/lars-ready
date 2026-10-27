@@ -3,7 +3,6 @@ const { test, expect } = require("@playwright/test");
 const routes = [
   { path: "/", name: "inicio" },
   { path: "/la-casona/", name: "la-casona" },
-  { path: "/rural-prado/", name: "rural-prado" },
   { path: "/el-entorno/", name: "el-entorno" },
   { path: "/reservas/", name: "reservas" },
 ];

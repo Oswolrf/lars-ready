@@ -25,15 +25,19 @@ test('el paquete de apertura permite indexar el contenido comercial en los tres 
     assert.equal($('link[rel="canonical"]').attr('href'), origin + route);
     assert.equal($('link[rel="alternate"][hreflang]').length, 4);
   }
-  assert.equal(urls.size, 45);
+  assert.equal(urls.size, 42);
+  assert.ok(![...urls].some(url => url.includes('/rural-prado/')));
   assert.ok(![...urls].some(url => url.includes('/zonas-comunes/')));
 });
 
-test('los nombres comerciales se conservan y la página retirada no se publica', () => {
+test('los nombres comerciales se conservan y las páginas retiradas no se publican', () => {
   for (const locale of Object.keys(i18n.locales)) {
+    // La sección Rural Prado se retiró: el paquete solo conserva el fallback 410 sin su contenido.
     const rural = document(i18n.localeRoute('/rural-prado/', locale));
-    assert.equal(rural('h1').text().replace(/\s+/g, ''), 'RuralPrado');
-    assert.equal(rural('[data-rural-gallery="ameiro"] [data-carousel-slide="0"]').attr('aria-label'), {es:'Ver imagen 1 de Ameiro', en:'View image 1 of Ameiro', de:'Bild 1 von Ameiro anzeigen'}[locale]);
+    assert.equal(rural('meta[name="robots"]').attr('content'), 'noindex,nofollow,noarchive');
+    assert.doesNotMatch(rural.html(), /rural[ -]?prado/i);
+    assert.ok(config.gone.includes(i18n.localeRoute('/rural-prado/', locale)));
+    assert.ok(!config.pages.some(page => page.route === '/rural-prado/'));
     for (const [route, name] of [['/villa-el-camino/', 'El Camino'], ['/villa-camelia/', 'Camelia'], ['/villa-jazmin/', 'Jazmín']]) {
       assert.equal(document(i18n.localeRoute(route, locale))('h1').text().trim(), name);
     }
@@ -47,23 +51,6 @@ test('los nombres comerciales se conservan y la página retirada no se publica',
     assert.equal(retired('link[rel="canonical"]').attr('href'), config.site.defaultOrigin + i18n.localeRoute('/la-casona/', locale));
     assert.ok(config.redirects.some(item => item.from === target && item.to === i18n.localeRoute('/la-casona/', locale) && item.status === 301));
   }
-});
-
-test('las galerías publican imágenes adaptables y difieren las que aún no se muestran', () => {
-  const $ = document('/rural-prado/');
-  assert.equal($('[data-rural-gallery] [data-carousel]').length, 5);
-  $('[data-rural-gallery]').each((_, e) => {
-    const gallery = $(e);
-    assert.equal(gallery.find('[data-carousel]').attr('data-carousel-preload'), 'visible');
-    gallery.find('[data-carousel-track] img').each((_, img) => {
-      const image = $(img);
-      assert.ok(image.attr('width') && image.attr('height'));
-      assert.ok(image.attr('data-srcset')?.includes('320w'));
-      assert.ok(image.attr('sizes')?.includes('calc('));
-      assert.ok(image.attr('src')?.startsWith('data:'));
-    });
-    assert.equal(gallery.find('noscript').length, 1);
-  });
 });
 
 test('el alojamiento conserva capacidades y camas y la portada prioriza su logo', () => {

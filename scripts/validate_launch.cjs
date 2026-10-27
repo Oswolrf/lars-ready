@@ -25,7 +25,7 @@ function validateLaunch(output, manifest) {
     assert.equal($("script").length, 1);
     assert.equal($("script").attr("src"), launch.cover.js);
     assert.equal($("nav, iframe, form, video").length, 0);
-    assert.equal($("a").length, 2);
+    assert.equal($("a").length, 1);
     assert.equal($(".countdown-units > div").length, 4);
     $("img[src], link[href], script[src]").each((_, element) => {
       const value = $(element).attr("src") || $(element).attr("href");

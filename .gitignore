@@ -39,3 +39,6 @@ assets/generated/videos/manifest.json
 
 # Obsolete local RAG planning documents (Cloudflare/IONOS prototype).
 docs/chatbot-rag/
+
+# Rural Prado: retirado de la web, se conserva solo en local.
+_local-rural-prado/

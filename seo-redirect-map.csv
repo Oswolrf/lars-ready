@@ -4,10 +4,6 @@ source,destination,status,reason
 /LaCasona,/la-casona/,ready,Previous Vercel clean URL
 /Lasvillas.html,/las-villas-casitas-independientes/,ready,Preview physical URL
 /Lasvillas,/las-villas-casitas-independientes/,ready,Previous Vercel clean URL
-/OtrosAlojamientos.html,/rural-prado/,ready,Preview physical URL
-/OtrosAlojamientos,/rural-prado/,ready,Previous Vercel clean URL
-/otros-alojamientos,/rural-prado/,ready,Legacy URL without trailing slash
-/otros-alojamientos/,/rural-prado/,ready,Replaced generic URL with the canonical property URL
 /Entorno.html,/el-entorno/,ready,Preview physical URL
 /Entorno,/el-entorno/,ready,Previous Vercel clean URL
 /Reserva.html,/reservas/,ready,Preview physical URL
@@ -27,3 +23,6 @@ source,destination,status,reason
 /como-llegar/,/el-entorno/#como-llegar,verify,Confirm equivalent content
 /excursiones-en-lugo/,,gone,HTTP 410 because the service is retired
 /blog/,,gone,HTTP 410 because the content is retired
+/rural-prado/,,gone,HTTP 410 because the Rural Prado section was removed from the website
+/otros-alojamientos/,,gone,HTTP 410 because the Rural Prado section was removed from the website
+/OtrosAlojamientos.html,,gone,HTTP 410 because the Rural Prado section was removed from the website

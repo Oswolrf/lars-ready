@@ -12,7 +12,7 @@ const handler = remote ? null : createEdgeHandler({...env,CHAT_DATABASE_KEY:env.
 const send = (request) => remote ? fetch(request) : handler(request, "live-smoke-test");
 let history = [];
 let historyToken;
-for (const message of ["Hola", "¿Dónde está Lar de Víes?", "¿Y Rural Prado?"]) {
+for (const message of ["Hola", "¿Dónde está Lar de Víes?", "¿Qué servicios incluye la estancia?"]) {
   const start = Date.now();
   const response = await send(new Request(endpoint,{method:"POST",headers:{Origin:origin,"Content-Type":"application/json"},body:JSON.stringify({message,history,historyToken,page:"/"})}));
   const result = await response.json();

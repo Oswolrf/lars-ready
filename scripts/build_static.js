@@ -7,7 +7,6 @@ const cheerio = require("cheerio");
 const esbuild = require("esbuild");
 const nunjucks = require("nunjucks");
 const sharp = require("sharp");
-const ruralGalleries = require("../js/rural-gallery-data.cjs");
 const config = require("../site.config.cjs");
 const i18n = require("../i18n.config.cjs");
 const { chatDeployConfig } = require("./chat_deploy_config.cjs");
@@ -83,7 +82,6 @@ const navigation = [
   { id: "inicio", label: "Inicio", route: "/" },
   { id: "casona", label: "La Casona", route: "/la-casona/" },
   { id: "villas", label: "Las Villas", route: "/las-villas-casitas-independientes/" },
-  { id: "rural", label: "Rural Prado", route: "/rural-prado/" },
   { id: "entorno", label: "Entorno", route: "/el-entorno/" },
   { id: "nosotros", label: "Sobre nosotros", route: "/sobre-nosotros/" },
 ];
@@ -149,12 +147,20 @@ function canonicalUrl(route) {
   return `${siteOrigin}${pathname}`;
 }
 
+// "Reservar" lleva directo al motor de reservas de Lar de Víes, en el idioma de la página.
+function bookingUrlFor(localeCode = "es") {
+  const url = new URL(config.properties.larDeVies.bookingUrl);
+  if (localeCode && localeCode !== "es") url.searchParams.set("locale", localeCode);
+  return url.href;
+}
+
 function render(template, page = {}, extra = {}) {
   const locale = i18n.locales[page.locale || "es"];
   return templates.render(template, {
     page,
     site: config.site,
     properties: config.properties,
+    bookingUrl: bookingUrlFor(page.locale || "es"),
     navigation,
     locale,
     locales: localeEntries,
@@ -256,7 +262,9 @@ function translateDocument($, localeCode) {
 }
 
 function normalizeUrlAttributes($, page) {
-  const bookingFallback = i18n.localeRoute(config.site.bookingFallback, page.locale || "es");
+  const bookingUrl = bookingUrlFor(page.locale || "es");
+  // Enlaces "Reservar" heredados de las fuentes (antes abrían el selector de alojamiento).
+  const isBookingCta = (anchor, href) => anchor.is("[data-booking-trigger]") || /^\/reservas\/#elegir-alojamiento$/.test(href);
   $("a[href]").each((_, element) => {
     const anchor = $(element);
     const href = anchor.attr("href");
@@ -264,22 +272,15 @@ function normalizeUrlAttributes($, page) {
     // These URLs already target an explicit locale. Rewriting them using the
     // current page locale would turn the Spanish option on /en/ into /en/.
     if (anchor.closest("[data-language-selector]").length) return;
-    if (href.includes("direct-book.com")) {
-      if (page.locale && page.locale !== "es") {
-        const bookingUrl = new URL(href);
-        bookingUrl.searchParams.set("locale", page.locale);
-        anchor.attr("href", bookingUrl.href);
-      }
-      if (!anchor.closest("#elegir-alojamiento").length && !anchor.is("[data-booking-property]")) {
-        anchor.attr("href", publicUrl(bookingFallback)).attr("data-booking-trigger", "");
-      }
+    if (isBookingCta(anchor, href) || href.includes("direct-book.com")) {
+      anchor.attr("href", bookingUrl).attr("target", "_blank").attr("rel", "noopener noreferrer").attr("data-booking-link", "");
+      anchor.removeAttr("data-booking-trigger");
       return;
     }
     anchor.attr("href", routeForLocalLink(page, href));
   });
 
-  $("[data-sticky-cta-url]").attr("data-sticky-cta-url", publicUrl(bookingFallback));
-  $(`a[href="${publicUrl(bookingFallback)}"]`).attr("data-booking-trigger", "");
+  $("body").attr("data-sticky-cta-url", bookingUrl);
 
   $("link[href]").each((_, element) => {
     const node = $(element);
@@ -364,10 +365,8 @@ function applyStructuredData($, page) {
   const sourceLodging = sourceNodes.find((node) => node["@type"] === "LodgingBusiness" && node.geo);
   const sourceAccommodation = sourceNodes.find((node) => node["@id"]?.endsWith("#accommodation"));
   const localizedHome = i18n.localeRoute("/", page.locale);
-  const localizedRural = i18n.localeRoute("/rural-prado/", page.locale);
   const websiteId = `${siteOrigin}${publicUrl(`${localizedHome}#website`)}`;
   const larId = `${siteOrigin}${publicUrl(`${localizedHome}#lar-de-vies`)}`;
-  const ruralId = `${siteOrigin}${publicUrl(`${localizedRural}#rural-prado`)}`;
   const pageUrl = canonicalUrl(page.route);
   const graph = [
     {
@@ -405,20 +404,6 @@ function applyStructuredData($, page) {
     });
   }
 
-  if (page.entity === "ruralPrado") {
-    graph.push({
-      "@type": "LodgingBusiness",
-      "@id": ruralId,
-      name: config.properties.ruralPrado.name,
-      url: pageUrl,
-      image: `${siteOrigin}${publicUrl(page.image)}`,
-      potentialAction: {
-        "@type": "ReserveAction",
-        target: config.properties.ruralPrado.bookingUrl,
-      },
-    });
-  }
-
   const webPage = {
     "@type": page.source === "sobre-nosotros.html" ? "AboutPage" : "WebPage",
     "@id": `${pageUrl}#webpage`,
@@ -429,8 +414,7 @@ function applyStructuredData($, page) {
     isPartOf: { "@id": websiteId },
     primaryImageOfPage: { "@type": "ImageObject", url: `${siteOrigin}${publicUrl(page.image)}` },
   };
-  if (page.entity === "ruralPrado") webPage.mainEntity = { "@id": ruralId };
-  else if (page.entity === "larDeVies") webPage.about = { "@id": larId };
+  if (page.entity === "larDeVies") webPage.about = { "@id": larId };
   if (page.source === "Entorno.html") {
     webPage.about = {
       "@type": "TouristDestination",
@@ -441,7 +425,7 @@ function applyStructuredData($, page) {
   if (page.source === "Reserva.html") {
     webPage.potentialAction = {
       "@type": "ReserveAction",
-      target: [config.properties.larDeVies.bookingUrl, config.properties.ruralPrado.bookingUrl],
+      target: config.properties.larDeVies.bookingUrl,
     };
   }
   graph.push(webPage);
@@ -480,7 +464,6 @@ function replaceSharedComponents($, page) {
   $("#mobile-menu").remove();
   $("footer").first().replaceWith(render("partials/footer.njk", page));
   $("#booking-dialog, #booking-modal, [data-booking-dialog]").remove();
-  $("body").append(render("partials/booking-dialog.njk", page));
   $("[data-chat-widget]").remove();
   $("body").append(render("partials/chat-widget.njk", page));
   if (!$("main#main-content").length) {
@@ -692,32 +675,6 @@ async function enhanceImages($, page) {
   }
 }
 
-// Publish gallery content in the initial HTML so images can be sized and deferred.
-function renderRuralGalleries($, page) {
-  const format = (pattern, values) => Object.entries(values).reduce((text, [key, value]) => text.replaceAll(`{${key}}`, String(value)), i18n.translate(page.locale, pattern));
-  $('[data-rural-gallery]').each((_, element) => {
-    const root = $(element);
-    const gallery = ruralGalleries[root.attr('data-rural-gallery')];
-    if (!gallery) return;
-    const carousel = $('<div>').addClass('rural-gallery__carousel').attr({ 'data-carousel': '', 'data-carousel-preload': 'visible', role: 'region', 'aria-label': format('Galería de {title}', {title:gallery.title}) });
-    const track = $('<div>').addClass('rural-gallery__track').attr({ 'data-carousel-track': '', 'aria-live': 'polite' });
-    const sizes = '(max-width: 767px) calc(100vw - 48px), (max-width: 1279px) calc((100vw - 128px) / 2), 560px';
-    for (const item of gallery.images) {
-      const image = $('<img>').addClass('stay-image').attr({ src: `/${item.src}`, alt: item.alt, loading: 'lazy', sizes });
-      track.append($('<div>').addClass('rural-gallery__slide').append(image));
-    }
-    carousel.append(track);
-    for (const [direction, label, symbol] of [['prev', 'Imagen anterior', '‹'], ['next', 'Imagen siguiente', '›']]) {
-      carousel.append($('<button>').addClass(`rural-gallery__control rural-gallery__control--${direction}`).attr({ type: 'button', [`data-carousel-${direction}`]: '', 'aria-label': label }).text(symbol));
-    }
-    const footer = $('<div>').addClass('rural-gallery__footer');
-    const dots = $('<div>').addClass('rural-gallery__dots').attr({ role: 'group', 'aria-label': 'Seleccionar imagen' });
-    gallery.images.forEach((_, index) => dots.append($('<button>').addClass('rural-gallery__dot').attr({ type: 'button', 'data-carousel-slide': String(index), 'aria-label': format('Ver imagen {number} de {title}', {number:index+1,title:gallery.title}), 'aria-current': String(index === 0) })));
-    footer.append(dots, $('<span>').addClass('rural-gallery__count').attr('data-carousel-count', '').text(`1 / ${gallery.images.length}`));
-    root.empty().append(carousel.append(footer));
-  });
-}
-
 function deferCarouselImages($) {
   const transparentPixel = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
   const candidate = (srcset, preferredWidth) => {
@@ -853,7 +810,7 @@ async function buildJs() {
     legalComments: "none",
     define: {
       __LAR_BASE_PATH__: JSON.stringify(basePath),
-      __LAR_BOOKING_FALLBACK__: JSON.stringify(publicUrl(config.site.bookingFallback)),
+      __LAR_BOOKING_URL__: JSON.stringify(bookingUrlFor("es")),
       __LAR_GA_ID__: JSON.stringify(analyticsId),
     },
   });
@@ -1006,7 +963,6 @@ async function buildPage(page, cssUrl, jsUrl) {
   const $ = cheerio.load(sourceHtml, { decodeEntities: false });
   $("base").remove();
   replaceSharedComponents($, page);
-  if (page.source === "OtrosAlojamientos.html") renderRuralGalleries($, page);
   translateDocument($, page.locale);
   applyMetadata($, page);
   normalizeUrlAttributes($, page);

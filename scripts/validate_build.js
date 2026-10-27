@@ -121,7 +121,9 @@ for (const page of pages) {
   if ($("h1").length !== 1) add(relative, `debe tener un H1; encontrados ${$("h1").length}`);
   if (!$('a[href="#main-content"]').length) add(relative, "falta skip link");
   if (!$("nav#main-nav[aria-label]").attr("aria-label")?.trim()) add(relative, "falta nombre de navegación principal");
-  if (!$('[data-booking-dialog]').length) add(relative, "falta selector de reserva estático");
+  if ($('[data-booking-dialog]').length) add(relative, "conserva el selector de reservas retirado");
+  if (!$('a[data-booking-link][href^="https://direct-book.com/properties/"]').length) add(relative, "falta el enlace de reserva directo");
+  if (/rural[ -]?prado/i.test($.html())) add(relative, "contiene referencias a Rural Prado");
   for (const locale of Object.values(i18n.locales)) {
     const expectedRoute = i18n.localeRoute(page.baseRoute, locale.code);
     const expectedHref = manifest.basePath === "/"

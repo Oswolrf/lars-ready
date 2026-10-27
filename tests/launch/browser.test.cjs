@@ -83,7 +83,7 @@ test("sin fecha no hay contador ficticio ni scripts y las reservas siguen funcio
     await page.goto(site.origin);
     assert.equal(await page.locator("[data-countdown], script").count(), 0);
     await page.locator("summary").click();
-    assert.equal(await page.locator("details[open] a").count(), 2);
+    assert.equal(await page.locator("details[open] a").count(), 1);
   } finally { await browser?.close(); await site.close(); }
 });
 
@@ -100,7 +100,7 @@ for (const basePath of ["/", "/preview/"]) test(`antes y después del lanzamient
       assert.equal(await page.locator(".countdown-units").isHidden(), true);
       assert.ok(await page.locator("time").textContent());
       await page.locator("summary").click({ timeout: 5000 });
-      assert.equal(await page.locator("details[open] a").count(), 2);
+      assert.equal(await page.locator("details[open] a").count(), 1);
       await page.close();
     }
     assert.deepEqual(await (await fetch(`${site.origin}${basePath}__launch/status.json`)).json(), { launched: false });
@@ -145,7 +145,7 @@ test("la pestaña abierta usa la hora del servidor y pasa a la misma página sin
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.screenshot({ path: path.join(cache, "countdown-desktop.png"), fullPage: true });
     await page.locator("summary").click();
-    assert.equal(await page.locator("details[open] a").count(), 2);
+    assert.equal(await page.locator("details[open] a").count(), 1);
     site.setTime(site.deadline - 2000);
     await page.evaluate(() => window.dispatchEvent(new Event("online")));
     await page.waitForFunction(() => document.querySelector("[data-countdown-days]").textContent === "00");
@@ -176,7 +176,7 @@ test("si falla la comprobación al llegar a cero no hay bucle de recargas; vuelv
     assert.equal(await page.locator("[data-countdown-seconds]").textContent(), "00");
     assert.equal(await page.locator("nav").count(), 0);
     await page.locator("summary").click();
-    assert.equal(await page.locator("details[open] a").count(), 2);
+    assert.equal(await page.locator("details[open] a").count(), 1);
     await page.unroute("**/__launch/status.json");
     await page.evaluate(() => window.dispatchEvent(new Event("online")));
     await page.waitForSelector("nav");

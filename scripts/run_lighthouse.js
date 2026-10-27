@@ -14,7 +14,7 @@ const routes = routeArgument
   ? [`/${routeArgument.replace(/^\/+|\/+$/g, "")}/`.replace(/^\/\/$/, "/")]
   : quick
     ? ["/"]
-    : ["/", "/la-casona/", "/suite-la-panera/", "/villa-el-camino/", "/el-entorno/", "/rural-prado/"];
+    : ["/", "/la-casona/", "/suite-la-panera/", "/villa-el-camino/", "/el-entorno/"];
 const profiles = profileArgument ? [profileArgument] : quick ? ["mobile"] : ["mobile", "desktop"];
 const failures = [];
 

@@ -16,7 +16,6 @@ const expectedCanonicalByFile = new Map(
 const manifestPageBySource = new Map(
   siteConfig.pages.map((page) => [page.source, page]),
 );
-const ruralPradoEntityId = `${siteOrigin}${siteConfig.properties.ruralPrado.entityId}`;
 const manifestLastModifiedByUrl = new Map(
   siteConfig.pages
     .filter((page) => page.indexable !== false)
@@ -154,53 +153,12 @@ for (const file of htmlFiles) {
       }
     }
     if (/href="https:\/\/direct-book\.com/i.test(html)) {
-      errors.push(`${file}: conserva un CTA directo en lugar del selector común`);
+      errors.push(`${file}: conserva un CTA directo en lugar del enlace de reservas común`);
     }
     if (!html.includes('/reservas/#elegir-alojamiento')) {
-      errors.push(`${file}: falta el fallback al selector común de reservas`);
+      errors.push(`${file}: falta el enlace común de reservas`);
     }
   }
-  if (file === "OtrosAlojamientos.html") {
-    const ruralPrado = schemaNodes.find(
-      (node) =>
-        node?.["@type"] === "LodgingBusiness" &&
-        node?.["@id"] === ruralPradoEntityId,
-    );
-    if (!ruralPrado) {
-      errors.push(`${file}: falta la entidad independiente Rural Prado`);
-    } else {
-      for (const unsupported of [
-        "address",
-        "telephone",
-        "email",
-        "identifier",
-        "occupancy",
-        "brand",
-        "parentOrganization",
-      ]) {
-        if (unsupported in ruralPrado) {
-          errors.push(`${file}: Rural Prado publica el dato no confirmado ${unsupported}`);
-        }
-      }
-    }
-    if (/direct-book\.com/i.test(html)) {
-      errors.push(`${file}: conserva un CTA directo en lugar del selector común`);
-    }
-    if (!html.includes('/reservas/#elegir-alojamiento')) {
-      errors.push(`${file}: falta el fallback al selector común de reservas`);
-    }
-    const galleryButtons = [
-      ...html.matchAll(
-        /<button\b[^>]*data-gallery-open[^>]*>([\s\S]*?)<\/button>/gi,
-      ),
-    ];
-    for (const button of galleryButtons) {
-      if (/<(?:article|div|h[1-6]|p|section)\b/i.test(button[1])) {
-        errors.push(`${file}: control de galería con contenido de bloque no válido`);
-      }
-    }
-  }
-
   const images = [...html.matchAll(/<img\b([^>]*)>/gi)];
   for (const image of images) {
     const attributes = image[1];
@@ -386,13 +344,7 @@ if (vercelConfig) {
     }
   }
   const redirects = vercelConfig.redirects || [];
-  const ruralRedirect = redirects.find(
-    (redirect) => redirect.source === "/otros-alojamientos/",
-  );
-  if (ruralRedirect?.destination !== "/rural-prado/" || ![301, 308].includes(ruralRedirect.statusCode || (ruralRedirect.permanent ? 308 : 0))) {
-    errors.push("vercel.json: falta el 301 de /otros-alojamientos/ a /rural-prado/");
-  }
-  for (const retired of ["/excursiones-en-lugo/", "/blog/"]) {
+  for (const retired of ["/excursiones-en-lugo/", "/blog/", "/rural-prado/", "/otros-alojamientos/"]) {
     if (redirects.some((redirect) => redirect.source === retired)) {
       errors.push(`vercel.json: ${retired} no debe redirigirse a contenido no equivalente`);
     }

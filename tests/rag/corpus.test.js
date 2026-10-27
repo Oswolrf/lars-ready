@@ -19,31 +19,22 @@ test("carga todo el corpus con rutas válidas y chunks autocontenidos", () => {
   const root = path.resolve(__dirname, "../..");
   const validRoutes = new Set(siteConfig.pages.map((page) => page.route));
   const corpus = loadCorpus({ root, validRoutes });
-  assert.equal(corpus.files.length, 18);
+  assert.equal(corpus.files.length, 17);
   assert.ok(corpus.chunks.length >= 80);
   assert.equal(new Set(corpus.chunks.map((chunk) => chunk.id)).size, corpus.chunks.length);
   for (const chunk of corpus.chunks) {
-    const propertyName = chunk.entity === "rural-prado" ? "Rural Prado" : "Lar de Víes";
-    assert.ok(chunk.content.includes(propertyName));
+    assert.ok(chunk.content.includes("Lar de Víes"));
     assert.ok(chunk.section.length > 0);
   }
 });
 
-test("mantiene Rural Prado separado de Lar de Víes", () => {
+test("la base de conocimiento no incluye contenido de otros establecimientos", () => {
   const root = path.resolve(__dirname, "../..");
   const validRoutes = new Set(siteConfig.pages.map((page) => page.route));
   const corpus = loadCorpus({ root, validRoutes });
-  const ruralChunks = corpus.chunks.filter((chunk) => chunk.doc_id === "rural-prado");
 
-  assert.ok(ruralChunks.length >= 10);
-  assert.ok(ruralChunks.every((chunk) => chunk.entity === "rural-prado"));
-  assert.ok(ruralChunks.every((chunk) => chunk.source_url === "/rural-prado/"));
-  assert.ok(ruralChunks.every((chunk) => chunk.content.includes("Rural Prado (San Tirso de Abres, Asturias)")));
-  assert.ok(ruralChunks.every((chunk) => !chunk.content.includes("A Pontenova, Lugo")));
-  assert.ok(ruralChunks.some((chunk) => chunk.id === "rural-prado#apartamento-salgueiro"));
-  assert.ok(ruralChunks.every((chunk) => !chunk.content.includes("Ático de Prado")));
-  assert.doesNotMatch(ruralChunks.find((chunk) => chunk.id === "rural-prado#informacion-no-confirmada").content, /Servicio de desayunos o cenas/);
-  assert.match(ruralChunks.find((chunk) => chunk.id === "rural-prado#desayunos-y-cenas").content, /no ofrece desayunos ni cenas/);
+  assert.ok(corpus.chunks.every((chunk) => chunk.entity === "lar-de-vies"));
+  assert.ok(corpus.chunks.every((chunk) => !/rural[ -]prado/i.test(`${chunk.doc_id} ${chunk.source_url} ${chunk.content}`)));
 });
 
 test("documenta las tarifas con y sin desayuno de forma recuperable", () => {
@@ -59,18 +50,15 @@ test("documenta las tarifas con y sin desayuno de forma recuperable", () => {
   assert.match(breakfastChunk.content, /depende de la tarifa seleccionada/);
 });
 
-test("recupera las reglas nuevas de gastronomía y Rural Prado", () => {
+test("recupera las reglas nuevas de gastronomía", () => {
   const root = path.resolve(__dirname, "../..");
   const validRoutes = new Set(siteConfig.pages.map((page) => page.route));
   const corpus = loadCorpus({ root, validRoutes });
   const gastronomy = corpus.chunks.find((chunk) => chunk.id === "gastronomia#desayuno");
   const dinners = corpus.chunks.find((chunk) => chunk.id === "gastronomia#cenas");
-  const rural = corpus.chunks.find((chunk) => chunk.id === "rural-prado#desayunos-y-cenas");
 
   assert.match(gastronomy.content, /12 EUR por adulto y 6 EUR por niño/);
   assert.match(gastronomy.content, /web oficial/);
   assert.match(dinners.content, /lunes, martes, jueves, viernes y sábados/);
   assert.match(dinners.content, /exclusivo para huéspedes alojados/);
-  assert.match(rural.content, /no ofrece desayunos ni cenas/);
-  assert.match(rural.content, /\+34 678 655 303/);
 });

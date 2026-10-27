@@ -148,3 +148,18 @@ hasta validar el cambio; no trasladar credenciales personales a la cuenta client
 Referencias: [autenticación](https://supabase.com/docs/guides/functions/auth),
 [secretos](https://supabase.com/docs/guides/functions/secrets),
 [límites](https://supabase.com/docs/guides/functions/limits).
+
+## Retirada de Rural Prado (octubre 2026)
+
+Rural Prado ya no forma parte de la web ni del chatbot. El material se conserva solo en local
+(`_local-rural-prado/`, ignorado por git) y `content/kb/` ya no contiene su ficha.
+
+Pasos para que el chat remoto deje de conocerlo:
+
+1. Redesplegar la función `chat` (`npm run chat:prepare:supabase`) con el prompt actualizado.
+2. Re-ejecutar `npm run rag:ingest`: la ingesta borra los fragmentos que no pertenecen a la
+   ingestión vigente, lo que elimina de `rag_documents` los fragmentos `rural-prado#*`.
+
+Hasta entonces, `chat-core.mjs` descarta cualquier documento `rural-prado*` recuperado
+(`RETIRED_DOC_IDS`), así que no llega al contexto del modelo. Cuando la base esté purgada,
+ese filtro puede retirarse.

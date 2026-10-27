@@ -1,6 +1,5 @@
 /**
- * Accessible dialog state shared by the mobile menu, booking selector and
- * image galleries. Callers remain responsible for their visual open/closed
+ * Accessible dialog state shared by the mobile menu and image galleries. Callers remain responsible for their visual open/closed
  * classes; this module owns focus, Escape, background inertness and scroll.
  */
 (() => {

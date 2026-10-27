@@ -17,7 +17,7 @@ function validateMaintenance(output, expectedEnv) {
     assert.match($("meta[name=robots]").attr("content"), /noindex/, file);
     assert.equal($("h1").length, 1, file);
     assert.equal($("summary").length, 1, file);
-    assert.equal($("a").length, 2, file);
+    assert.equal($("a").length, 1, file);
     assert.equal($("nav, script, iframe, form").length, 0, file);
     $("a").each((index, element) => {
       const url = new URL($(element).attr("href"));
@@ -33,6 +33,6 @@ function validateMaintenance(output, expectedEnv) {
   }
   for (const page of manifest.pages) assert.ok(fs.existsSync(path.join(content, page.route.slice(1), "index.html")), page.route);
   assert.ok(!fs.readFileSync(path.join(content, "sitemap.xml"), "utf8").includes("<loc>"));
-  console.log("Prelanzamiento: rutas, idiomas, noindex, recursos y ambos motores de reserva verificados.");
+  console.log("Prelanzamiento: rutas, idiomas, noindex, recursos y motor de reservas verificados.");
 }
 module.exports = { validateMaintenance };

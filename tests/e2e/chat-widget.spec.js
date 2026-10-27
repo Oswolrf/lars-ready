@@ -16,7 +16,7 @@ test.describe('chatbot RAG', () => {
 
     await trigger.click();
     await expect(page.getByRole('dialog', { name: '¿En qué podemos ayudarte?' })).toBeVisible();
-    await expect(page.getByText('Soy el asistente virtual de Lar de Víes y Rural Prado, basado en inteligencia artificial.')).toBeVisible();
+    await expect(page.getByText('Soy el asistente virtual de Lar de Víes, basado en inteligencia artificial.')).toBeVisible();
     const panel = page.locator('[data-chat-panel]');
     const panelBox = await panel.boundingBox();
     expect(panelBox).not.toBeNull();

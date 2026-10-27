@@ -15,7 +15,6 @@ import { getLocale, localePath, t } from './i18n.js';
     const status = widget.querySelector('[data-chat-status]');
     const endpoint = widget.dataset.chatEndpoint || '/api/chat';
     const pageContext = window.location.pathname;
-    const isRuralPradoPage = /\/rural-prado\/?$/i.test(pageContext);
     const sessionKey = `lar-de-vies-chat-session-v3-${getLocale()}`;
     const maxTranscriptMessages = 16;
     const maxHistoryMessages = 6;
@@ -177,9 +176,7 @@ import { getLocale, localePath, t } from './i18n.js';
         suggestions.hidden = true;
         setBusy(true);
 
-        const pendingLabel = isRuralPradoPage
-            ? t('Estoy consultando la información de Rural Prado…')
-            : t('Estoy consultando la información de nuestros alojamientos…');
+        const pendingLabel = t('Estoy consultando la información de nuestros alojamientos…');
         const pending = addMessage('assistant', pendingLabel, [], { record: false, persist: false });
         pending.classList.add('chat-widget__message--pending');
         const controller = new AbortController();

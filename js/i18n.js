@@ -2,7 +2,6 @@ const messages = {
     en: {
         'Más información': 'More information',
         'Preparando respuesta': 'Preparing response',
-        'Estoy consultando la información de Rural Prado…': 'I am checking Rural Prado information…',
         'Estoy consultando la información de nuestros alojamientos…': 'I am checking our accommodation information…',
         'No he podido conectar. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.': 'I could not connect. Please try again in a moment or email us at reservas@lardevies.com.',
         'No se ha podido obtener una respuesta': 'A response could not be obtained',
@@ -52,7 +51,6 @@ const messages = {
     de: {
         'Más información': 'Mehr erfahren',
         'Preparando respuesta': 'Antwort wird vorbereitet',
-        'Estoy consultando la información de Rural Prado…': 'Ich prüfe die Informationen zu Rural Prado…',
         'Estoy consultando la información de nuestros alojamientos…': 'Ich prüfe die Informationen zu unseren Unterkünften…',
         'No he podido conectar. Inténtalo de nuevo en un momento, o escríbenos a reservas@lardevies.com.': 'Die Verbindung konnte nicht hergestellt werden. Versuchen Sie es gleich noch einmal oder schreiben Sie uns an reservas@lardevies.com.',
         'No se ha podido obtener una respuesta': 'Es konnte keine Antwort abgerufen werden',

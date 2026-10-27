@@ -16,16 +16,16 @@ for (const entry of pages) {
   });
 }
 
-test("todos los CTA abren siempre el selector con ambas propiedades", async ({ page }) => {
+test("todos los CTA de reserva llevan directo al motor de Lar de Víes", async ({ page }) => {
   await page.goto("/");
-  const trigger = page.locator("[data-booking-trigger]:visible").first();
-  await trigger.click();
-  const dialog = page.locator("[data-booking-dialog]");
-  await expect(dialog).toBeVisible();
-  await expect(dialog.locator(`[href="${properties.larDeVies.bookingUrl}"]`)).toHaveCount(1);
-  await expect(dialog.locator(`[href="${properties.ruralPrado.bookingUrl}"]`)).toHaveCount(1);
-  await page.keyboard.press("Escape");
-  await expect(dialog).not.toBeVisible();
+  await expect(page.locator("[data-booking-dialog], [data-booking-trigger]")).toHaveCount(0);
+  const links = page.locator("a[data-booking-link]");
+  expect(await links.count()).toBeGreaterThan(0);
+  for (const href of await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")))) {
+    expect(href).toBe(properties.larDeVies.bookingUrl);
+  }
+  await expect(page.locator("a[data-booking-link]:not([target='_blank'])")).toHaveCount(0);
+  await expect(page.locator('a[href*="casaruralelprado"]')).toHaveCount(0);
 });
 
 test("el selector de idioma enlaza las tres versiones", async ({ page }, testInfo) => {
@@ -65,7 +65,7 @@ test("la reserva funciona sin JavaScript", async ({ browser }) => {
   await page.goto("/reservas/#elegir-alojamiento");
   await expect(page.locator("#elegir-alojamiento")).toBeVisible();
   await expect(page.locator(`#elegir-alojamiento a[href="${properties.larDeVies.bookingUrl}"]`)).toBeVisible();
-  await expect(page.locator(`#elegir-alojamiento a[href="${properties.ruralPrado.bookingUrl}"]`)).toBeVisible();
+  await expect(page.locator('#elegir-alojamiento a[href*="casaruralelprado"]')).toHaveCount(0);
   await context.close();
 });
 
@@ -195,7 +195,9 @@ test("la transferencia previa al vídeo respeta los presupuestos móvil y escrit
 });
 
 test("redirecciones y retiradas usan estados correctos", async ({ request }) => {
-  expect((await request.get("/otros-alojamientos/", { maxRedirects: 0 })).status()).toBe(301);
+  expect((await request.get("/otros-alojamientos/", { maxRedirects: 0 })).status()).toBe(410);
+  expect((await request.get("/rural-prado/", { maxRedirects: 0 })).status()).toBe(410);
+  expect((await request.get("/en/rural-prado/", { maxRedirects: 0 })).status()).toBe(410);
   expect((await request.get("/excursiones-en-lugo/", { maxRedirects: 0 })).status()).toBe(410);
   expect((await request.get("/blog/", { maxRedirects: 0 })).status()).toBe(410);
 });
